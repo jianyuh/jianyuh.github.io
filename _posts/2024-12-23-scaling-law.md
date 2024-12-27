@@ -32,9 +32,7 @@ The scaling law highlights the importance of data in LLM training. As the field 
 
 ### Key highlights of Chinchilla
 
-One of the sources describes a 70B parameter model called Chinchilla that outperforms much larger models, including the 280B parameter Gopher model. The source also explains the key differences between the research that led to the creation of Chinchilla and the earlier work by Kaplan et al. from OpenAI that investigated the scaling laws of LLMs.
-
-Here are some key differences between the Chinchilla and Kaplan OpenAI work:
+Chinchilla outperforms much larger models, including the 280B parameter Gopher model. Here are some key differences between the Chinchilla and Kaplan OpenAI work:
 - **Learning Rate Schedule**: Kaplan et al. used a fixed learning rate schedule and number of training tokens for all models. This approach did not account for the impact of these hyperparameters on the loss. In contrast, the Chinchilla researchers varied the learning rate schedule and found that setting it to approximately match the number of training tokens resulted in the best final loss regardless of model size.
 - **Model Size**: The Chinchilla researchers included models with up to 16B parameters in their analysis, while the majority of runs in Kaplan et al.'s research used models with significantly fewer parameters, many under 100M. Including larger models in the analysis allowed the Chinchilla researchers to observe a slight curvature in the FLOP-loss frontier, which impacted their predictions about optimal model size.
 - **Number of Training Tokens**: The Kaplan study suggested increasing the model size more rapidly than the number of training tokens when scaling up the compute budget. Specifically, they recommended that a 10x increase in the computational budget should be accompanied by a 5.5x increase in model size but only a 1.8x increase in the number of training tokens. The Chinchilla research, however, found that the model size and the number of training tokens should be scaled equally for compute-optimal training. For example, Chinchilla was trained on 4x more data than Gopher, despite using the same compute budget.
