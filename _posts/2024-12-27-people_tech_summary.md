@@ -29,8 +29,8 @@ Several insights are drawn from [Staff Engineer: Leadership beyond the managemen
 - Convincing others requires evidence or experience.
 
 ### Office Politics:
-- Sometimes, others succeed with the same points you raised due to office politics.
-- Avoid relying on political means to influence others, as it can backfire.
+- At times, a point you raise may be dismissed, only to be accepted when presented by someone else due to their seniority, experience, or connections. This is known as office politics.
+- Avoid relying on political tactics to influence others when you have the power to do so, as it can backfire. Instead, try to persuade with evidence and technical reasoning.
 
 ### Growth and Risk-taking:
 - Growth comes from taking risks and facing challenges.
