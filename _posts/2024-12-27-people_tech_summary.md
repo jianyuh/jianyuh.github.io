@@ -8,7 +8,7 @@ tags: [people]
 
 Disclaimer: Adapted from various sources for educational purposes; does not reflect the views of this blog.
 
-Several insights are drawn from [Staff Engineer: Leadership beyond the management track](https://staffeng.com/book). A good summary is available on [this page](https://github.com/mgp/book-notes/blob/master/staff-engineer.markdown#staff-projects).
+Several insights are drawn from [Staff Engineer: Leadership beyond the management track](https://staffeng.com/book). A good summary is available on [this page](https://github.com/mgp/book-notes/blob/master/staff-engineer.markdown). Also several good blogs mentioned [here](https://github.com/mgp/book-notes/blob/master/effective-tech-lead-notes.markdown).
 
 ### Communication in Engineering:
 - Modern engineering involves diverse communication methods: emails, workplace chat messages, documents, comments, PR reviews, meetings, and interviews.
