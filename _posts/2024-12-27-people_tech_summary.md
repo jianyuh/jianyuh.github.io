@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "People Retroperspective: Communication, Growth, Collaboration, and Challenges"
+title: "People Retrospective: Communication, Growth, Collaboration, and Challenges"
 date: 2024-12-27
 categories: [Non-tech, People]
 tags: [people]
