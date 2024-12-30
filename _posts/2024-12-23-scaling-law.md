@@ -6,6 +6,8 @@ categories: [LLM, training, Chinchilla]
 tags: [LLM]
 ---
 
+Read [Scaling Laws for Neural Language Models](https://arxiv.org/abs/2001.08361), [Training Compute-Optimal Large Language Models](https://arxiv.org/abs/2203.15556), and [this blog](https://medium.com/sage-ai/demystify-transformers-a-comprehensive-guide-to-scaling-laws-attention-mechanism-fine-tuning-fffb62fc2552).
+
 The scaling law for LLM is a key concept in understanding how to optimize their training and deployment.
 
 ### Key Variables:
