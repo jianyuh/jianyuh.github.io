@@ -21,7 +21,7 @@
 title: Jianyu Huang's Blog
 email: jianyu0huang@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Record the technical thoughs.
+  Record the technical thoughts.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://jianyuhuang.com/" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  jianyuh
