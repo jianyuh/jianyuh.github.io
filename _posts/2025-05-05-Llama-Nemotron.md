@@ -13,7 +13,7 @@ Llama-Nemotron: Efficient Reasoning Models
 
 The world of large language models (LLMs) is constantly evolving, with models becoming increasingly capable of complex tasks. A significant recent advancement has been the introduction of "reasoning models," which can engage in deep thinking processes like chain-of-thought, self-verification, and reflection to solve challenging problems. However, achieving state-of-the-art reasoning often comes with a cost: these models can be computationally expensive and slow to run during inference.
 
-NVIDIA has recently introduced the Llama-Nemotron series of models, an open family of heterogeneous reasoning models designed to deliver exceptional reasoning capabilities while prioritizing inference efficiency. This family includes three sizes: Nano (8B), Super (49B), and Ultra (253B). A key feature is their open license for enterprise use, contributing significantly to the open-source community.
+This paper has recently introduced the Llama-Nemotron series of models, an open family of heterogeneous reasoning models designed to deliver exceptional reasoning capabilities while prioritizing inference efficiency. This family includes three sizes: Nano (8B), Super (49B), and Ultra (253B). A key feature is their open license for enterprise use, contributing significantly to the open-source community.
 
 ## Why Reasoning and Efficiency Together?
 
@@ -67,7 +67,7 @@ For training the reasoning toggle, paired data is constructed where prompts have
 
 The Llama-Nemotron models were evaluated across a range of reasoning and non-reasoning benchmarks, including AIME, GPQA-Diamond, LiveCodeBench, MATH500, IFEval, BFCL V2 Live, and Arena-Hard. Evaluations were performed at 32k context length to accommodate long reasoning traces.
 
-- LN-Ultra stands out, matching or outperforming all existing open-weight models on these benchmarks. It achieves state-of-the-art performance on GPQA-Diamond among open models, demonstrating the effectiveness of the large-scale RL training. Figure 4 illustrates that LN-Ultra consistently outperforms DeepSeek-R1 and Llama-3.1-405B in both accuracy and efficiency on GPQA-Diamond.
+- LN-Ultra stands out, matching or outperforming all existing open-weight models on these benchmarks. It achieves state-of-the-art performance on GPQA-Diamond among open models, demonstrating the effectiveness of the large-scale RL training. LN-Ultra consistently outperforms DeepSeek-R1 and Llama-3.1-405B in both accuracy and efficiency on GPQA-Diamond.
 
 - LN-Super performs competitively in its weight class. In reasoning-on mode, it outperforms distilled models like DeepSeek-R1-Distilled-Llama-70B. In reasoning-off mode, it performs comparably to its base model, Llama-3.3-70B. It also achieved an impressive Arena Hard score, beating some proprietary models.
 
@@ -76,7 +76,7 @@ Beyond reasoning and chat, the models were also evaluated on JudgeBench, an out-
 
 ## Conclusion
 
-The Llama-Nemotron series represents a significant contribution to the open-source AI landscape. By combining efficient architecture design through the Puzzle framework with a multi-stage training process involving supervised fine-tuning and large-scale reinforcement learning, NVIDIA has created a family of models that are both highly capable in reasoning and efficient for inference. The release of the model weights, training data, and code under a permissive license further supports open research and development in reasoning models.
+The Llama-Nemotron series represents a significant contribution to the open-source AI landscape. By combining efficient architecture design through the Puzzle framework with a multi-stage training process involving supervised fine-tuning and large-scale reinforcement learning, this paper has created a family of models that are both highly capable in reasoning and efficient for inference. The release of the model weights, training data, and code under a permissive license further supports open research and development in reasoning models.
 
 The paper underscores that while SFT is effective for transferring reasoning from a strong teacher, large-scale, curriculum-driven RL is essential to push capabilities beyond the teacher's performance. It also highlights the need for multiple post-training stages to produce a well-rounded, all-around model.
 
