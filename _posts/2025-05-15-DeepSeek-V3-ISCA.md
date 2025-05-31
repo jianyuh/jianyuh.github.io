@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "DeepSeek-V3's Hardware-Aware Design"
-date: 2025-05-04
+date: 2025-05-15
 categories: [DeepSeek]
 tags: [DeepSeek]
 ---
