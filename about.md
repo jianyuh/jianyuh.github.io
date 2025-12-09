@@ -1,7 +1,6 @@
 ---
-layout: page
+layout: external_redirect
 title: About
-# permalink: /about/
+redirect_to: https://jianyuhuang.com
+permalink: /about/
 ---
-
-Welcome to [Jianyu](http://jianyuhuang.com)'s blog.
