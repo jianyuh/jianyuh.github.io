@@ -9,3 +9,5 @@ gem "kramdown-parser-gfm" if ENV["JEKYLL_VERSION"] == "~> 3.9"
 gem "csv", "~> 3.3"
 
 gem "base64", "~> 0.3.0"
+
+gem "jekyll-redirect-from"
