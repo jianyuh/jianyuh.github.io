@@ -94,3 +94,91 @@ The significant difference between intra-node and inter-node bandwidth dictated 
 
 The high bandwidth difference justifies constraining **Tensor Parallelism (TP)** to within a single node to leverage NVLink, leaving **Data Parallelism (DP)** to handle the slower inter-node EFA communication.
 
+
+## V. Math
+
+Math related to the architecture, efficiency metrics, and stability interventions.
+
+### 1. Inference Bottlenecks: KV-Cache Memory
+While feedforward layers dominate training compute, the Key-Value (KV) cache is the bottleneck during inference. The playbook provides the formula to estimate the memory footprint of the KV-cache for a specific sequence length ($seq$) using Multi-Head Attention (MHA):
+
+$$s_{KV} = 2 \times n_{layers} \times n_{heads} \times seq \times dim_{head} \times bytes$$
+
+*   **2**: Accounts for storing both Keys and Values.
+*   **bytes**: Typically 2 bytes per parameter (FP16/BF16).
+
+**Implication for Llama 3 70B:**
+Using standard MHA with a sequence length of 8192, the cache size becomes roughly 20GB, necessitating compression techniques like GQA.
+
+### 2. Positional Encodings: RoPE and Frequencies
+Rotary Positional Embeddings (RoPE) encode position by rotating query and key vectors in high-dimensional space.
+
+**The Rotation Angle ($\theta$):**
+For a token at position $p$ and a dimension pair index $k$, the rotation angle is calculated as:
+
+$$\theta_{p,k} = p \times base^{-k / (dim/2)}$$
+
+*   $p$: The position index (0, 1, 2...).
+*   $k$: The index of the dimension pair (0 to $dim/2 - 1$).
+*   $base$: A reference frequency (typically 10,000 or higher for long contexts).
+
+**The Extrapolation Property:**
+The core benefit of RoPE is that the interaction between two tokens depends only on their relative distance. The dot product of their rotated vectors is defined as:
+
+$$dot(RoPE(x, m), RoPE(y, n)) = \sum_k [x_k \cdot y_k \cdot \cos((m-n) \cdot \theta_k)]$$
+
+Because the term uses $(m-n)$, tokens that are $d$ positions apart preserve the same angular relationship regardless of their absolute position.
+
+### 3. Mixture of Experts (MoE): Metrics and Balancing
+Metrics for evaluating MoE efficiency and routing stability.
+
+**Efficiency Leverage (EL):**
+This metric quantifies how much more efficient an MoE is compared to a dense model in terms of FLOPs to achieve the same loss:
+$$EL = \frac{C_{Dense}}{C_{MoE}}$$
+
+**Granularity ($G$):**
+Granularity measures the ratio of expert size to model size. A higher value indicates more, smaller experts:
+$$G = \frac{d_{expert}}{d_{model}}$$
+*(Note: Some definitions normalize this by a factor $\alpha$, typically 2 or 4, related to the intermediate dimension of dense layers)*.
+
+**Load Balancing Loss ($L_{Bal}$):**
+To prevent routing collapse (where one expert takes all tokens), an auxiliary loss is added:
+
+$$L_{Bal} = \alpha \cdot N \sum_{i=1}^{N} f_i P_i$$
+
+*   $\alpha$: Strength coefficient.
+*   $N$: Number of experts.
+*   $f_i$: The fraction of tokens routed to expert $i$.
+*   $P_i$: The probability mass allocated to expert $i$ (sum of routing probabilities).
+
+### 4. Hybrid Models: The "Linear Trick"
+Hybrid models (linear attention) reorder computations to avoid the $O(N^2)$ complexity of softmax attention.
+
+**Standard Attention (Softmax):**
+$$o_t = \sum_{j=1}^t \exp(q_t^T k_j) v_j$$
+This requires calculating the attention scores for all previous tokens.
+
+**Linear Recurrent Form:**
+By removing the softmax and utilizing the associativity of matrix multiplication, the computation is rewritten as a running state $S_t$:
+
+1.  **State Update:** $S_t = S_{t-1} + v_t k_t^T$
+2.  **Output Calculation:** $o_t = S_t q_t$
+
+This reduces the complexity from $O(t \cdot d)$ per step to $O(d^2)$, making it constant with respect to sequence length.
+
+**Gating Mechanism (General Form):**
+Modern linear attention adds a decay or gate ($G_t$) to the state update to let go of past information:
+$$S_t = G_t \odot S_{t-1} + v_t k_t^T$$
+
+Various architectures parameterize $G_t$ differently (e.g., Mamba, GLA, GateLoop) using sigmoid or exponential decay functions acting on the input $x_t$.
+
+**Lightning Attention:**
+To stabilize the linear form, Lightning Attention applies normalization to the Query and Key/Value blocks separately:
+$$O = \text{RMSNorm}(Q(K^T V))$$
+
+### 5. Stability: Z-Loss
+To prevent logit drift and instability during training, Z-loss regularizes the log normalization constant $Z$:
+
+$$L_{z-loss} = \lambda \cdot \log(Z)^2$$
+
+Here, $Z$ represents the denominator of the softmax function. Keeping $Z$ constrained prevents numerical instability in the final output layers.
