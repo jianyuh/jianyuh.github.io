@@ -2,14 +2,14 @@
 <html>
 <head>
   <title>{{ page.title }}</title>
-  <link rel="canonical" href="{{ page.redirect_to }}"/>
-  <meta http-equiv="refresh" content="0; url={{ page.redirect_to }}">
+  <link rel="canonical" href="{{ page.target_url | default: page.redirect_to }}"/>
+  <meta http-equiv="refresh" content="0; url={{ page.target_url | default: page.redirect_to }}">
   <script type="text/javascript">
-    window.location.href = "{{ page.redirect_to }}";
+    window.location.href = "{{ page.target_url | default: page.redirect_to }}";
   </script>
 </head>
 <body>
-  <p>Redirecting to <a href="{{ page.redirect_to }}">{{ page.redirect_to }}</a>...</p>
+  <p>Redirecting to <a href="{{ page.target_url | default: page.redirect_to }}">{{ page.target_url | default: page.redirect_to }}</a>...</p>
   <noscript>
     <p>If you are not redirected automatically, please click the link above.</p>
   </noscript>
