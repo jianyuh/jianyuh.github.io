@@ -1,6 +1,6 @@
 ---
 title: About
 layout: external_redirect
-target_url: https://jianyuhuang.com
+redirect_to: https://jianyuhuang.com
 permalink: /about/
 ---
