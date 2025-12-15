@@ -6,7 +6,7 @@ categories: [RL]
 tags: [RL]
 ---
 
-Read on DeepSeek-V3.2:
+Read on the following paper:
 - [Stabilizing Reinforcement Learning with LLMs: Formulation and Practices](https://www.arxiv.org/pdf/2512.01374).
 
 Instability of Reinforcement Learning (RL) in LLMs, specifically the mismatch between **sequence-level rewards** (outcome-based) and **token-level optimization** (policy gradient). The authors propose a formulation where the token-level objective acts as a **first-order approximation** of the true sequence-level reward.
