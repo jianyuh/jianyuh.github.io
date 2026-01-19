@@ -1,2 +1,73 @@
 // Placeholder to allow defining custom styles that override everything else.
 // (Use `_sass/minima/custom-variables.scss` to override variable defaults)
+
+/* Copy Code Button Styles */
+.code-display-wrapper {
+  position: relative;
+}
+
+.copy-code-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: var(--minima-code-background-color, #f8f8f8);
+  border: 1px solid var(--minima-border-color-01, #ddd);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  color: var(--minima-text-color, #666);
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  opacity: 0; /* Hidden by default */
+}
+
+/* Show button on hover */
+.code-display-wrapper:hover .copy-code-button {
+  opacity: 1;
+}
+
+.copy-code-button:hover {
+  filter: brightness(0.9);
+}
+
+.copy-code-button.copied {
+  background-color: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+/* Adjust for Dark Mode if needed, though variables usually handle it */
+/* However, the 'copied' state colors are hardcoded green, so we might want to adjust those for dark mode */
+@media (prefers-color-scheme: dark) {
+  .copy-code-button.copied {
+    background-color: #1e4620;
+    color: #d4edda;
+    border-color: #2b5f32;
+    @include dm-highlight;
+  }
+}
+
+/* Back to Top Button */
+#back-to-top {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: var(--minima-brand-color, #828282);
+  color: white;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 50%;
+  font-size: 18px;
+  transition: opacity 0.3s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+#back-to-top:hover {
+  filter: brightness(0.8);
+}
+
