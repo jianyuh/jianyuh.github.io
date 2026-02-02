@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "DeepSeek-OCR 2 with DeepEncoder V2"
-date: 2026-01-17
+date: 2026-01-27
 categories: [DeepSeek]
 tags: [DeepSeek]
 ---
