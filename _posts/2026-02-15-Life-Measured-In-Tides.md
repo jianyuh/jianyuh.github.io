@@ -13,7 +13,7 @@ Before high school, the sea was a distant myth to me. I still vividly recall a s
 
 ### University: Reflections in the Harbor
 
-During my university years, the sea became a shifting backdrop for my growth. While visiting various universities in Hong Kong, I stood by the shores of Clear Water Bay near HKUST and watched the neon lights of the city shimmer on the deep waters of Victoria Harbour. It was a striking fusion of modern ambition and raw natural power. Upon graduation, I traveled to the Bohai Sea at Beidaihe. Standing there, the salt air seemed to carry away the bittersweetness of parting, replacing it with a quiet wonder for the future.
+During my university years, the sea became a shifting backdrop for my growth. While visiting various universities in Hong Kong, I experienced the ocean’s contrasting characters: the serene, untouched shores of Clear Water Bay near HKUST, and the vibrant energy of Victoria Harbour, where the city’s neon lights shimmered on the deep, urban waters. It was a striking fusion of modern ambition and raw natural power. Upon graduation, I traveled to the Bohai Sea at Beidaihe. Standing there, the salt air seemed to carry away the bittersweetness of parting, replacing it with a quiet wonder for the future.
 
 ### The Research Years: A Global Coastline
 
