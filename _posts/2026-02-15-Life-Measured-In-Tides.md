@@ -9,7 +9,7 @@ tags: [CostalLiving]
 
 ### Youth: The First Encounter
 
-Before high school, the sea was a distant myth to me. I still vividly recall a social practice trip where we cycled for two hours from my school to reach the coast. When our wheels finally came to a halt by the Yellow Sea, the rhythmic roar of the tide and the boundless blue horizon left an indelible mark on my soul. It was my first true encounter with the concept of "infinity"—a sudden realization of how vast the world is, and how small we are within it.
+Before high school, the sea was a distant myth to me. I still vividly recall a social practice trip where we cycled for two hours from my high school to reach the coast. When our wheels finally came to a halt by the Yellow Sea, the rhythmic roar of the tide and the boundless blue horizon left an indelible mark on my soul. It was my first true encounter with the concept of "infinity"—a sudden realization of how vast the world is, and how small we are within it.
 
 ### University: Reflections in the Harbor
 
