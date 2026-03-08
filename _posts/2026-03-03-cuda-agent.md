@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "CUDA Agent: Leap Forward in LLM-Driven GPU Kernel Optimization"
-date: 2026-03-06
+date: 2026-03-03
 categories: [CUDA]
 tags: [CUDA]
 ---
