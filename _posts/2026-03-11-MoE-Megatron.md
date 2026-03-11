@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Scalable MoE Training with Megatron Core"
-date: 2026-03-09
+date: 2026-03-11
 categories: [MoE]
 tags: [MoE]
 ---
