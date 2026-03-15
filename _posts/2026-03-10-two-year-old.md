@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Reunion with Time: On My Son’s Second Birthday"
+title: "A Two-Year-Old’s Milestone: A Heartfelt Reflection on Time"
 date: 2026-03-10
 categories: [Life, Non-tech]
 tags: [Birthday, Parenting, Reflection, Memoir]
