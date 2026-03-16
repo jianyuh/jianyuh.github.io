@@ -6,51 +6,97 @@ categories: [Residual]
 tags: [Residual]
 ---
 
-Reading the following paper:
-- [Attention Residuals](https://github.com/MoonshotAI/Attention-Residuals/blob/master/Attention_Residuals.pdf)
+Paper: [Attention Residuals](https://github.com/MoonshotAI/Attention-Residuals/blob/master/Attention_Residuals.pdf)
 
-**1. The Motivation: Time-Depth Duality and PreNorm Dilution**
-Standard residual connections are mathematically formalized as $h^l = h^{l-1} + f_{l-1}(h^{l-1})$. When unrolled over depth, this equates to $h^l = h^1 + \sum_{i=1}^{l-1} f_i(h^i)$, revealing that a layer receives a uniformly-weighted sum of all preceding layer outputs. 
+This paper asks a simple question: if attention replaced recurrence along the sequence dimension, why are we still using a fixed additive recurrence along the depth dimension?
 
-The authors note a striking **"Time-Depth Duality"**: just as Recurrent Neural Networks (RNNs) compress all historical sequence tokens into a single hidden state over time, standard residuals compress all preceding layer outputs into a single hidden state over depth. 
+## Motivation: Residuals Behave Like Depth-Wise Recurrence
 
-In modern LLMs, the standard PreNorm architecture exacerbates this limitation. **Because PreNorm uses unweighted accumulation, hidden-state magnitudes grow as $O(L)$ with depth**. This phenomenon, known as "PreNorm dilution," progressively shrinks each layer’s relative contribution, forcing deeper layers to learn increasingly large outputs from fixed-scale inputs just to maintain influence. Prior efforts to solve this, such as scaled residuals or multi-stream recurrences, remained fundamentally constrained to the additive recurrence paradigm. 
+Standard residual connections can be written as:
 
-**2. Full Attention Residuals (Full AttnRes): The Core Formulation**
-To resolve this, the authors complete the transition from recurrence to attention over the depth dimension—mirroring the Transformer's triumph over RNNs in the sequence dimension. **Full AttnRes replaces fixed accumulation with learned softmax attention over previous layers**.
+$$h^l = h^{l-1} + f_{l-1}(h^{l-1})$$
 
-The update rule becomes:
-$h^l = \sum_{i=0}^{l-1} \alpha_{i \to l} \cdot v_i$
+Unrolling over depth gives:
 
-Here, the values are the token embedding ($v_0 = h^1$) and previous layer transformations ($v_i = f_i(h^i)$ for $1 \le i \le l-1$). The attention weights $\alpha_{i \to l}$ are computed via softmax:
-$\alpha_{i \to l} = \frac{\phi(q^l, k_i)}{\sum_{j=0}^{l-1} \phi(q^l, k_j)}$
+$$h^l = h^1 + \sum_{i=1}^{l-1} f_i(h^i)$$
 
-Crucially, **the query $q^l = w^l$ is a single layer-specific, learned parameter vector in $\mathbb{R}^d$**. This pseudo-query is entirely decoupled from the current hidden state, allowing parallel computation across layers. The kernel function utilizes an RMSNorm on the keys to prevent layers with massive output magnitudes from dominating the attention distribution: $\phi(q, k) = \exp(q^\top \text{RMSNorm}(k))$. 
+That view makes the paper's core observation clear: every layer sees a uniformly weighted sum of all earlier layer updates. The authors call this a **time-depth duality**. In an RNN, all past tokens are compressed into a single hidden state over time. In a Transformer with standard residuals, all past layer outputs are compressed into a single hidden state over depth.
 
-*Insight:* While Full AttnRes requires $O(L^2 d)$ arithmetic, $L$ is typically $<1000$, making this trivial. However, because all $L$ layer outputs must be preserved for subsequent layers, **memory and communication overhead grow to $O(Ld)$ under activation recomputation and pipeline parallelism regimes**, creating a bottleneck at massive scale.
+The paper argues that this becomes especially problematic in PreNorm LLMs. Because the residual stream keeps accumulating unweighted updates, hidden-state magnitudes tend to grow with depth, leading to **PreNorm dilution**. Later layers then have to produce larger and larger updates just to maintain the same influence on the final representation.
 
-**3. Block Attention Residuals (Block AttnRes): Scaling to Production**
-To solve the communication bottleneck, **Block AttnRes partitions the $L$ layers into $N$ blocks of $S$ layers each**. Within each block, layer outputs are reduced to a single vector representation via straightforward summation:
-$b_n = \sum_{j \in B_n} f_j(h^j)$
+## Full Attention Residuals
 
-For inter-block attention, a layer now attends only to the completed block summaries ($b_0, b_1, \dots, b_{n-1}$) and the evolving partial sum $b_n^{i-1}$ of its current block. **This elegant compression reduces both memory and cross-stage communication overhead from $O(Ld)$ to $O(Nd)$**. Scaling laws reveal that a configuration of just $N \approx 8$ blocks retains nearly all the performance benefits of Full AttnRes.
+The proposed fix is to replace fixed accumulation with learned softmax attention over previous layers:
 
-**4. Infrastructure Optimizations for Training and Inference**
-The authors introduce highly specialized engineering to make Block AttnRes a true "drop-in" replacement:
+$$h^l = \sum_{i=0}^{l-1} \alpha_{i \to l} \cdot v_i$$
 
-*   **Training (Cross-Stage Caching):** Under pipeline parallelism with $P$ physical stages and $V$ virtual stages, naively sending accumulated blocks incurs an $O(C)$ redundant communication cost. By having each rank cache blocks received in earlier virtual stages, **only the newly incremental blocks are transmitted**. This brings the peak per-transition communication cost down to $O(P)$, enabling full overlap with computation.
-*   **Inference (Two-Phase Computation & Online Softmax):** Because the query vectors $w^l$ are static parameters, memory access is amortized. **Phase 1** batches the inter-block attention computation for all $S$ layers in a block simultaneously against cached block representations, reducing HBM reads drastically. **Phase 2** sequentially computes the intra-block attention and merges it with Phase 1 outputs using online softmax. This keeps total inference memory I/O to a minimal $5.5d$ reads per layer (compared to $3d$ for standard residuals and $34d$ for multi-stream approaches like mHC).
+Here, the values are the embedding and prior layer outputs, while the attention weights are:
 
-**5. Theoretical Insights: Residuals as Structured Matrices**
-By framing residual connections as a depth mixing matrix $M \in \mathbb{R}^{L \times L}$, where $M_{i \to l}$ is the weight layer $l$ assigns to layer $i$'s output, the authors unify previous literature:
-*   **Standard Residuals:** An all-ones lower-triangular matrix (1-semiseparable rank).
-*   **Highway Networks:** Introduce input-dependent scalar gates, but remain 1-semiseparable, acting as a "softmax-free stick-breaking attention".
-*   **Multi-stream (mHC):** Functions identically to depth-wise *linear attention* with an expanded matrix-valued state, rendering an $m$-semiseparable rank matrix.
-*   **Attention Residuals:** Executes depth-wise *softmax attention*, generating a dense matrix of rank $LM$. The block variant effectively interpolates the rank between standard residuals ($N=1$) and Full AttnRes ($N=L$).
+$$\alpha_{i \to l} = \frac{\phi(q^l, k_i)}{\sum_{j=0}^{l-1} \phi(q^l, k_j)}$$
 
-**6. Empirical Findings and Shift in Optimal Architecture**
-Pre-trained on 1.4T tokens using the 48B Kimi Linear architecture, AttnRes proves deeply impactful:
-*   **Resolves PreNorm Dilution:** Output magnitudes remain strictly bounded in a periodic pattern across block boundaries, and gradient magnitudes are distributed substantially more uniformly across depth due to softmax competition.
-*   **Learned Skip Connections:** Attention heatmaps show strong diagonal dominance (layers rely mostly on immediate predecessors), but deeper layers occasionally concentrate attention heavily on specific early layers or the embedding, forming learned, dynamic skip connections.
-*   **Favors Deeper, Narrower Models:** An iso-compute/iso-parameter sweep shows that **AttnRes shifts the optimal architecture ratio ($d_{model} / L_b$) from $\approx 60$ in baselines down to $\approx 45$**. This implies that because AttnRes fixes depth-wise information degradation, the model can effectively leverage much deeper networks than standard Transformer heuristics recommend.
+Instead of deriving the query from the current hidden state, each layer uses a learned parameter vector:
 
+$$q^l = w^l \in \mathbb{R}^d$$
+
+This detail matters. The query is static, so depth-wise attention can still be computed in parallel across layers. The keys are RMS-normalized before scoring,
+
+$$\phi(q, k) = \exp(q^\top \mathrm{RMSNorm}(k))$$
+
+which prevents large-magnitude activations from dominating the attention distribution.
+
+Conceptually, Full AttnRes turns the residual path into a learned depth mixer. A layer is no longer forced to treat all earlier layers equally; it can emphasize whichever layers are most useful.
+
+## Why the Full Version Does Not Scale Cleanly
+
+From an arithmetic perspective, Full AttnRes is manageable. The paper quotes $O(L^2 d)$ work, which is acceptable for realistic layer counts. The real issue is systems cost: all previous layer outputs must remain available, so activation storage and cross-stage communication grow as $O(Ld)$. Under activation recomputation or pipeline parallelism, that becomes the bottleneck.
+
+## Block Attention Residuals
+
+To make the idea practical, the paper introduces **Block AttnRes**. The $L$ layers are partitioned into $N$ blocks of size $S$, and each block is summarized by a simple sum:
+
+$$b_n = \sum_{j \in B_n} f_j(h^j)$$
+
+A layer then attends to:
+
+- completed block summaries $b_0, b_1, \dots, b_{n-1}$
+- the running partial sum of its current block
+
+This is the key compression step. Instead of exposing every earlier layer explicitly, the model exposes a smaller set of block summaries, which reduces memory and communication overhead from $O(Ld)$ to $O(Nd)$. The reported scaling results suggest that a small number of blocks, roughly $N \approx 8$, captures most of the gains of Full AttnRes.
+
+## Training and Inference Optimizations
+
+The paper also does the systems work needed to make Block AttnRes usable at scale.
+
+For training, the main trick is **cross-stage caching** under pipeline parallelism. Rather than repeatedly sending already-seen block summaries across virtual stages, each rank caches what it has received and only transmits the incremental blocks. That avoids redundant communication and reduces the peak communication cost enough to overlap it with computation.
+
+For inference, the authors use a **two-phase computation**:
+
+1. compute inter-block attention for all layers in a block together
+2. compute intra-block attention sequentially and merge it with an online softmax
+
+Because the layer queries are static parameters, this organization lowers memory traffic substantially. The paper reports total residual-path memory I/O of about $5.5d$ reads per layer, compared with $3d$ for standard residuals and much higher cost for multi-stream alternatives such as mHC.
+
+## Residual Connections as a Mixing Matrix
+
+One of the nicest parts of the paper is the matrix view. If we define a depth mixing matrix $M \in \mathbb{R}^{L \times L}$, where $M_{i \to l}$ is the weight assigned by layer $l$ to layer $i$'s output, several architectures fall into the same template:
+
+- **Standard residuals:** an all-ones lower-triangular matrix
+- **Highway networks:** input-dependent scalar gates, but still low-complexity depth mixing
+- **Multi-stream methods such as mHC:** depth-wise linear attention with a higher-rank structured state
+- **Attention residuals:** full depth-wise softmax attention
+
+Under this lens, Block AttnRes smoothly interpolates between standard residuals and Full AttnRes by changing how many block summaries are exposed.
+
+## Takeaways
+
+The empirical story is straightforward:
+
+- **PreNorm dilution is reduced.** Activation magnitudes stay bounded more cleanly, and gradients are distributed more evenly over depth.
+- **The model learns nontrivial skip patterns.** Attention maps remain strongly local, but deeper layers sometimes jump back to very early layers or even the embedding.
+- **The preferred architecture shifts.** In the paper's iso-compute and iso-parameter sweeps, AttnRes favors deeper, narrower models than standard residual designs do.
+
+That last point is especially interesting. If depth is no longer handicapped by uniform residual accumulation, then making a model deeper becomes a better tradeoff than it is in a baseline Transformer.
+
+My main takeaway is that this paper treats residual connections as an architectural choice rather than a fixed law. Standard residuals hard-code a very specific depth mixing rule: every earlier layer contributes equally through simple addition. AttnRes replaces that rule with learned attention, then introduces a blockwise approximation that keeps the idea deployable at scale.
+
+Whether this becomes a standard recipe will depend on implementation complexity and robustness across model families, but the framing is strong: residual paths are not just optimization scaffolding, they are a depth-wise information routing mechanism that can be redesigned.
