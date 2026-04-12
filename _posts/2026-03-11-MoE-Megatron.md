@@ -1,72 +1,470 @@
 ---
 layout: post
-title: "Scalable MoE Training with Megatron Core"
+title: "Scalable Training of Mixture-of-Experts Models with Megatron Core"
 date: 2026-03-11
 categories: [MoE]
-tags: [MoE]
+tags: [MoE, Megatron, NVIDIA, distributed-training, FP8]
 ---
 
 Reading the following paper:
 - [Scalable Training of Mixture-of-Experts Models with Megatron Core](https://arxiv.org/pdf/2603.07685)
 
+This paper presents **Megatron-Core MoE**, the MoE training stack within NVIDIA's Megatron-Core framework. It addresses the fundamental systems challenges of training trillion-parameter-class MoE models at high throughput on NVIDIA GPU clusters. The headline results: **1,233 TFLOPS/GPU** on GB300 and **1,048 TFLOPS/GPU** on GB200 for DeepSeek-V3-685B.
 
-### 1. Introduction & The Core Asymmetry of MoE
-MoE models like DeepSeek-V3 and Qwen3 have redefined the compute-optimal frontier, achieving equivalent or better quality than dense models while dramatically reducing training FLOPs. However, as NVIDIA's new report on Megatron-Core MoE highlights, this algorithmic efficiency introduces brutal systems challenges rooted in a single, fundamental asymmetry: **Sparsity**.
+---
 
-In a dense transformer, every parameter activates for every token (total parameters scale proportionally with per-token compute). MoE breaks this lockstep. DeepSeek-V3, for instance, has 685B total parameters but activates only 37B per token—an 18x gap. This **Parameter-Compute Mismatch** creates massive memory pressure to store all $E$ experts, high communication volume to route tokens, but leaves insufficient local compute to hide these latencies.
+## 1. MoE Fundamentals
 
-Megatron-Core addresses this by systematically breaking down **Three Walls of MoE**: Memory, Communication, and Compute Efficiency. 
+### Architecture
 
-### 2. The Dense-Sparse Mismatch & MoE Parallel Folding
-Traditional parallelism (3D/4D parallelism) assumes uniform computation across layers. Attention layers rely heavily on Tensor Parallelism (TP) to shard large QKV matrices and Context Parallelism (CP) for long sequences. However, MoE layers require Expert Parallelism (EP) to distribute the massive pool of experts across GPUs. 
+Given an input token representation **x**, the router computes:
 
-Historically, frameworks forced MoE and Attention to share the same parallelism configuration, carving EP out of the Data Parallelism (DP) group ($EP \le DP$). This "Dense-Sparse Mismatch" resulted in either artificially low TP (bottlenecking attention) or artificially high TP (fragmenting small expert MLPs into inefficient slivers).
+$$\mathbf{p}(\mathbf{x}) = \text{Softmax}(\mathbf{W}_r \mathbf{x})$$
 
-**Insight & Solution:** Megatron-Core introduces **MoE Parallel Folding**, completely decoupling the parallelism mappings. 
-*   Attention groups: `TP × CP × DP × PP`
-*   MoE groups: `ETP × EP × EDP × PP`
+The MoE layer output is:
 
-The only constraint is that Pipeline Parallelism (PP) must remain consistent. By folding EP across the `TP × CP` domains, a 256-GPU cluster can run Attention at `TP=4, CP=2` while MoE runs independently at `ETP=1, EP=64`. This keeps both layers in their optimal utilization regimes and traps high-bandwidth All-to-All communication inside the intra-node NVLink domain.
+$$\text{MoE}(\mathbf{x}) = \sum_{i \in \text{TopK}(\mathbf{p}(\mathbf{x}))} p_i(\mathbf{x}) \cdot E_i(\mathbf{x})$$
 
-### 3. Breaking the Memory Wall: The "Zero-Overhead" Trick
-Activations dominate the memory footprint in large-scale MoE training. For DeepSeek-V3, activations account for ~131 GB out of a 199.5 GB per-GPU requirement. While Megatron-Core uses fine-grained recomputation and stream-overlapped CPU offloading, the most elegant solution is **Memory-Efficient Permutation**, which provides massive memory savings with *zero computational overhead*.
+where $E_i$ is the $i$-th expert network. Three key advantages:
+- **Scalable capacity**: model size grows independently of per-token compute
+- **Computational efficiency**: only $K$ of $E$ experts activate per token
+- **Specialization**: different experts learn different input patterns
 
-**The Math:**
-Given an input token representation $x$, the router selects a set of experts $\mathcal{T}(x) \subset \{1, \dots, E\}$ with probabilities $p_i$. A standard expert is a 2-layer MLP without bias: $E_i(x) = W^{(i)}_2 \phi(W^{(i)}_1 x)$.
+### The Parameter-Compute Mismatch
 
-Normally, the weighted combination occurs *after* the expert outputs are computed:
-$$y = \sum_{i \in \mathcal{T}(x)} p_i \cdot W^{(i)}_2 \phi(W^{(i)}_1 x)$$
-In this formulation, computing the backward pass for the router weights ($\partial \mathcal{L} / \partial p_i$) requires the system to save the massive post-expert tensor $E_i(x)$. 
+This is the central insight of the paper. In a dense transformer with $N_\text{total}$ parameters, FLOPs per token is approximately $6N_\text{total}$, so parameters and computation scale in lockstep.
 
-Because scalar multiplication commutes with linear mappings, Megatron-Core absorbs $p_i$ *into* the activation function before the second linear layer:
-$$y = \sum_{i \in \mathcal{T}(x)} W^{(i)}_2 \left( p_i \cdot \phi(W^{(i)}_1 x) \right)$$
-**Insight:** By applying $p_i$ earlier, the gradient $\partial \mathcal{L} / \partial p_i$ now only depends on $\phi(W^{(i)}_1 x)$. Because $W^{(i)}_1 x$ (denoted as $z_i$) is already stored for the SwiGLU backward pass, the framework doesn't need to save any additional tensors for the router's backward pass. For DeepSeek-V3, this simple algebraic manipulation saves ~26.3 GB of activation memory per GPU for free.
+For MoE, per-token computation is approximately $6N_\text{active}$ where $N_\text{active} \propto K$ while $N_\text{total} \propto E$, and $K \ll E$.
 
-### 4. Breaking the Communication Wall: 1F1B & The W/D Split
-With high EP, token dispatch and combine (All-to-All) can consume up to 60% of step time. Optimized custom dispatchers like HybridEP (for NVLink) and DeepEP (for InfiniBand) fuse permutations and improve pure bandwidth utilization. However, true scalability requires hiding communication latency behind computation.
+**Concrete example**: DeepSeek-V3 has 685B total parameters but only 37B active per token, an **18x gap**.
 
-Megatron-Core utilizes a 1F1B (One Forward, One Backward) overlapping schedule, interleaving computation streams with communication streams. But here's the catch: MoE expert MLPs are so small that their forward compute isn't long enough to hide the backward All-to-All dispatch. 
+This creates the **Three Walls**:
 
-**Insight - The W/D Split:** To maximize overlap, Megatron-Core breaks the backward MLP dependency. Calculating the Weight gradient (`W/mlp`) doesn't depend on the backward token dispatch—only the Data gradient (`D/mlp`) does. By splitting these operations, the system can execute `W/mlp` concurrently with the forward MLP (`F/mlp`) of an adjacent microbatch, artificially extending the compute window and successfully hiding the communication latency. 
+| Wall | Root Cause | Manifestation |
+|------|-----------|---------------|
+| **Memory** | All $E$ experts' params/grads/optimizer states in memory, but only $K$ activate | 199.5 GB per GPU for DeepSeek-V3 |
+| **Communication** | EP requires all-to-all collectives to route tokens across GPUs | 20-60% of training time |
+| **Compute** | Small per-expert GEMMs underutilize Tensor Cores; many kernel launches | Host-boundedness |
 
-### 5. Breaking the Compute Efficiency Wall: Dropless MoE & CUDA Graphs
-In fine-grained MoE (e.g., 256 small experts), GPU kernels shrink. The GPU executes operations so fast that the CPU cannot launch the next kernel quickly enough, leaving the GPU idle (Host-Boundedness). 
+---
 
-CUDA Graphs typically solve this by capturing a sequence of kernel launches into a single graph. However, modern architectures (like DeepSeek-V3) use **dropless routing**—meaning expert token allocations are strictly dynamic based on runtime probability distributions. CUDA Graphs require *static* tensor shapes and crash upon dynamic shapes. 
+## 2. MoE Layer Architecture: Four-Stage Forward Pass
 
-**The Trio Solution for Full Graph Coverage:**
-To capture the entire layer, Megatron-Core engineers developed three brilliant mitigations:
-1.  **Device-Initiated Kernels:** Grouped GEMMs and HybridEP now read their dynamic shape configurations directly from device memory, bypassing CPU synchronization completely.
-2.  **ECHO (Elastic Cloning for Hot Experts):** A massive load imbalance means worst-case buffer allocations are huge. ECHO uses a dynamic bin-packing planner to clone "hot" expert weights to under-utilized GPUs (spare slots) during the forward pass, and reduces gradients back to the "home" expert in the backward pass. This flattens the variance in token distribution.
-3.  **Paged Stashing:** Even with ECHO, pre-allocating memory for the *worst-case* token limit causes severe $O(\text{layers} \times \text{worst\_case})$ memory fragmentation. Megatron-Core adapts OS-level paging: a single worst-case `tmp` buffer is shared across all layers for computation. After a layer computes, its actual tokens are "stashed" into a tightly packed, paged memory buffer, dropping memory requirements to $O(\text{worst\_case} + \text{actual\_total})$.
+**Stage 1: Route.** A learned linear projection maps each token's hidden state to $E$ logits: $\mathbf{l} = \mathbf{W}_r^\top \mathbf{x} \in \mathbb{R}^E$. A score function, either softmax or sigmoid as used in DeepSeek-V3, converts these into probabilities. Top-$k$ selection chooses the active experts.
 
-### 6. Reduced Precision (FP8/FP4) & Long Context Dynamics
-The framework integrates deep mixed-precision support down to **NVFP4 (4-bit)**. 
-**Insight:** MoE inherently amplifies the risks of reduced-precision. If the router uses low-precision, expert collapse can occur. The core philosophy is *Selective Precision*: the router, embeddings, and main gradients stay in FP32/BF16, while the bulk $O(N)$ GEMMs execute in E4M3 FP8 or E2M1 FP4. To enable Graph compatibility, padding is fused into token permutation, enforcing 128-token multiple alignment for Grouped Quantization.
+**Stage 2: Dispatch.** Tokens are permuted so those destined for the same expert are contiguous. Three backends are described: AllGather, All-to-All, and Flex via DeepEP/HybridEP.
 
-**The Long Context Shift:**
-When sequence length ($s$) crosses ~64K, a phase shift occurs: Scaled Dot-Product Attention (SDPA), which is $O(s^2)$, overtakes the MoE MLP ($O(s)$) as the dominant compute bottleneck (jumping to ~70% of total FLOPs). 
-To combat this, Megatron-Core uses **Dynamic Context Parallelism (Dynamic-CP)** over packed sequences (THD format). Rather than forcing a statically high CP degree that wastes cross-device bandwidth for shorter sequences within a batch, Dynamic-CP resizes the CP degree on a *per-microbatch* basis dynamically at runtime.
+**Stage 3: Expert Computation.** All local experts run in a single Grouped GEMM call. Each expert is a two-layer MLP with optional gating:
+$$E_i(\mathbf{x}) = \mathbf{W}_2^{(i)} \phi(\mathbf{W}_1^{(i)} \mathbf{x})$$
 
-### Final Thoughts
-Training 685B+ parameter MoE models is no longer just an algorithmic challenge; it is fundamentally a distributed systems orchestration problem. The optimization pipeline operates recursively: reducing precision (FP8) frees up memory, which is then re-invested into extra buffers to overlap EP communication, which subsequently exposes CPU latency, triggering the need for CUDA Graphs, which requires fixing dynamic memory allocation. Megatron-Core's holistic, cross-stack design highlights exactly what it takes to scale out the next generation of LLMs.
+**Stage 4: Combine.** Inverse communication returns tokens, unpermutation restores order, and shared expert output is added.
+
+---
+
+## 3. Parallel Folding and Multi-Dimensional Parallelism
+
+### The Dense-Sparse Mismatch
+
+A single Transformer block contains two fundamentally different computation patterns:
+
+| Aspect | Attention (Dense) | MoE (Sparse) |
+|--------|-------------------|--------------|
+| **TP** | Large QKV matrices benefit from high TP | Small per-expert dims make high TP counterproductive |
+| **CP** | Long sequences benefit from high CP | No sequence dependency; CP is irrelevant |
+| **EP** | Not applicable | Essential for distributing experts |
+
+Prior frameworks forced `World Size = TP x CP x PP x DP`, where `EP <= DP`. This creates three problems:
+1. **Multiplicative GPU requirements**: EP=8 forces DP>=8, and with CP=8 the minimum becomes 64 GPUs.
+2. **Forced suboptimal parallelism**: high TP fragments small experts, while low TP underparallelizes attention.
+3. **Cross-node communication**: EP constrained within DP forces all-to-all across slow interconnects.
+
+### Parallel Folding Solution
+
+**Core idea**: decouple attention and MoE parallelism mappings.
+
+- **Attention layers** form groups over `TP x CP x DP x PP`
+- **MoE layers** form groups over `ETP x EP x EDP x PP`
+- **Only constraint**: PP must remain consistent
+
+Key benefits:
+1. **Breaks EP <= DP**: EP can fold across TP x CP groups. Example: attention TP=4, CP=2, DP=8, PP=4 on 256 GPUs. Traditionally EP<=8; with folding EP=64 becomes possible.
+2. **Reduces minimum GPUs**: CP=8 and EP=8 traditionally requires 64 GPUs; with folding, only 8.
+3. **Independent optimization**: attention uses high TP, while MoE uses ETP=1 for full expert width.
+4. **NVLink locality**: both CP and EP all-to-all stay within the NVLink domain.
+
+### Gradient Handling
+
+Expert gradients are scaled by `edp_size / dp_size` to account for the different effective batch sizes seen by experts versus dense layers.
+
+---
+
+## 4. Breaking the Memory Wall
+
+### Memory Anatomy (DeepSeek-V3, PP4 x VPP4 x EP64, 256 GPUs)
+
+| Component | Memory/GPU | Optimization |
+|-----------|-----------|--------------|
+| Weights & Gradients | 36.4 GB | PP, EP, TP sharding |
+| Main Weights & Optimizer States | 32.1 GB | Distributed optimizer, BF16 moments |
+| Activations | **131.0 GB** | Low precision, recomputation, offloading |
+| **Total** | **199.5 GB** | |
+
+**Key insight**: activations dominate, exceeding weights and optimizer states combined.
+
+### Memory-Efficient Permutation (Zero Overhead)
+
+Standard formulation applies routing weights **after** expert computation:
+$$y = \sum_{i \in \mathcal{T}(\mathbf{x})} p_i \cdot \mathbf{W}_2^{(i)} \phi(\mathbf{W}_1^{(i)} \mathbf{x})$$
+
+Memory-efficient version absorbs $p_i$ **before** the second linear layer:
+$$y = \sum_{i \in \mathcal{T}(\mathbf{x})} \mathbf{W}_2^{(i)} \left(p_i \cdot \phi(\mathbf{W}_1^{(i)} \mathbf{x})\right)$$
+
+Since $\mathbf{W}_2^{(i)}$ is a pure linear map with no bias, scalar multiplication commutes:
+$$p_i \cdot \mathbf{W}_2^{(i)} \mathbf{h} = \mathbf{W}_2^{(i)} (p_i \cdot \mathbf{h})$$
+
+**Why this saves memory**: in the standard version, computing $\partial\mathcal{L}/\partial p_i$ requires retaining each expert output $E_i(\mathbf{x})$. In the efficient version, $p_i$ multiplies $\phi(\mathbf{z}_i)$ directly, so $\partial\mathcal{L}/\partial p_i$ only depends on $\phi(\mathbf{z}_i)$, which can be recomputed from $\mathbf{z}_i = \mathbf{W}_1^{(i)} \mathbf{x}$ already saved for SwiGLU backward. This saves roughly **26.3 GB per GPU** for DeepSeek-V3 with essentially zero extra compute.
+
+### FP8/FP4 Activations
+
+Linear layer inputs stored in FP8 instead of BF16 reduce memory by 50% per tensor. For DeepSeek-V3, that is roughly **16 GB saved**. FP4 pushes this further to a 75% reduction.
+
+### Fine-Grained Recomputation
+
+Two composable techniques:
+1. **Granular recomputation**: selectively recompute only specific operations such as activation functions, LayerNorm, and MLA up-projection, typically with under 5% compute overhead.
+2. **Output-discarding recomputation**: release checkpointed module outputs immediately after downstream consumption and restore them via recomputation during backward.
+
+| Recomputation Target | Memory Saved/GPU |
+|---------------------|-----------------|
+| MLA Up-Projection | 30.4 GB |
+| SwiGLU Activation | 3.8 GB |
+| LayerNorm | 8.2 GB |
+| **Total** | **42.4 GB** |
+
+**Critical insight**: full-layer recomputation of MoE is especially expensive because it re-triggers EP all-to-all communication. Fine-grained recomputation avoids that penalty.
+
+### Fine-Grained Activation Offloading
+
+**Forward**: input activations are offloaded to CPU through a dedicated D2H stream, overlapping with the next module's computation.
+
+**Backward**: Layer-Staggered Reload reloads the same module type from the **next** layer while gradients are computed for the current layer. Only one activation per module type resides on GPU at a time.
+
+**Peak memory advantage over full recomputation**:
+- Full recomputation: $L \times \text{layer\_input} + 1 \times \text{layer\_intermediate}$
+- Offloading: $1 \times \text{layer\_input} + 1 \times \text{layer\_intermediate}$
+
+Results: **10-18% memory reduction** with only **1.6-2% throughput overhead**. For Qwen3-235B, offloading enabled a lower TP degree and about **15% throughput improvement**.
+
+### Precision-Aware Optimizer
+
+Adam stores first and second moments. The optimization here is to store moments in BF16 or FP8, then cast to FP32 inside TransformerEngine's FusedAdam kernel for the actual update.
+
+Memory per parameter per DP rank decreases from $6 + 12/d$ bytes to $6 + 8/d$ bytes, saving on the order of **10-12 GB** from the 32.1 GB optimizer-state budget.
+
+### FSDP for MoE
+
+**Dual DeviceMesh design**: dense layers shard across the full DP group, while expert layers shard across the EDP group.
+
+Two key optimizations:
+1. **Non-uniform sharding**: flatten and concatenate module parameters, then shard non-uniformly so shard boundaries align with communication buffers for zero-copy collectives.
+2. **Persistent double buffers with NCCL User Buffer Registration**: pre-allocate two persistent buffers and cycle between them. This reduces SM footprint from 8-32 SMs to 1-4 SMs.
+
+---
+
+## 5. Breaking the Communication Wall
+
+### Communication Anatomy
+
+For DeepSeek-V3: 58 MoE layers times 2 operations per layer gives **116 dispatch/combine operations per forward pass**. Backward doubles this. At 50 GB/s inter-node bandwidth, a single 200 MB dispatch already costs milliseconds, which compounds rapidly over an iteration.
+
+### HybridEP
+
+Developed by NVIDIA for NVLink-rich topologies such as NVL72.
+
+**Dispatch**: reads data from global memory into shared memory based on routing info, then writes to destinations via FIFO queues. For inter-node traffic, GPUs with the same local index across nodes exchange first, then forward within the node.
+
+**Combine**: fuses reduction into the communication kernel itself. Cross-node data is reduced first, then the remaining intra-node reduction completes locally.
+
+Performance on GB200 with EP64:
+- HybridEP dispatch: **675 us** vs all-to-all **930 us**
+- HybridEP combine: **744 us** vs all-to-all **827 us**
+
+### EP Communication Overlapping
+
+**1F1B forward-backward overlap** merges the forward pass of one microbatch with the backward pass of another.
+
+Two key optimizations:
+1. **Stream Separation**: compute stream and communication stream run in parallel.
+2. **W/D Split**: backward MLP is split into weight gradient (`W/mlp`) and data gradient (`D/mlp`). Only `D/mlp` depends on backward dispatch, which opens more room to hide communication.
+
+Result: EP communication overhead drops from **30-40% to under 5%** of iteration time for DeepSeek-V3 on H100.
+
+---
+
+## 6. Breaking the Compute Efficiency Wall
+
+### Grouped GEMM
+
+DeepSeek-V3's 256 small experts produce GEMMs with M dimensions around 128 tokens per expert, far below the regime needed for peak Tensor Core efficiency.
+
+Four implementations are discussed:
+1. **Multi-stream cuBLASLt GEMMs**: individual GEMMs launched into multiple CUDA streams
+2. **CUTLASS Grouped GEMM**: a fused single-kernel path
+3. **cuBLASLt Grouped GEMM** (device-initiated): reads shapes from device memory, making it CUDA-Graph-compatible
+4. **cuteDSL Grouped GEMM**: fuses SwiGLU activation and FP8 quantization into the GEMM epilogue
+
+### Permutation Fusion
+
+Three-stage pipeline:
+- Preprocessing: generate the Row ID map once
+- Permute: move tokens according to offset maps
+- Unpermute: inverse permutation plus FP32 accumulation
+
+### Router and Aux-Loss Fusion
+
+Three fused kernels are described:
+- score computation with top-$k$ and softmax/sigmoid
+- score computation for auxiliary loss
+- auxiliary loss computation
+
+### CUDA Graphs
+
+**Full vs Partial**:
+- **Full CUDA Graphs** capture the entire forward-backward pass, but only for drop-and-pad MoE
+- **Partial CUDA Graphs** capture only static components, while dynamic token dispatch/expert GEMM/combine remain outside
+
+Memory optimizations include graph count reduction, pool sharing, and static buffer reuse across pipeline stages.
+
+Result: about **10% end-to-end speedup** with roughly **7 GB** extra memory on DeepSeek-V3 GB200.
+
+### Full CUDA Graphs for Dropless MoE: Three Complementary Techniques
+
+**Challenge 1**: kernel launch without knowing problem size.
+Solution: **device-initiated Grouped GEMM** so cuBLASLt reads shapes from device memory.
+
+**Challenge 2**: memory allocation without knowing actual size, which otherwise forces worst-case buffers.
+
+#### ECHO (Elastic Cloning for Hot Experts)
+
+Popular experts can receive far more tokens than others. ECHO dynamically clones hot experts onto spare slots on underutilized ranks.
+
+**Forward**: a planner identifies hot experts, builds the hot-expert map and updated routing map, copies weights to spare slots, and routes tokens to both home and cloned experts.
+
+**Backward**: gradients from cloned experts are reduced back to the home expert.
+
+#### Paged Stashing
+
+Decouples worst-case computation buffers from activation storage:
+- **Single tmp buffer** sized for worst case and shared across all layers
+- **Paged stashing buffer** stores only the actual tokens used per layer
+
+This reduces memory from $O(\text{layers} \times \text{worst\_case})$ to $O(\text{worst\_case} + \text{actual\_total})$.
+
+---
+
+## 7. Reduced-Precision Training (FP8/FP4)
+
+### Strategy: Selective Precision
+
+Three principles:
+1. **Protect routing**: keep the router in FP32
+2. **Preserve key components**: embeddings, output layers, main gradients, master weights, and optimizer states stay high precision
+3. **Quantize bulk computation**: expert GEMMs and activations go low precision
+
+### FP8 Recipes
+
+**Per-Tensor FP8**: one scale per tensor. Uses E4M3 inputs and weights with E5M2 gradients.
+
+**Blockwise FP8**: uses E4M3 for all tensors, with activations and gradients quantized in 1 x 128 tiles and weights in 128 x 128 blocks.
+
+**MXFP8**: uses 1 x 32 element granularity and native Blackwell hardware support. A key caveat is that parameter AllGather still communicates in BF16 because forward and backward require different quantization directions.
+
+### NVFP4
+
+Uses E2M1 with **two-level microscaling**:
+- per-tensor FP32 scale
+- per-block E4M3 scale with blocks of 16 elements
+
+Three algorithmic additions are highlighted for stable training:
+1. **Random Hadamard Transforms**
+2. **2D scaling**
+3. **Stochastic rounding**
+
+### FP8/FP4 Primary Weights
+
+The framework eliminates redundant BF16 copies by casting directly from FP32 to FP8/FP4. Distributed optimizer quantization proceeds by taking local abs-max, then global abs-max through AllReduce, then quantizing with that shared scale.
+
+### MoE-Specific FP8/FP4 Challenges
+
+**Padding alignment**: FP8 GEMMs require token-dimension alignment to 16 or 32 depending on the recipe.
+
+**Grouped quantization**: multiple expert input tensors are quantized in a single fused kernel.
+
+**NVFP4 quantization fusion**: fuses Hadamard transforms with quantization to avoid extra BF16 traffic.
+
+---
+
+## 8. Long-Context MoE Training
+
+### The Computational Shift
+
+At 64K tokens, **SDPA consumes 69% of FLOPs** compared with roughly 10-15% at short context. Since SDPA scales as $O(s^2)$ while MoE scales as $O(s)$, attention becomes the dominant cost.
+
+**Key recommendation**: do not recompute core attention at long sequence lengths. At 64K, SDPA recomputation adds about **18% compute overhead** but saves only **9 GB** memory, while recomputing non-SDPA components saves much more memory with lower performance impact.
+
+### CP vs TP Trade-offs
+
+- **P2P CP**: preferred across nodes because ring-style KV exchange overlaps naturally with SDPA
+- **All-to-all CP**: converts sequence-sharded layouts to head-sharded layouts before SDPA
+- **TP**: preferred within nodes for sharding linear weights
+
+Practical guideline: **all-to-all CP + TP inside nodes; P2P CP across nodes**.
+
+### Dynamic Context Parallelism
+
+For variable-length sequences, the system selects CP degree per microbatch based on actual sequence lengths. The per-token loss is:
+
+$$\mathcal{L} = \frac{\sum_{t \in \mathcal{V}} \ell_t}{|\mathcal{V}|}$$
+
+where $\mathcal{V}$ is the set of valid non-padding tokens.
+
+---
+
+## 9. Production Features
+
+### Load Balancing Strategies
+
+Three approaches are discussed:
+- **Auxiliary loss**: gradient-based, differentiable, soft balance
+- **Sinkhorn**: assignment-based, non-differentiable, hard balance
+- **Aux-loss-free / Expert Bias**: feedback-based, non-differentiable, adaptive
+
+### Latent MoE
+
+Latent MoE inserts a shared down-projection before expert dispatch and an up-projection after combine, reducing both all-to-all volume and per-expert weight size by the compression ratio $\alpha = d / \ell$.
+
+### Flexible Asymmetric VPP
+
+Allows different numbers and types of layers per virtual pipeline stage, which is important for balancing models like DeepSeek-V3 that mix dense, MoE, and MTP layers.
+
+### Upcycling
+
+Converts dense checkpoints into MoE via virtual-group initialization by sharding dense MLP weights, duplicating shards, and initializing router weights so the initial MoE exactly matches the dense model's output.
+
+### Multi-Token Prediction (MTP)
+
+MTP supervises multiple future tokens at each position while preserving causal dependencies through hidden-state transitions. During inference, the model falls back to ordinary single-token prediction.
+
+### Muon Optimizer
+
+Muon applies matrix-aware orthogonalized updates rather than element-wise AdamW-style updates. Production support includes split-QKV handling, distributed optimizer integration, CPU offloading, and **MuonClip** to prevent attention explosions in large-scale training.
+
+---
+
+## 10. Performance Results
+
+| Model | System | #GPUs | Dtype | TFLOPS/GPU | Tokens/s/GPU |
+|-------|--------|-------|-------|-----------|-------------|
+| DeepSeek-V3 | GB300 | 256 | MXFP8 | **1,233** | 4,730 |
+| DeepSeek-V3 | GB200 | 256 | MXFP8 | **1,048** | 4,020 |
+| DeepSeek-V3 | GB200 | 256 | BF16 | 857 | 3,298 |
+| DeepSeek-V3 | H100 | 1,024 | FP8-BLK | 368 | 1,412 |
+| Qwen3-235B | GB300 | 256 | MXFP8 | **974** | 6,583 |
+| Qwen3-235B | GB200 | 256 | MXFP8 | 919 | 6,212 |
+| Qwen3-235B | GB300 | 128 | MXFP8 (131K seq) | 1,150 | 1,556 |
+
+GB200 and GB300 deliver roughly **3x higher token throughput** than H100. Long-context DeepSeek-V3 at 256K tokens still reaches **88% of short-context MFU**.
+
+---
+
+## 11. Case Study: DeepSeek-V3 GB200 vs H100
+
+| Config | GB200 (256 GPUs) | H100 (1,024 GPUs) |
+|--------|------------------|-------------------|
+| **TP/PP/EP** | 1/4/64 | 2/8/64 |
+| **Precision** | MXFP8 | FP8-Blockwise |
+| **Dispatcher** | HybridEP | DeepEP |
+| **Recompute** | mlp only | mlp, mla_up_proj, moe_act, layernorm |
+| **CUDA Graphs** | Enabled | - |
+| **EP Overlap** | - | Enabled |
+| **Performance** | 1,048 TFLOPS/GPU | 368 TFLOPS/GPU |
+
+**Key insight**: the same model requires different optimization strategies on different hardware. GB200's larger memory and NVL72 topology shift the bottleneck toward CPU overhead, making CUDA Graphs critical. H100's tighter memory and NVL8 topology shift the bottleneck toward communication, making EP overlap critical.
+
+---
+
+## 12. Systematic Optimization Workflow
+
+A practical three-phase workflow emerges from the case studies on Mixtral, DeepSeek-V3, and Qwen3.
+
+### Phase 1: Establish Memory-Feasible Parallelism
+
+Memory feasibility is the first hard constraint.
+
+| Strategy | Peak Activation | Weight Memory | Optimizer States | Comm (Per-Layer) |
+|----------|----------------|---------------|-----------------|-----------------|
+| TP | $1/d$ (with SP) | $1/d$ | $1/d$ | High |
+| EP | ~1 (load-dependent) | $1/d$ (MoE only) | $1/d$ | Medium |
+| PP | 1 (>1 with VPP) | $1/d$ | $1/d$ | Medium |
+| CP | $1/d$ | 1 | $1/d$* | Medium |
+| DP | 1 | 1 | $1/d$* | Low |
+
+`*` Requires distributed optimizer.
+
+Practical tip: `--fake-init-process-group` lets you emulate distributed training on a single GPU for parallelism experimentation.
+
+### Phase 2: Select Optimal Parallelism Strategy
+
+Five guidelines:
+1. **Minimize model parallelism, maximize data parallelism**
+2. **Keep EP and TP within the NVLink domain**
+3. **Use PP for multi-node scaling**
+4. **Prefer EP over TP for expert layers**
+5. **Enable CP for long sequences**
+
+### Phase 3: Profile and Optimize Bottlenecks
+
+**Memory bottleneck**:
+- FP8 training
+- selective recomputation
+- precision-aware optimizer
+- activation offloading
+- optimizer offloading
+
+**Communication bottleneck**:
+- overlap gradient reduce and parameter gather
+- TP communication overlap
+- tune EP dispatcher
+- overlap EP communication
+- tune pipeline layout
+
+**CPU overhead bottleneck**:
+- disable Python GC in hot paths
+- reduce kernel launches
+- enable CUDA Graphs
+
+**Computation bottleneck**:
+- Grouped GEMM
+- kernel fusions
+- FP8 precision
+
+**Key insight**: the optimization loop is iterative. Solving one wall often exposes the next.
+
+---
+
+## 13. RL Post-Training Insights
+
+- **Router Replay**: log expert assignments during inference and replay them during training
+- **Packing-aware dynamic batch size**: keep effective token counts stable
+- **Attention cost metric**: sort microbatches by $\sum (\text{seq\_len})^2$ to reduce synchronization bubbles
+- **Dynamic CP**: choose CP degree per microbatch rather than provisioning for the worst case
+
+---
+
+## 14. Conclusion
+
+MoE sparsity introduces two fundamental problems:
+1. **Parameter-compute mismatch**, which creates the Three Walls of memory, communication, and compute efficiency
+2. **Dense-sparse mismatch**, which requires decoupled parallelism between attention and expert layers
+
+The overall takeaway is that Megatron-Core MoE is a full-stack systems response to those two mismatches. Memory savings from FP8, recomputation, and offloading are not isolated wins; they enable communication overlap, better parallelism choices, and eventually CUDA Graph coverage. The paper is valuable precisely because it does not present a single trick. It shows how large-scale MoE training becomes feasible only when routing, parallelism, kernels, optimizer states, and long-context execution are all tuned together.
