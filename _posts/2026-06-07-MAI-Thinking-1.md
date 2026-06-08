@@ -7,7 +7,7 @@ tags: [Microsoft-AI, MoE, RL, GRPO, Scaling-Laws, Agentic, Latent-MoE, Reasoning
 ---
 
 Reading notes on:
-- [MAI-Thinking-1](https://microsoft.ai/pdf/mai-thinking-1.pdf).
+- [MAI-Thinking-1: Building a Hill-Climbing Machine](https://microsoft.ai/pdf/mai-thinking-1.pdf).
 
 Microsoft AI's technical report introduces **MAI-Thinking-1**, a 35B active / 1T total parameter Mixture of Experts (MoE) reasoning model.
 
