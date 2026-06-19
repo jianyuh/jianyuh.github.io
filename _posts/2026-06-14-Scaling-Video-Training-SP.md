@@ -21,7 +21,7 @@ The standard parallelism playbook covers three orthogonal dimensions:
 
 | Parallelism | What it splits | Why not enough for long video |
 |---|---|---|
-| Data Parallelism / [FSDP]({% post_url 2026-03-02-vescale-fsdp %}) / ZeRO | Batch, parameters, gradients, optimizer state | A single video sample can still be too long for one rank |
+| Data Parallelism / [FSDP]({% post_url 2026-03-02-vescale-fsdp %}#fsdp) / ZeRO | Batch, parameters, gradients, optimizer state | A single video sample can still be too long for one rank |
 | Tensor Parallelism | Hidden dimensions, attention heads | Sequence activations may still be too large |
 | Model / Pipeline Parallelism | Transformer layers | Each stage still sees the full sequence |
 
@@ -41,7 +41,7 @@ But "just split the sequence" is deceptively simple. For video, the partition mu
 Before diving into the video-specific designs, it helps to place the key SP systems on the map:
 
 *   **Sequence Parallelism (Li et al., 2021):** Framed SP as breaking input sequence length limitations by distributing chunks across devices.
-*   **Megatron SP / [Context Parallelism]({% post_url 2025-11-28-LLM-Train-GPU %}):** Megatron-style SP reduces activation memory and interacts naturally with tensor parallelism. Megatron Core's later Context Parallelism generalizes this by partitioning the sequence dimension for network inputs and activations.
+*   **Megatron SP / [Context Parallelism]({% post_url 2025-11-28-LLM-Train-GPU %}#context-parallelism):** Megatron-style SP reduces activation memory and interacts naturally with tensor parallelism. Megatron Core's later Context Parallelism generalizes this by partitioning the sequence dimension for network inputs and activations.
 *   **DeepSpeed-Ulysses:** Partitions input data along the sequence dimension, using all-to-all communication during attention. Efficient when the attention head count supports the required partitioning.
 *   **Ring Attention:** Uses blockwise attention and ring communication of KV blocks—devices stream KV chunks while computing local attention. Context length scales linearly with device count.
 *   **USP:** Unifies Ulysses-style and Ring-style approaches into a broader SP design space.
@@ -90,7 +90,7 @@ This hardware-aware communication layout is not an afterthought—it is a core d
 
 ## 4. SP for Long-Video Generation: LongLive-2.0's Balanced SP
 
-LongLive-2.0 tackles long-video generation infrastructure, combining [NVFP4 training]({% post_url 2025-11-20-NVFP4-Train %}), KV-cache compression, parallel dequantization, and asynchronous VAE decoding. The training-side innovation is **Balanced SP**.
+LongLive-2.0 tackles long-video generation infrastructure, combining [NVFP4 training]({% post_url 2025-11-20-NVFP4-Train %}#nvfp4-training), KV-cache compression, parallel dequantization, and asynchronous VAE decoding. The training-side innovation is **Balanced SP**.
 
 ### The Problem: AR Teacher Forcing Creates Imbalance
 
@@ -180,7 +180,7 @@ The blog distills five design principles that I find broadly applicable beyond v
 **Principle 5: Check What Each Rank Actually Handles.** After sharding, every rank should have meaningful work. A quick decision tree:
 
 ```
-Across samples?                          → DP / [FSDP]({% post_url 2026-03-02-vescale-fsdp %}) / ZeRO
+Across samples?                          → DP / [FSDP]({% post_url 2026-03-02-vescale-fsdp %}#fsdp) / ZeRO
 Inside one long sample?                  → SP / Context Parallelism
 Mostly text, enough attention heads?     → Ulysses-style SP
 Many nodes or beyond head limits?        → Ring / USP / 2D-Attention / LoongTrain
@@ -192,7 +192,7 @@ Clean/noisy AR video streams?            → Balanced-SP-style temporal work ass
 
 ## Insights
 
-1. **"The temporal dimension is the new batch dimension."** This is the central thesis of the blog and I think it is exactly right. Once a single sample no longer fits on one GPU, the system must distribute work *within* the sample, and SP is how that distribution happens. As video models push to minutes and hours of footage, SP will be as essential as [FSDP]({% post_url 2026-03-02-vescale-fsdp %}) is today.
+1. **"The temporal dimension is the new batch dimension."** This is the central thesis of the blog and I think it is exactly right. Once a single sample no longer fits on one GPU, the system must distribute work *within* the sample, and SP is how that distribution happens. As video models push to minutes and hours of footage, SP will be as essential as [FSDP]({% post_url 2026-03-02-vescale-fsdp %}#fsdp) is today.
 
 2. **Domain-Aware SP > Generic SP.** The most important lesson from both LongVILA and LongLive-2.0 is that generic "split the sequence" SP is necessary but not sufficient. The SP partition must be *semantically aware*: aware of where tokens come from (modality-aware for understanding) and what they mean for the training objective (objective-aware for generation). This is a fundamentally different design constraint than text-only SP systems face.
 

@@ -12,7 +12,7 @@ Evaluating LLMs is not a single test you run at the end. It is a layered system 
 2. **Capability Regression Evaluation (checkpoint level):** scheduled validation to measure capability growth and flag catastrophic forgetting.
 3. **Release Gating Evaluation (pre-release level):** the final comprehensive evaluation that decides whether a model is production-ready.
 
-Each of these layers shows up differently in the three major phases of model development: **[Pre-training, Mid-training, and Post-training]({% post_url 2025-12-14-Pre-Mid-Post-Train %})**. Below is the full breakdown of the monitoring metrics and evaluation benchmarks that matter at each phase.
+Each of these layers shows up differently in the three major phases of model development: **[Pre-training, Mid-training, and Post-training]({% post_url 2025-12-14-Pre-Mid-Post-Train %}#training-stages)**. Below is the full breakdown of the monitoring metrics and evaluation benchmarks that matter at each phase.
 
 ---
 
@@ -31,7 +31,7 @@ These metrics are tracked continuously at the step or hour level to keep the tra
 | **System Efficiency** | Tokens/sec/GPU (Throughput); Model FLOPs Utilization (MFU); GPU Utilization & Memory Footprint; Fault Recovery / Checkpointing Times |
 | **MoE Specifics** *(if applicable)* | Expert Load Balance / Routing Distribution; Router Entropy; Dropped Token Rates |
 
-A few of these deserve emphasis. The **Update-to-Weight Ratio** is one of the most underrated early-warning signals — if updates are too large relative to weights, the run is on the edge of divergence. For [MoE models]({% post_url 2026-03-11-MoE-Megatron %}), **Router Entropy** and **Dropped Token Rates** tell you whether your experts are actually specializing or collapsing into a degenerate routing pattern.
+A few of these deserve emphasis. The **Update-to-Weight Ratio** is one of the most underrated early-warning signals — if updates are too large relative to weights, the run is on the edge of divergence. For [MoE models]({% post_url 2026-03-11-MoE-Megatron %}#moe-models), **Router Entropy** and **Dropped Token Rates** tell you whether your experts are actually specializing or collapsing into a degenerate routing pattern.
 
 ### 1.2 Checkpoint Capability Evaluation
 
@@ -99,7 +99,7 @@ The key discipline here: the **General Baseline** column must stay *frozen* acro
 
 ## Phase 3: Post-training (SFT & Alignment)
 
-Post-training converts the raw capabilities of a base model into a helpful, obedient, and safe user-facing assistant — through Supervised Fine-Tuning (SFT) and [Reinforcement Learning (RLHF / DPO)]({% post_url 2025-11-23-RL-Scaling %}).
+Post-training converts the raw capabilities of a base model into a helpful, obedient, and safe user-facing assistant — through Supervised Fine-Tuning (SFT) and [Reinforcement Learning (RLHF / DPO)]({% post_url 2025-11-23-RL-Scaling %}#rl-scaling).
 
 ### 3.1 SFT Stage Monitoring Metrics
 

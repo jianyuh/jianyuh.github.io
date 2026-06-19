@@ -10,6 +10,8 @@ Reading the following paper:
 - [On the Interplay of Pre-Training, Mid-Training, and RL on Reasoning Language Models](https://www.arxiv.org/pdf/2512.07783)
 
 
+<a id="training-stages"></a>
+
 Does RL merely refine capabilities acquired during pre-training (the "refiner" view), or can it genuinely extend reasoning boundaries (the "capability" view)?
 
 Prior analyses suffered from uncontrolled variables in opaque pre-training corpora. By utilizing a **fully controlled synthetic environment** (based on GSM-Infinite), these competing views are not mutually exclusive but rather regime-dependent. The paper provides a recipe for when RL works: it requires specific "headroom" in pre-training and data calibrated to the model's "edge of competence".

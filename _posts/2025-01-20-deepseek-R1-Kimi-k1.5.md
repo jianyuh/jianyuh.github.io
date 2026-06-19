@@ -19,6 +19,7 @@ The work introduces two primary models:
 ## Technical Methodology
 
 ### A. The Core Algorithm: Group Relative Policy Optimization (GRPO)
+<a id="grpo"></a>
 Instead of standard PPO (Proximal Policy Optimization), the authors utilize **GRPO**.
 *   **Critic-Less Architecture:** Standard RL requires a value function (critic) model, usually the same size as the policy model, doubling memory/compute costs. GRPO eliminates the critic.
 *   **Baseline Estimation:** It estimates the baseline using the average reward of a group of outputs sampled from the same query.

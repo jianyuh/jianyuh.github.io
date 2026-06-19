@@ -16,6 +16,7 @@ This paper presents **Megatron-Core MoE**, the MoE training stack within NVIDIA'
 ## 1. MoE Fundamentals
 
 ### Architecture
+<a id="moe-models"></a>
 
 Given an input token representation **x**, the router computes:
 

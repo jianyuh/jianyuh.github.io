@@ -10,6 +10,7 @@ Read on the following paper:
 - [The Art of Scaling Reinforcement Learning Compute for LLMs](https://arxiv.org/pdf/2510.13786).
 
 ### Context and Motivation
+<a id="rl-scaling"></a>
 
 The paper addresses the critical issue that while RL has become central to training LLMs, the field **lacks predictive scaling methodologies** comparable to those established for pre-training. Despite rapidly increasing compute budgets (with some RL training runs consuming 100,000 H800 GPU hours), the process of scaling RL remains "more art than science". The goal of this work is to provide a scientific framework and a practical recipe for RL training that offers predictability.
 

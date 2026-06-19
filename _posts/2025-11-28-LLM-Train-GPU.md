@@ -62,6 +62,7 @@ TP shards weights, gradients, optimizer states, and activations along the **hidd
 TP introduces synchronization points (like AllReduce) directly into the computation path (e.g., after the attention block or Feed Forward Layer) that are difficult to fully overlap with computation.
 
 #### C. Sequence and Context Parallelism (SP/CP)
+<a id="context-parallelism"></a>
 These methods shard tensors along the input sequence dimension ($seq$):
 
 1.  **Sequence Parallelism (SP):** Complements TP by splitting operations not handled by TP (like LayerNorm and Dropout) along $seq$. This reduces the maximal activation size per GPU to $\mathbf{b \cdot s/N_{sp} \cdot h/N_{tp}}$.

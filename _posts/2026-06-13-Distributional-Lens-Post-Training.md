@@ -58,7 +58,7 @@ On-Policy Distillation (OPD) is a hybrid: it uses a **teacher signal like SFT**,
 **On-Policy Self-Distillation (OPSD).** Here the teacher and student are *the exact same model*, except the teacher is handed a privileged reference solution as a prefix and generates target log-probabilities from it.
 
 - **The clipping problem.** Because teacher and student are nearly identical, *style* tokens (e.g., "wait") often show much higher per-token KL than *critical math* tokens. Updating too aggressively on style tokens can collapse the model: which is why per-token clipping becomes necessary.
-- **Bias vs. variance.** This dynamic makes OPSD resemble **RLHF** (which needs KL penalties and trust-region clipping because of biased reward models) more than **[RLVR]({% post_url 2025-11-22-RLVR-Limit %})** (where low bias permits loosened constraints like [GRPO]({% post_url 2025-01-20-deepseek-R1-Kimi-k1.5 %})). OPD supplies a unique reward *per token*, but at the cost of more noise and bias per update than the sparse outcome rewards of RLVR.
+- **Bias vs. variance.** This dynamic makes OPSD resemble **RLHF** (which needs KL penalties and trust-region clipping because of biased reward models) more than **[RLVR]({% post_url 2025-11-22-RLVR-Limit %})** (where low bias permits loosened constraints like [GRPO]({% post_url 2025-01-20-deepseek-R1-Kimi-k1.5 %}#grpo)). OPD supplies a unique reward *per token*, but at the cost of more noise and bias per update than the sparse outcome rewards of RLVR.
 
 ---
 

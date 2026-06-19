@@ -14,6 +14,7 @@ The evolution of LLM has heavily relied on Fully Sharded Data Parallel (FSDP) an
 This reading note dives into **veScale-FSDP**, an open-source system developed by ByteDance that redesigns FSDP to natively support modern structure-aware training methods while scaling linearly to tens of thousands of GPUs.
 
 ### 1. The Core Problem: The Misalignment of Sharding and Structure
+<a id="fsdp"></a>
 Modern state-of-the-art models (e.g., Gemini, DeepSeek-V3) increasingly rely on **structure-aware training techniques**, such as:
 *   **Non-element-wise optimizers:** Matrix-based optimizers like Shampoo and Muon require calculations on the original 2D shape of the parameter matrix.
 *   **Block-wise quantization:** Optimizers like 8-bit Adam require slicing tensors into discrete 2D blocks to calculate localized scaling factors.
