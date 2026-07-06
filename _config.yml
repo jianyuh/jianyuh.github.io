@@ -1,4 +1,4 @@
-title: Jianyu Huang's Blog
+title: Jianyu Huang
 author:
   name: Jianyu Huang
   email: jianyu0huang@gmail.com
@@ -7,7 +7,7 @@ author:
 # The `>` after `description:` means to ignore line-breaks until next key.
 # If you want to omit the line-break after the end of text, use `>-` instead.
 description: >
-  Record the technical thoughts.
+  Notes on technology, life, and the ideas in between.
 
 google_analytics: G-D0QB575CLE
 
