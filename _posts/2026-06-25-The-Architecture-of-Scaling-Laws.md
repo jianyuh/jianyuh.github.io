@@ -6,7 +6,7 @@ categories: [Deep Learning, Theory]
 tags: [Scaling Laws, LLM, Chinchilla, Kaplan, Optimization]
 ---
 
-Here is a comprehensive, deeply technical reading note based on Lilian Weng's [*Scaling Laws, Carefully*](https://lilianweng.github.io/posts/2026-06-24-scaling-laws/). This revisits and deepens an [earlier note on scaling laws]({% post_url 2024-12-23-scaling-law %}).
+Here is a comprehensive, deeply technical reading note based on Lilian Weng's [*Scaling Laws, Carefully*](https://lilianweng.github.io/posts/2026-06-24-scaling-laws/), extended with the skeptical counterpoint in [*Scaling Laws, Honestly*](https://www.completeskeptic.com/p/scaling-laws-honestly). This revisits and deepens an [earlier note on scaling laws]({% post_url 2024-12-23-scaling-law %}).
 
 ***
 
@@ -91,3 +91,26 @@ Despite their clean mathematical forms, empirically fitting these curves is asto
 Besiroglu et al. (2024) replicated Chinchilla's Method 3 and found that DeepMind's original fit was numerically flawed. An L-BFGS minimizer prematurely terminated because they *averaged* rather than *summed* Huber-loss values across examples, and intermediate parameter rounding compounded the errors. A toy simulation reveals that perturbing loss values by mere milli-loss units (0.001) or artificially restricting the fit to "small models only" can completely alter the apparent exponents of the scaling law. 
 
 **Expert Insight:** When building empirical scaling laws for your own architectures, standardizing the optimization setup (batch ramp, schedules, optimizer states) is just as critical as the loss fitting itself. Ensure you fit across at least three orders of magnitude of scale to insulate against local exponent artifacts. For the practical training-recipe side of these decisions, see the [Smol Training Playbook note]({% post_url 2025-11-29-Smol-Train %}).
+
+---
+
+### 6. A Skeptic's Postscript: Was It a Bug, and Whose Language?
+
+The framing above (following Pearce & Song) treats the Kaplan–Chinchilla gap as a *measurement* artifact — embedding parameters plus fragile extrapolation. A sharper reading in [*Scaling Laws, Honestly*](https://www.completeskeptic.com/p/scaling-laws-honestly) argues the discrepancy was, more fundamentally, an **experimental bug** in the original setup. The two accounts are complementary rather than mutually exclusive, but the second is worth stating in its own terms.
+
+#### The Learning-Rate-Schedule Bug
+Three coupled methodological choices in Kaplan et al. conspired to make large models look artificially undertrained:
+
+1.  **Fixed token budget across all model sizes.** Every model — tiny to large — was trained on roughly the same **~130B tokens** with a static schedule. A small model thus received far more training *relative to its capacity* than a large one on the identical token count, tilting the comparison.
+2.  **Cosine LR decayed to zero at the token target.** The schedule smoothly decayed the learning rate to zero as training approached ~130B tokens. This forced large models to **artificially plateau** right at the cutoff, hiding the fact that they would have kept improving with more data and an unconstrained schedule.
+3.  **Misreading the infinite-data limit.** The conclusion that performance is "largely independent of the learning rate schedule" was only true *within* the fixed-token boundary; it failed to capture the true infinite-data limit that a correct scaling law must model.
+
+Under this lens, Chinchilla's correction was less about counting parameters and more about removing an artificial constraint: with the schedule matched to the actual token horizon, the compute-optimal recipe collapses to **equal scaling** of $N$ and $D$ — a model less than half the size of GPT-3 trained on over 4× the tokens.
+
+#### The Hidden "Language Contingency" of Chinchilla
+Even granting the fix, the celebrated **~20 tokens per parameter** ratio carries an unstated scope condition: it is implicitly an **English** scaling law. The compute-optimal ratio depends on the *morphological richness* of the training language.
+
+*   **Why English is data-hungry.** English is morphologically impoverished, so the model must infer from statistical co-occurrence what morphologically richer languages mark explicitly on the word itself — more tokens to reach the same grammatical competence.
+*   **A controlled result.** In a pre-registered experiment, a **125M-parameter transformer trained on French reached grammatical competence** (100% on agreement probes) at roughly **197M tokens**, while an identical model on English remained at chance past **3B tokens** — a **>15× gap in the emergence threshold** from language alone.
+
+*Takeaway:* True compute-optimal scaling is not purely a function of $N$, $D$, and $C$. It is also bound by the **information density of the language** being modeled — a scope condition that the token-per-parameter folklore quietly omits. Treat "20:1" as an English data point, not a universal constant.
