@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Looped Transformers: From Programmable Computers to Length Generalization"
-date: 2026-07-01
+date: 2026-07-02
 categories: [LLM, Theory, Architecture]
 tags: [Looped Transformers, Recurrence, Length Generalization, RASP-L, In-Context Learning, Adaptive Depth, Attention, Universal Computation]
 ---
