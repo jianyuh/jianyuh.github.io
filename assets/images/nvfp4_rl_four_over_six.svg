@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="760" height="360" fill="#ffffff"/>
+  <text x="380" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Four-Over-Six: Clip the Range to Buy Precision</text>
+
+  <!-- geometry: map value 0..6 to x 80..680 -->
+  <!-- Scale-to-6 line -->
+  <text x="80" y="88" font-size="13" font-weight="700" fill="#dc2626">Scale block max → 6  (standard NVFP4)</text>
+  <line x1="80" y1="120" x2="680" y2="120" stroke="#334155" stroke-width="2"/>
+  <!-- ticks for 0 .5 1 1.5 2 3 4 6 : x = 80 + v*100 -->
+  <g fill="#334155" font-size="11" text-anchor="middle">
+    <g stroke="#334155" stroke-width="2">
+      <line x1="80"  y1="114" x2="80"  y2="126"/>
+      <line x1="130" y1="114" x2="130" y2="126"/>
+      <line x1="180" y1="114" x2="180" y2="126"/>
+      <line x1="230" y1="114" x2="230" y2="126"/>
+      <line x1="280" y1="114" x2="280" y2="126"/>
+      <line x1="380" y1="114" x2="380" y2="126"/>
+      <line x1="480" y1="114" x2="480" y2="126"/>
+      <line x1="680" y1="114" x2="680" y2="126"/>
+    </g>
+    <text x="80"  y="142">0</text>
+    <text x="130" y="142">.5</text>
+    <text x="180" y="142">1</text>
+    <text x="230" y="142">1.5</text>
+    <text x="280" y="142">2</text>
+    <text x="380" y="142">3</text>
+    <text x="480" y="142">4</text>
+    <text x="680" y="142">6</text>
+  </g>
+  <!-- dead zone 4..6 -->
+  <rect x="480" y="106" width="200" height="28" fill="#fecaca" opacity="0.55"/>
+  <text x="580" y="98" text-anchor="middle" font-size="11.5" fill="#b91c1c">dead zone: step = 2.0</text>
+  <text x="580" y="168" text-anchor="middle" font-size="12" fill="#b91c1c">max error ≈ 1/6 of range</text>
+
+  <!-- Scale-to-4 line -->
+  <text x="80" y="228" font-size="13" font-weight="700" fill="#059669">Scale block max → 4  (adaptive, when it lowers error)</text>
+  <line x1="80" y1="260" x2="680" y2="260" stroke="#334155" stroke-width="2"/>
+  <!-- now range compresses to 0..4 mapped to 80..680 : x = 80 + v*150 -->
+  <g fill="#334155" font-size="11" text-anchor="middle">
+    <g stroke="#334155" stroke-width="2">
+      <line x1="80"  y1="254" x2="80"  y2="266"/>
+      <line x1="155" y1="254" x2="155" y2="266"/>
+      <line x1="230" y1="254" x2="230" y2="266"/>
+      <line x1="305" y1="254" x2="305" y2="266"/>
+      <line x1="380" y1="254" x2="380" y2="266"/>
+      <line x1="530" y1="254" x2="530" y2="266"/>
+      <line x1="680" y1="254" x2="680" y2="266"/>
+    </g>
+    <text x="80"  y="282">0</text>
+    <text x="155" y="282">.5</text>
+    <text x="230" y="282">1</text>
+    <text x="305" y="282">1.5</text>
+    <text x="380" y="282">2</text>
+    <text x="530" y="282">3</text>
+    <text x="680" y="282">4</text>
+  </g>
+  <rect x="380" y="246" width="300" height="28" fill="#bbf7d0" opacity="0.55"/>
+  <text x="530" y="238" text-anchor="middle" font-size="11.5" fill="#047857">finer resolution near the top</text>
+  <text x="530" y="308" text-anchor="middle" font-size="12" fill="#047857">max error ≈ 1/8 of range</text>
+
+  <text x="380" y="345" text-anchor="middle" font-size="12.5" fill="#475569">Applied to <tspan font-weight="700">both weights and activations</tspan> for RL; decided per-block, computed losslessly in FP16.</text>
+</svg>
