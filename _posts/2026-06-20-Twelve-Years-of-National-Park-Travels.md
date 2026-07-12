@@ -12,6 +12,8 @@ From my first visit to Yosemite in 2014 to returning to Mount Rainier in 2026 wi
 
 Here are some notes from those national park travels.
 
+![Twelve years of national park travels — from one person to a family](/assets/images/national_parks_family_collage.png)
+
 ---
 
 ## 🏕️ PhD Days: Confusion and Finding My Rhythm (2014-2015)

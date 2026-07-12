@@ -28,6 +28,8 @@ But the crowd of 69,000 kept the energy alive. We had Senegal fans to our left a
 
 ### The 86th-Minute Miracle
 
+![Belgium 3–2 Senegal comeback timeline](/assets/images/worldcup_comeback_timeline.svg)
+
 Eventually, Senegal broke through and scored the first goal, quickly followed by a second. For 86 minutes, the score sat at 2-0. Almost everyone in the stadium thought Senegal had it in the bag.
 
 Then, a miracle happened.
