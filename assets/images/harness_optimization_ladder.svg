@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="760" height="360" fill="#ffffff"/>
+  <text x="380" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">The RSI Optimization Ladder</text>
+  <text x="380" y="50" text-anchor="middle" font-size="12.5" fill="#64748b">what the loop is allowed to rewrite — deeper = more autonomy</text>
+
+  <!-- steps, rising left→right -->
+  <!-- step 1 -->
+  <rect x="40"  y="250" width="130" height="70" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="105" y="278" text-anchor="middle" font-size="14" font-weight="700" fill="#1d4ed8">Prompt</text>
+  <text x="105" y="298" text-anchor="middle" font-size="10.5" fill="#475569">text, heuristic</text>
+  <!-- step 2 -->
+  <rect x="185" y="205" width="130" height="70" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="250" y="233" text-anchor="middle" font-size="14" font-weight="700" fill="#1d4ed8">Context</text>
+  <text x="250" y="253" text-anchor="middle" font-size="10.5" fill="#475569">ACE · MCE</text>
+  <!-- step 3 -->
+  <rect x="330" y="160" width="130" height="70" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="395" y="188" text-anchor="middle" font-size="14" font-weight="700" fill="#4338ca">Workflow</text>
+  <text x="395" y="208" text-anchor="middle" font-size="10.5" fill="#475569">ADAS · AFlow</text>
+  <!-- step 4 -->
+  <rect x="475" y="115" width="130" height="70" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="540" y="143" text-anchor="middle" font-size="14" font-weight="700" fill="#6d28d9">Harness code</text>
+  <text x="540" y="163" text-anchor="middle" font-size="10.5" fill="#475569">STOP · DGM</text>
+  <!-- step 5 -->
+  <rect x="620" y="70" width="130" height="70" rx="8" fill="#faf5ff" stroke="#9333ea" stroke-width="1.5"/>
+  <text x="685" y="98" text-anchor="middle" font-size="14" font-weight="700" fill="#7e22ce">Weights</text>
+  <text x="685" y="118" text-anchor="middle" font-size="10.5" fill="#475569">SIA (joint)</text>
+
+  <!-- rising arrow -->
+  <line x1="55" y1="335" x2="735" y2="55" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#a3)"/>
+
+  <defs>
+    <marker id="a3" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+</svg>
