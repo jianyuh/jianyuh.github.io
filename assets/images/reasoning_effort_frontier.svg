@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="760" height="440" fill="#ffffff"/>
+  <text x="380" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Training scaling vs. inference-effort scaling overlap</text>
+
+  <!-- axes -->
+  <line x1="90" y1="360" x2="690" y2="360" stroke="#334155" stroke-width="1.5"/>
+  <line x1="90" y1="360" x2="90" y2="70" stroke="#334155" stroke-width="1.5"/>
+  <text x="390" y="392" text-anchor="middle" font-size="12.5" fill="#475569">Inference compute — reasoning tokens per query (log)</text>
+  <text x="34" y="215" text-anchor="middle" font-size="12.5" fill="#475569" transform="rotate(-90 34 215)">Accuracy</text>
+  <!-- effort ticks -->
+  <g font-size="10.5" fill="#64748b" text-anchor="middle">
+    <text x="170" y="378">Low</text><text x="330" y="378">Medium</text><text x="490" y="378">High</text><text x="640" y="378">Max</text>
+  </g>
+
+  <!-- three model-size curves (log-ish saturating) -->
+  <!-- small (Luna) -->
+  <path d="M110,320 C 220,250 360,205 500,190 C 580,182 640,180 670,179" fill="none" stroke="#94a3b8" stroke-width="3"/>
+  <text x="676" y="182" font-size="11" fill="#64748b">small</text>
+  <!-- mid (Terra) -->
+  <path d="M110,270 C 220,190 360,150 500,138 C 580,132 640,130 670,129" fill="none" stroke="#2563eb" stroke-width="3"/>
+  <text x="676" y="132" font-size="11" fill="#2563eb">mid</text>
+  <!-- large (Sol) -->
+  <path d="M110,210 C 220,135 360,100 500,92 C 580,88 640,87 670,86" fill="none" stroke="#7c3aed" stroke-width="3"/>
+  <text x="676" y="90" font-size="11" fill="#7c3aed">large</text>
+
+  <!-- overlap callout: small@High ≈ mid@Low -->
+  <circle cx="490" cy="190" r="6" fill="#94a3b8"/>
+  <circle cx="145" cy="258" r="6" fill="#2563eb"/>
+  <line x1="151" y1="258" x2="484" y2="190" stroke="#059669" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <rect x="250" y="300" width="290" height="34" rx="7" fill="#ecfdf5" stroke="#059669"/>
+  <text x="395" y="322" text-anchor="middle" font-size="11.5" fill="#065f46">small @ High effort ≈ mid @ Low effort</text>
+
+  <!-- diminishing returns callout -->
+  <rect x="500" y="60" width="200" height="20" rx="4" fill="#fef2f2"/>
+  <text x="600" y="75" text-anchor="middle" font-size="10.5" fill="#b91c1c">diminishing returns at max effort</text>
+  <path d="M600,80 C 610,110 640,120 655,90" fill="none" stroke="#dc2626" stroke-width="1.3" stroke-dasharray="3 3" marker-end="url(#adr)"/>
+
+  <!-- reward equation footer -->
+  <rect x="120" y="404" width="520" height="28" rx="7" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="380" y="423" text-anchor="middle" font-size="12.5" fill="#5b21b6">R(e) = R_task − &#955;(e)·N_tokens   (low e → large &#955; → shorter traces)</text>
+
+  <defs>
+    <marker id="adr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#dc2626"/></marker>
+  </defs>
+</svg>
