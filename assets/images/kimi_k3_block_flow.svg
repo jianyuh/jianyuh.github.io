@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 400" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="780" height="400" fill="#ffffff"/>
+  <text x="390" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Kimi K3 — AttnRes residual routing across depth</text>
+  <text x="390" y="48" text-anchor="middle" font-size="12" fill="#64748b">2.8T total · 16 of 896 experts active · Stable LatentMoE</text>
+
+  <!-- blocks -->
+  <g text-anchor="middle">
+    <rect x="40"  y="120" width="120" height="140" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/><text x="100" y="112" font-size="12" fill="#64748b">Block n−3</text>
+    <rect x="200" y="120" width="120" height="140" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/><text x="260" y="112" font-size="12" fill="#64748b">Block n−2</text>
+    <rect x="360" y="120" width="120" height="140" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/><text x="420" y="112" font-size="12" fill="#64748b">Block n−1</text>
+    <rect x="540" y="120" width="150" height="140" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/><text x="615" y="112" font-size="12" font-weight="700" fill="#1d4ed8">Block n</text>
+
+    <!-- internal modules of block n -->
+    <g font-size="10.5">
+      <rect x="552" y="132" width="126" height="26" rx="5" fill="#ffffff" stroke="#60a5fa"/><text x="615" y="149" fill="#1e293b">KDA (delta attn)</text>
+      <rect x="552" y="164" width="126" height="26" rx="5" fill="#ffffff" stroke="#60a5fa"/><text x="615" y="181" fill="#1e293b">Gated MLA</text>
+      <rect x="552" y="196" width="126" height="26" rx="5" fill="#ffffff" stroke="#60a5fa"/><text x="615" y="213" fill="#1e293b">Stable LatentMoE</text>
+      <rect x="552" y="228" width="126" height="24" rx="5" fill="#ecfdf5" stroke="#059669"/><text x="615" y="244" fill="#065f46">SiTU · L2 conv</text>
+    </g>
+  </g>
+
+  <!-- residual routing arrows into block n, weighted alpha_w -->
+  <g fill="none" stroke-width="2">
+    <path d="M160,150 C 300,70 470,70 552,140" stroke="#7c3aed" marker-end="url(#ap)"/>
+    <path d="M320,160 C 420,95 480,95 552,150" stroke="#7c3aed" marker-end="url(#ap)"/>
+    <path d="M480,175 L 552,180" stroke="#7c3aed" marker-end="url(#ap)"/>
+  </g>
+  <text x="360" y="72" text-anchor="middle" font-size="11" fill="#7c3aed">AttnRes: selectively retrieve representations from n−1, n−2, n−3 (weights α_w)</text>
+
+  <!-- forward chain arrows -->
+  <g stroke="#94a3b8" stroke-width="2">
+    <line x1="160" y1="230" x2="200" y2="230" marker-end="url(#ag2)"/>
+    <line x1="320" y1="230" x2="360" y2="230" marker-end="url(#ag2)"/>
+    <line x1="480" y1="230" x2="540" y2="230" marker-end="url(#ag2)"/>
+  </g>
+
+  <!-- expert sparsity callout -->
+  <rect x="40" y="292" width="330" height="86" rx="10" fill="#f0fdf4" stroke="#16a34a"/>
+  <text x="56" y="313" font-size="12.5" font-weight="700" fill="#166534">Extreme sparsity: 16 / 896 experts</text>
+  <text x="56" y="332" font-size="10.5" fill="#15803d">Quantile Balancing — allocation from router-score quantiles</text>
+  <text x="56" y="349" font-size="10.5" fill="#15803d">(no sensitive balancing hyperparameters → solves expert collapse)</text>
+  <text x="56" y="368" font-size="10.5" fill="#15803d">Per-Head Muon · MXFP4 weights / MXFP8 activations (QAT)</text>
+
+  <!-- capabilities callout -->
+  <rect x="390" y="292" width="350" height="86" rx="10" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="406" y="313" font-size="12.5" font-weight="700" fill="#5b21b6">Bootstraps its own infra</text>
+  <text x="406" y="332" font-size="10.5" fill="#6d28d9">MiniTriton compiler (MLIR→PTX) · optimizes 512-head MLA kernels</text>
+  <text x="406" y="349" font-size="10.5" fill="#6d28d9">EDA agent: designed a chip (45nm, INT4 MAC) in 48h</text>
+  <text x="406" y="368" font-size="10.5" fill="#6d28d9">reproduced I–Love–Q relations in ~2h · native video edit</text>
+
+  <defs>
+    <marker id="ap" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#7c3aed"/></marker>
+    <marker id="ag2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#94a3b8"/></marker>
+  </defs>
+</svg>
