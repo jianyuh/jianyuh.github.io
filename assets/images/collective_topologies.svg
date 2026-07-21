@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="800" height="420" fill="#ffffff"/>
+  <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Two cluster topologies, two collective strategies</text>
+
+  <!-- LEFT: TPU torus -->
+  <text x="200" y="62" text-anchor="middle" font-size="14" font-weight="700" fill="#2563eb">TPU — nearest-neighbor torus (ICI)</text>
+  <text x="200" y="80" text-anchor="middle" font-size="11" fill="#64748b">2D/3D grid, wraparound links, routes physically</text>
+  <!-- 3x3 grid of nodes -->
+  <g>
+    <!-- nodes -->
+    <g fill="#eff6ff" stroke="#2563eb" stroke-width="1.5">
+      <circle cx="110" cy="130" r="14"/><circle cx="200" cy="130" r="14"/><circle cx="290" cy="130" r="14"/>
+      <circle cx="110" cy="215" r="14"/><circle cx="200" cy="215" r="14"/><circle cx="290" cy="215" r="14"/>
+      <circle cx="110" cy="300" r="14"/><circle cx="200" cy="300" r="14"/><circle cx="290" cy="300" r="14"/>
+    </g>
+    <!-- horizontal + vertical links -->
+    <g stroke="#94a3b8" stroke-width="2">
+      <line x1="124" y1="130" x2="186" y2="130"/><line x1="214" y1="130" x2="276" y2="130"/>
+      <line x1="124" y1="215" x2="186" y2="215"/><line x1="214" y1="215" x2="276" y2="215"/>
+      <line x1="124" y1="300" x2="186" y2="300"/><line x1="214" y1="300" x2="276" y2="300"/>
+      <line x1="110" y1="144" x2="110" y2="201"/><line x1="110" y1="229" x2="110" y2="286"/>
+      <line x1="200" y1="144" x2="200" y2="201"/><line x1="200" y1="229" x2="200" y2="286"/>
+      <line x1="290" y1="144" x2="290" y2="201"/><line x1="290" y1="229" x2="290" y2="286"/>
+    </g>
+    <!-- wraparound links (dashed) -->
+    <g stroke="#7c3aed" stroke-width="2" stroke-dasharray="4 3" fill="none">
+      <path d="M110,116 C 70,90 330,90 290,116"/>
+      <path d="M110,201 C 70,175 330,175 290,201" opacity="0"/>
+      <path d="M96,130 C 70,130 70,300 96,300"/>
+    </g>
+  </g>
+  <text x="200" y="340" text-anchor="middle" font-size="10.5" fill="#7c3aed">dashed = torus wraparound (lost in small slices → ~2× slower ring)</text>
+  <text x="200" y="362" text-anchor="middle" font-size="11" fill="#334155">2D All-Gather uses all 4 links → 2× vs 1D</text>
+  <text x="200" y="380" text-anchor="middle" font-size="10.5" fill="#64748b">latency-bound if chunk &#8818; 45 KB (45 GB/s × 1 µs)</text>
+
+  <!-- divider -->
+  <line x1="400" y1="55" x2="400" y2="395" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- RIGHT: GPU fat tree -->
+  <text x="600" y="62" text-anchor="middle" font-size="14" font-weight="700" fill="#059669">GPU — hierarchical fat tree (NVLink + IB)</text>
+  <text x="600" y="80" text-anchor="middle" font-size="11" fill="#64748b">all-to-all node, logical ring over the switch</text>
+  <!-- spine -->
+  <g text-anchor="middle" font-size="10">
+    <rect x="520" y="100" width="70" height="28" rx="6" fill="#ecfdf5" stroke="#059669"/><text x="555" y="119" fill="#065f46">spine</text>
+    <rect x="610" y="100" width="70" height="28" rx="6" fill="#ecfdf5" stroke="#059669"/><text x="645" y="119" fill="#065f46">spine</text>
+    <!-- leaf -->
+    <rect x="470" y="175" width="70" height="28" rx="6" fill="#f0fdf4" stroke="#16a34a"/><text x="505" y="194" fill="#166534">leaf</text>
+    <rect x="565" y="175" width="70" height="28" rx="6" fill="#f0fdf4" stroke="#16a34a"/><text x="600" y="194" fill="#166534">leaf</text>
+    <rect x="660" y="175" width="70" height="28" rx="6" fill="#f0fdf4" stroke="#16a34a"/><text x="695" y="194" fill="#166534">leaf</text>
+  </g>
+  <!-- links spine-leaf -->
+  <g stroke="#94a3b8" stroke-width="1.6">
+    <line x1="555" y1="128" x2="505" y2="175"/><line x1="555" y1="128" x2="600" y2="175"/><line x1="555" y1="128" x2="695" y2="175"/>
+    <line x1="645" y1="128" x2="505" y2="175"/><line x1="645" y1="128" x2="600" y2="175"/><line x1="645" y1="128" x2="695" y2="175"/>
+  </g>
+  <!-- nodes (8 GPUs each abstracted) -->
+  <g fill="#dcfce7" stroke="#16a34a" stroke-width="1.4">
+    <rect x="472" y="240" width="66" height="26" rx="5"/><rect x="567" y="240" width="66" height="26" rx="5"/><rect x="662" y="240" width="66" height="26" rx="5"/>
+  </g>
+  <g text-anchor="middle" font-size="9.5" fill="#166534"><text x="505" y="257">8-GPU node</text><text x="600" y="257">8-GPU node</text><text x="695" y="257">8-GPU node</text></g>
+  <g stroke="#94a3b8" stroke-width="1.6">
+    <line x1="505" y1="203" x2="505" y2="240"/><line x1="600" y1="203" x2="600" y2="240"/><line x1="695" y1="203" x2="695" y2="240"/>
+  </g>
+  <text x="600" y="300" text-anchor="middle" font-size="10.5" fill="#334155">All-Reduce = Reduce-Scatter + All-Gather</text>
+  <text x="600" y="320" text-anchor="middle" font-size="10.5" fill="#059669">SHARP in-network reduce: ~1.75× theory, ~1.3× real</text>
+  <text x="600" y="340" text-anchor="middle" font-size="10.5" fill="#64748b">bisection limited by smaller partition side</text>
+  <text x="600" y="360" text-anchor="middle" font-size="10.5" fill="#64748b">rings for big msgs · trees (log₂N) for low latency</text>
+  <text x="600" y="380" text-anchor="middle" font-size="10.5" fill="#dc2626">MoE All-to-All on NVL72: token hits ~8/72 GPUs (sparse)</text>
+</svg>
