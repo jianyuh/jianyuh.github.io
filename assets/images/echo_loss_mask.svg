@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 380" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="780" height="380" fill="#ffffff"/>
+  <text x="390" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">ECHO: which tokens carry loss</text>
+  <text x="390" y="52" text-anchor="middle" font-size="12.5" fill="#64748b">A terminal trajectory interleaves agent commands (actions) and terminal output (observations)</text>
+
+  <!-- legend -->
+  <rect x="250" y="66" width="16" height="16" rx="3" fill="#dbeafe" stroke="#2563eb"/><text x="272" y="79" font-size="12" fill="#334155">action tokens</text>
+  <rect x="390" y="66" width="16" height="16" rx="3" fill="#e2e8f0" stroke="#94a3b8"/><text x="412" y="79" font-size="12" fill="#334155">observation tokens</text>
+
+  <!-- token strip helper: reused twice -->
+  <!-- GRPO row -->
+  <text x="30" y="118" font-size="14" font-weight="700" fill="#334155">Standard GRPO</text>
+  <text x="30" y="136" font-size="11.5" fill="#dc2626">loss on actions only — observations masked (wasted supervision)</text>
+  <g font-size="10" text-anchor="middle">
+    <rect x="30"  y="146" width="80" height="34" rx="5" fill="#dbeafe" stroke="#2563eb"/><text x="70" y="167" fill="#1e40af">cmd: ls</text>
+    <rect x="116" y="146" width="150" height="34" rx="5" fill="#e2e8f0" stroke="#94a3b8"/><text x="191" y="167" fill="#64748b">stdout / file list</text>
+    <rect x="272" y="146" width="90" height="34" rx="5" fill="#dbeafe" stroke="#2563eb"/><text x="317" y="167" fill="#1e40af">cmd: cat x</text>
+    <rect x="368" y="146" width="170" height="34" rx="5" fill="#e2e8f0" stroke="#94a3b8"/><text x="453" y="167" fill="#64748b">traceback / error</text>
+    <rect x="544" y="146" width="100" height="34" rx="5" fill="#dbeafe" stroke="#2563eb"/><text x="594" y="167" fill="#1e40af">cmd: fix</text>
+  </g>
+  <!-- hatch mask over observation cells -->
+  <rect x="116" y="146" width="150" height="34" rx="5" fill="url(#hatch)" opacity="0.55"/>
+  <rect x="368" y="146" width="170" height="34" rx="5" fill="url(#hatch)" opacity="0.55"/>
+  <text x="191" y="196" text-anchor="middle" font-size="9.5" fill="#dc2626">masked</text>
+  <text x="453" y="196" text-anchor="middle" font-size="9.5" fill="#dc2626">masked</text>
+
+  <!-- ECHO row -->
+  <text x="30" y="240" font-size="14" font-weight="700" fill="#334155">ECHO</text>
+  <text x="30" y="258" font-size="11.5" fill="#059669">loss on actions <tspan font-weight="700">and</tspan> observations — learns a world model for free (no extra forward/backward)</text>
+  <g font-size="10" text-anchor="middle">
+    <rect x="30"  y="268" width="80" height="34" rx="5" fill="#dbeafe" stroke="#2563eb"/><text x="70" y="289" fill="#1e40af">cmd: ls</text>
+    <rect x="116" y="268" width="150" height="34" rx="5" fill="#d1fae5" stroke="#059669"/><text x="191" y="289" fill="#065f46">stdout / file list</text>
+    <rect x="272" y="268" width="90" height="34" rx="5" fill="#dbeafe" stroke="#2563eb"/><text x="317" y="289" fill="#1e40af">cmd: cat x</text>
+    <rect x="368" y="268" width="170" height="34" rx="5" fill="#d1fae5" stroke="#059669"/><text x="453" y="289" fill="#065f46">traceback / error</text>
+    <rect x="544" y="268" width="100" height="34" rx="5" fill="#dbeafe" stroke="#2563eb"/><text x="594" y="289" fill="#1e40af">cmd: fix</text>
+  </g>
+  <text x="335" y="322" text-anchor="middle" font-size="10.5" fill="#059669">predict observation tokens → track files, kernel state, dir structure in hidden states</text>
+
+  <!-- objective -->
+  <rect x="90" y="336" width="600" height="34" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="390" y="358" text-anchor="middle" font-size="13.5" fill="#5b21b6">L_ECHO = L_GRPO(Actions) + &#955; · L_env(Observations)</text>
+
+  <defs>
+    <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="7" height="7" fill="#f1f5f9"/><line x1="0" y1="0" x2="0" y2="7" stroke="#dc2626" stroke-width="1.4"/>
+    </pattern>
+  </defs>
+</svg>
