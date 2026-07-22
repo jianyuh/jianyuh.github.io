@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="800" height="400" fill="#ffffff"/>
+  <text x="400" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">DeepSeek-V4 hybrid attention — interleaved by compression ratio</text>
+  <text x="400" y="48" text-anchor="middle" font-size="12" fill="#64748b">each layer reads a 128-token sliding window from one pool + compressed history from another, one online-softmax reduction</text>
+
+  <!-- column headers: history ... recent -->
+  <text x="70" y="78" font-size="11" fill="#64748b">← compressed history</text>
+  <text x="700" y="78" text-anchor="end" font-size="11" fill="#64748b">recent 128 raw tokens →</text>
+
+  <!-- SWA row -->
+  <text x="30" y="118" font-size="13" font-weight="700" fill="#2563eb">SWA</text>
+  <text x="30" y="134" font-size="10" fill="#64748b">ratio 0</text>
+  <rect x="90" y="98" width="480" height="34" rx="5" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="330" y="120" text-anchor="middle" font-size="10.5" fill="#94a3b8">(not attended)</text>
+  <rect x="580" y="98" width="120" height="34" rx="5" fill="#dbeafe" stroke="#2563eb"/>
+  <text x="640" y="120" text-anchor="middle" font-size="10.5" fill="#1e40af">128 raw · dense</text>
+
+  <!-- CSA row -->
+  <text x="30" y="188" font-size="13" font-weight="700" fill="#059669">CSA</text>
+  <text x="30" y="204" font-size="10" fill="#64748b">ratio 4</text>
+  <g>
+    <rect x="90"  y="168" width="60" height="34" rx="5" fill="#d1fae5" stroke="#059669"/>
+    <rect x="160" y="168" width="60" height="34" rx="5" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <rect x="230" y="168" width="60" height="34" rx="5" fill="#d1fae5" stroke="#059669"/>
+    <rect x="300" y="168" width="60" height="34" rx="5" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <rect x="370" y="168" width="60" height="34" rx="5" fill="#d1fae5" stroke="#059669"/>
+    <rect x="440" y="168" width="60" height="34" rx="5" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <rect x="510" y="168" width="60" height="34" rx="5" fill="#d1fae5" stroke="#059669"/>
+  </g>
+  <text x="330" y="190" text-anchor="middle" font-size="10" fill="#065f46">4× compressed → Indexer Top-K (K=512/1024)</text>
+  <rect x="580" y="168" width="120" height="34" rx="5" fill="#dbeafe" stroke="#2563eb"/>
+  <text x="640" y="190" text-anchor="middle" font-size="10.5" fill="#1e40af">128 raw</text>
+
+  <!-- HCA row -->
+  <text x="30" y="258" font-size="13" font-weight="700" fill="#7c3aed">HCA</text>
+  <text x="30" y="274" font-size="10" fill="#64748b">ratio 128</text>
+  <rect x="90" y="238" width="480" height="34" rx="5" fill="#ede9fe" stroke="#7c3aed"/>
+  <text x="330" y="260" text-anchor="middle" font-size="10.5" fill="#5b21b6">ALL 128× compressed history · dense · no Indexer</text>
+  <rect x="580" y="238" width="120" height="34" rx="5" fill="#dbeafe" stroke="#2563eb"/>
+  <text x="640" y="260" text-anchor="middle" font-size="10.5" fill="#1e40af">128 raw</text>
+
+  <!-- cache lifecycle + throughput -->
+  <rect x="30" y="300" width="360" height="80" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="46" y="321" font-size="12.5" font-weight="700" fill="#1e293b">KV cache lifecycle heterogeneity</text>
+  <text x="46" y="340" font-size="10.5" fill="#475569">• sliding-window cache — recycled when 128/8-tok window expires</text>
+  <text x="46" y="357" font-size="10.5" fill="#475569">• persistent 4× / 128× compressed caches — grow slowly</text>
+  <text x="46" y="374" font-size="10.5" fill="#7c3aed">KV manager = multi-pool, lifecycle-aware memory hypervisor</text>
+
+  <rect x="410" y="300" width="360" height="80" rx="10" fill="#ecfdf5" stroke="#059669"/>
+  <text x="426" y="321" font-size="12.5" font-weight="700" fill="#065f46">Blackwell (GB300) results</text>
+  <text x="426" y="341" font-size="11" fill="#047857">Fixed-shape: 984 → 1,618 tok/s/GPU (+64.5%)</text>
+  <text x="426" y="359" font-size="11" fill="#047857">via epilogue FP8 fusion, GVR Top-K (2.17×), MegaMoE, PDL</text>
+  <text x="426" y="376" font-size="11" fill="#047857">AgentPerf: 57.5 CPG @ SLO20 · 19.2 CPG @ SLO60</text>
+</svg>
