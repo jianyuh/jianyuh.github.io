@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="760" height="380" fill="#ffffff"/>
+  <text x="380" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">The Joint Pretraining-to-RL Scaling Law</text>
+
+  <!-- Pretraining box -->
+  <rect x="40" y="60" width="220" height="118" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="150" y="86" text-anchor="middle" font-size="14" font-weight="700" fill="#1d4ed8">Pretraining</text>
+  <text x="150" y="112" text-anchor="middle" font-size="12.5" fill="#334155">loss  L_pt(N, T)</text>
+  <text x="150" y="134" text-anchor="middle" font-size="12.5" fill="#334155">size N   ·   tokens T</text>
+  <text x="150" y="160" text-anchor="middle" font-size="11" fill="#64748b">Chinchilla: E + A/Nᵃ + B/Dᵇ</text>
+
+  <!-- Mapping f -->
+  <rect x="300" y="60" width="160" height="52" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="380" y="82" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7c3aed">f( L_pt )</text>
+  <text x="380" y="100" text-anchor="middle" font-size="10.5" fill="#64748b">α + β·exp(−γ L_pt)</text>
+
+  <!-- Mapping g -->
+  <rect x="300" y="126" width="160" height="52" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+  <text x="380" y="148" text-anchor="middle" font-size="12.5" font-weight="700" fill="#059669">g( N, T )</text>
+  <text x="380" y="166" text-anchor="middle" font-size="10.5" fill="#64748b">α + β·log T + γ·log N</text>
+
+  <!-- arrows pretrain -> f,g -->
+  <line x1="260" y1="100" x2="298" y2="86"  stroke="#7c3aed" stroke-width="2" marker-end="url(#ap)"/>
+  <line x1="260" y1="138" x2="298" y2="152" stroke="#059669" stroke-width="2" marker-end="url(#ag)"/>
+
+  <!-- Outputs -->
+  <rect x="500" y="60" width="220" height="52" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="610" y="82" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1e293b">Reference reward  Rʳᵉᶠ</text>
+  <text x="610" y="100" text-anchor="middle" font-size="10.5" fill="#64748b">the ceiling RL reaches</text>
+
+  <rect x="500" y="126" width="220" height="52" rx="8" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+  <text x="610" y="148" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1e293b">RL slope  B (per log C)</text>
+  <text x="610" y="166" text-anchor="middle" font-size="10.5" fill="#64748b">how fast RL climbs</text>
+
+  <line x1="460" y1="86"  x2="498" y2="86"  stroke="#7c3aed" stroke-width="2" marker-end="url(#ap)"/>
+  <line x1="460" y1="152" x2="498" y2="152" stroke="#059669" stroke-width="2" marker-end="url(#ag)"/>
+
+  <!-- Joint law -->
+  <rect x="120" y="230" width="520" height="70" rx="12" fill="#1e293b"/>
+  <text x="380" y="258" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Joint Scaling Law</text>
+  <text x="380" y="284" text-anchor="middle" font-size="13" fill="#f1f5f9">R(C_RL, N, T) = f(L_pt) + g(N, T)·(log C_RL − log C_ref)</text>
+
+  <line x1="610" y1="178" x2="500" y2="228" stroke="#94a3b8" stroke-width="2" marker-end="url(#aa)"/>
+  <line x1="610" y1="112" x2="470" y2="228" stroke="#94a3b8" stroke-width="2" marker-end="url(#aa)"/>
+
+  <text x="380" y="340" text-anchor="middle" font-size="12.5" fill="#475569">Pretraining <tspan font-weight="700" fill="#7c3aed">loss</tspan> sets the ceiling  ·  Pretraining <tspan font-weight="700" fill="#059669">data volume</tspan> sets the climb rate</text>
+  <text x="380" y="364" text-anchor="middle" font-size="11" fill="#94a3b8">validated in a chess testbed (5M–1B params) and transferred to 1B-param math (OLMo-2)</text>
+
+  <defs>
+    <marker id="ap" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#7c3aed"/></marker>
+    <marker id="ag" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#059669"/></marker>
+    <marker id="aa" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#94a3b8"/></marker>
+  </defs>
+</svg>
