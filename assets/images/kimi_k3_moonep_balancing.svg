@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 400" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="780" height="400" fill="#ffffff"/>
+  <text x="390" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">MoonEP: E/R redundant experts → static-shape MoE</text>
+  <text x="390" y="48" text-anchor="middle" font-size="12" fill="#64748b">reserve at most E/R slots per rank → every rank receives exactly S×K tokens</text>
+
+  <!-- LEFT: dynamic imbalance -->
+  <text x="196" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">Standard EP — dynamic, imbalanced</text>
+  <g>
+    <!-- baseline -->
+    <line x1="60" y1="300" x2="332" y2="300" stroke="#cbd5e1" stroke-width="1.5"/>
+    <!-- target line -->
+    <line x1="60" y1="230" x2="332" y2="230" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="336" y="234" font-size="9.5" fill="#64748b">S×K</text>
+    <!-- uneven bars -->
+    <rect x="72"  y="150" width="42" height="150" fill="#fecaca" stroke="#f87171"/>
+    <rect x="130" y="262" width="42" height="38"  fill="#fecaca" stroke="#f87171"/>
+    <rect x="188" y="196" width="42" height="104" fill="#fecaca" stroke="#f87171"/>
+    <rect x="246" y="278" width="42" height="22"  fill="#fecaca" stroke="#f87171"/>
+    <text x="93"  y="315" text-anchor="middle" font-size="9.5" fill="#64748b">R0</text>
+    <text x="151" y="315" text-anchor="middle" font-size="9.5" fill="#64748b">R1</text>
+    <text x="209" y="315" text-anchor="middle" font-size="9.5" fill="#64748b">R2</text>
+    <text x="267" y="315" text-anchor="middle" font-size="9.5" fill="#64748b">R3</text>
+  </g>
+  <text x="196" y="345" text-anchor="middle" font-size="10.5" fill="#b91c1c">host↔device sync every MoE layer;</text>
+  <text x="196" y="360" text-anchor="middle" font-size="10.5" fill="#b91c1c">dynamic shapes stall the pipeline</text>
+
+  <!-- center arrow -->
+  <path d="M356,230 L404,230" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#ar)"/>
+  <text x="380" y="220" text-anchor="middle" font-size="9" fill="#334155">plan</text>
+
+  <!-- RIGHT: balanced -->
+  <text x="580" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#047857">MoonEP — balanced, static</text>
+  <g>
+    <line x1="440" y1="300" x2="720" y2="300" stroke="#cbd5e1" stroke-width="1.5"/>
+    <line x1="440" y1="230" x2="720" y2="230" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="724" y="234" font-size="9.5" fill="#64748b">S×K</text>
+    <!-- even bars: base load + redundant slice on top -->
+    <g>
+      <rect x="452" y="230" width="42" height="70" fill="#d1fae5" stroke="#34d399"/>
+      <rect x="510" y="230" width="42" height="70" fill="#d1fae5" stroke="#34d399"/>
+      <rect x="568" y="230" width="42" height="70" fill="#d1fae5" stroke="#34d399"/>
+      <rect x="626" y="230" width="42" height="70" fill="#d1fae5" stroke="#34d399"/>
+      <!-- redundant top-up (E/R slots) -->
+      <rect x="452" y="206" width="42" height="24" fill="#bfdbfe" stroke="#60a5fa"/>
+      <rect x="510" y="206" width="42" height="24" fill="#bfdbfe" stroke="#60a5fa"/>
+      <rect x="568" y="206" width="42" height="24" fill="#bfdbfe" stroke="#60a5fa"/>
+      <rect x="626" y="206" width="42" height="24" fill="#bfdbfe" stroke="#60a5fa"/>
+    </g>
+    <text x="473" y="315" text-anchor="middle" font-size="9.5" fill="#64748b">R0</text>
+    <text x="531" y="315" text-anchor="middle" font-size="9.5" fill="#64748b">R1</text>
+    <text x="589" y="315" text-anchor="middle" font-size="9.5" fill="#64748b">R2</text>
+    <text x="647" y="315" text-anchor="middle" font-size="9.5" fill="#64748b">R3</text>
+  </g>
+  <rect x="452" y="118" width="216" height="20" rx="4" fill="#eff6ff" stroke="#60a5fa"/>
+  <text x="560" y="132" text-anchor="middle" font-size="9.5" fill="#1d4ed8">≤ E/R redundant experts per rank</text>
+  <text x="580" y="345" text-anchor="middle" font-size="10.5" fill="#047857">zero host sync on critical path;</text>
+  <text x="580" y="360" text-anchor="middle" font-size="10.5" fill="#047857">zero-copy buffers, static shapes</text>
+
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker>
+  </defs>
+</svg>

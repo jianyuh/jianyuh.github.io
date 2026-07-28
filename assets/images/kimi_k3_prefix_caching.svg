@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 400" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="780" height="400" fill="#ffffff"/>
+  <text x="390" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">KDA-aware prefix caching: decouple hashing from allocation</text>
+  <text x="390" y="48" text-anchor="middle" font-size="12" fill="#64748b">fine 512-token hash blocks over coarse 6144-token physical blocks + copy-on-write KDA restore</text>
+
+  <!-- physical blocks row -->
+  <text x="60" y="96" font-size="12" font-weight="700" fill="#475569">Physical allocation — 6144-token blocks</text>
+  <g>
+    <rect x="60"  y="106" width="300" height="46" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+    <rect x="368" y="106" width="300" height="46" rx="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="210" y="134" text-anchor="middle" font-size="11" fill="#1d4ed8">physical block 0  (0–6143)</text>
+    <text x="518" y="134" text-anchor="middle" font-size="11" fill="#64748b">physical block 1  (6144–…)</text>
+  </g>
+
+  <!-- fine hash blocks row -->
+  <text x="60" y="188" font-size="12" font-weight="700" fill="#475569">Prefix hashing — 512-token hash blocks (chained MLA hash)</text>
+  <g font-size="8" text-anchor="middle">
+    <!-- 12 fine blocks over physical block 0 -->
+    <g>
+      <rect x="60"  y="198" width="25" height="30" fill="#ecfdf5" stroke="#059669"/>
+      <rect x="85"  y="198" width="25" height="30" fill="#ecfdf5" stroke="#059669"/>
+      <rect x="110" y="198" width="25" height="30" fill="#ecfdf5" stroke="#059669"/>
+      <rect x="135" y="198" width="25" height="30" fill="#ecfdf5" stroke="#059669"/>
+      <rect x="160" y="198" width="25" height="30" fill="#ecfdf5" stroke="#059669"/>
+      <rect x="185" y="198" width="25" height="30" fill="#d1fae5" stroke="#059669" stroke-width="1.8"/>
+      <text x="197" y="217" fill="#065f46">2560</text>
+      <rect x="210" y="198" width="25" height="30" fill="#f8fafc" stroke="#cbd5e1"/>
+      <rect x="235" y="198" width="25" height="30" fill="#f8fafc" stroke="#cbd5e1"/>
+      <rect x="260" y="198" width="25" height="30" fill="#f8fafc" stroke="#cbd5e1"/>
+      <rect x="285" y="198" width="25" height="30" fill="#f8fafc" stroke="#cbd5e1"/>
+      <rect x="310" y="198" width="25" height="30" fill="#f8fafc" stroke="#cbd5e1"/>
+      <rect x="335" y="198" width="25" height="30" fill="#f8fafc" stroke="#cbd5e1"/>
+    </g>
+  </g>
+
+  <!-- hit marker -->
+  <path d="M197,152 L197,198" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <rect x="150" y="242" width="120" height="22" rx="4" fill="#fef2f2" stroke="#dc2626"/>
+  <text x="210" y="257" text-anchor="middle" font-size="10" fill="#b91c1c">hit at token 2560</text>
+
+  <!-- requirements callout -->
+  <rect x="60" y="288" width="330" height="94" rx="10" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="76" y="309" font-size="12" font-weight="700" fill="#5b21b6">A hit requires both:</text>
+  <text x="76" y="328" font-size="10.5" fill="#6d28d9">1. matching chained MLA hash at the boundary</text>
+  <text x="76" y="345" font-size="10.5" fill="#6d28d9">2. a persisted KDA checkpoint at that boundary</text>
+  <text x="76" y="362" font-size="10.5" fill="#6d28d9">   across all KDA cache groups</text>
+  <text x="76" y="379" font-size="9.5" fill="#7c3aed">KDA checkpoints saved every 1024–6144 tokens</text>
+
+  <!-- restore flow -->
+  <rect x="410" y="288" width="330" height="94" rx="10" fill="#ecfdf5" stroke="#059669"/>
+  <text x="426" y="309" font-size="12" font-weight="700" fill="#047857">Copy-on-write restore</text>
+  <text x="426" y="328" font-size="10.5" fill="#047857">restore KDA state snapshot → COW copy</text>
+  <text x="426" y="345" font-size="10.5" fill="#047857">resume prefill from token 2560</text>
+  <text x="426" y="362" font-size="10.5" font-weight="700" fill="#065f46">skip recomputing the first 2560 tokens</text>
+  <text x="426" y="379" font-size="9.5" fill="#059669">partially-filled blocks cached &amp; shared efficiently</text>
+
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker>
+  </defs>
+</svg>
