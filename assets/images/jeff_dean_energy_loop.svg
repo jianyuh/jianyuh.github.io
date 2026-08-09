@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="760" height="400" fill="#ffffff"/>
+  <text x="380" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#1e293b">The 1000× Energy Gap and the Agentic-Latency Trade-off</text>
+
+  <!-- energy bars -->
+  <text x="150" y="62" text-anchor="middle" font-size="12" font-weight="600" fill="#475569">Energy per operation</text>
+  <rect x="60" y="76" width="30" height="16" rx="3" fill="#2563eb"/>
+  <text x="98" y="89" font-size="11" fill="#334155">multiplier op — 1 pJ  (1×)</text>
+  <rect x="60" y="102" width="300" height="18" rx="3" fill="#dc2626"/>
+  <text x="60" y="138" font-size="11" fill="#334155">HBM → processor transfer — 1000 pJ</text>
+  <text x="368" y="116" font-size="12" font-weight="700" fill="#dc2626">1000×</text>
+
+  <!-- trade-off -->
+  <rect x="60" y="160" width="300" height="72" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="210" y="182" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626">Batching mitigates the gap…</text>
+  <text x="210" y="202" text-anchor="middle" font-size="10.5" fill="#334155">↑ throughput  (amortize I/O over tokens)</text>
+  <text x="210" y="220" text-anchor="middle" font-size="10.5" fill="#334155">↑ latency  — kills serial agent loops</text>
+
+  <!-- specialized hw -->
+  <rect x="400" y="160" width="300" height="72" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+  <text x="550" y="182" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">Specialized low-precision HW</text>
+  <text x="550" y="202" text-anchor="middle" font-size="10.5" fill="#334155">30–80× energy efficiency</text>
+  <text x="550" y="220" text-anchor="middle" font-size="10.5" fill="#334155">20–30× lower latency</text>
+
+  <line x1="362" y1="196" x2="398" y2="196" stroke="#94a3b8" stroke-width="2" marker-end="url(#jd)"/>
+
+  <!-- recursive loop -->
+  <text x="380" y="262" text-anchor="middle" font-size="12" font-weight="600" fill="#475569">…enabling the self-improving loop</text>
+  <rect x="90" y="276" width="160" height="44" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="170" y="298" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d4ed8">1. Decompose</text>
+  <text x="170" y="313" text-anchor="middle" font-size="9.5" fill="#64748b">into sub-problems</text>
+  <rect x="300" y="276" width="160" height="44" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="380" y="298" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d4ed8">2. Experiment</text>
+  <text x="380" y="313" text-anchor="middle" font-size="9.5" fill="#64748b">massively parallel</text>
+  <rect x="510" y="276" width="160" height="44" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="590" y="298" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d4ed8">3. Synthesize</text>
+  <text x="590" y="313" text-anchor="middle" font-size="9.5" fill="#64748b">fold into recipe</text>
+  <line x1="250" y1="298" x2="298" y2="298" stroke="#94a3b8" stroke-width="2" marker-end="url(#jd)"/>
+  <line x1="460" y1="298" x2="508" y2="298" stroke="#94a3b8" stroke-width="2" marker-end="url(#jd)"/>
+  <path d="M590,320 C590,344 170,344 170,322" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#jd)"/>
+
+  <!-- outcome -->
+  <text x="380" y="388" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">Learned validation models → 300,000× faster verification (&quot;lunch-break discovery&quot;)</text>
+
+  <defs>
+    <marker id="jd" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#94a3b8"/></marker>
+  </defs>
+</svg>

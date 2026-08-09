@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="760" height="400" fill="#ffffff"/>
+  <text x="380" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#1e293b">Pull-Based Dispatch on the NVL72 NVLink Domain</text>
+
+  <!-- PUSH side -->
+  <text x="195" y="58" text-anchor="middle" font-size="13" font-weight="700" fill="#dc2626">Push (baseline)</text>
+  <rect x="70" y="70" width="250" height="30" rx="6" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="195" y="90" text-anchor="middle" font-size="10.5" fill="#334155">3-col {src_idx, dst_rank, dst_idx} + sort passes</text>
+  <rect x="70" y="108" width="250" height="30" rx="6" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="195" y="128" text-anchor="middle" font-size="10.5" fill="#334155">local copies; unidirectional lanes</text>
+  <rect x="70" y="146" width="250" height="46" rx="6" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="195" y="165" text-anchor="middle" font-size="10.5" fill="#334155">wait on up to 71 peer signals</text>
+  <text x="195" y="183" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626">~103 μs barrier</text>
+
+  <!-- PULL side -->
+  <text x="565" y="58" text-anchor="middle" font-size="13" font-weight="700" fill="#059669">Pull (MoK)</text>
+  <rect x="440" y="70" width="250" height="30" rx="6" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+  <text x="565" y="90" text-anchor="middle" font-size="10.5" fill="#334155">2-col {src_rank, src_idx}, on-device Φ &lt;3%</text>
+  <rect x="440" y="108" width="250" height="30" rx="6" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+  <text x="565" y="128" text-anchor="middle" font-size="10.5" fill="#334155">zero-copy landing; TX+RX bidirectional</text>
+  <rect x="440" y="146" width="250" height="46" rx="6" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+  <text x="565" y="165" text-anchor="middle" font-size="10.5" fill="#334155">local wait for data arrival only</text>
+  <text x="565" y="183" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">~18 μs, no barrier</text>
+
+  <!-- lane diagram -->
+  <text x="380" y="230" text-anchor="middle" font-size="12" font-weight="600" fill="#475569">Bidirectional NVLink lanes — 1.8 TB/s per GPU</text>
+  <rect x="140" y="248" width="90" height="44" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="185" y="275" text-anchor="middle" font-size="12" font-weight="600" fill="#1d4ed8">GPU r</text>
+  <rect x="530" y="248" width="90" height="44" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="575" y="275" text-anchor="middle" font-size="12" font-weight="600" fill="#1d4ed8">expert l</text>
+  <line x1="232" y1="262" x2="528" y2="262" stroke="#059669" stroke-width="2.5" marker-end="url(#mk)"/>
+  <text x="380" y="257" text-anchor="middle" font-size="9.5" fill="#059669">RX: pull request</text>
+  <line x1="528" y1="280" x2="232" y2="280" stroke="#2563eb" stroke-width="2.5" marker-end="url(#mk2)"/>
+  <text x="380" y="293" text-anchor="middle" font-size="9.5" fill="#2563eb">TX: token data (zero-copy)</text>
+
+  <!-- outcome bar -->
+  <rect x="120" y="320" width="520" height="56" rx="12" fill="#1e293b"/>
+  <text x="380" y="343" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">+29% bandwidth util · −82% signaling · 41% higher tokens/s/GPU (512-GPU)</text>
+  <text x="380" y="364" text-anchor="middle" font-size="11" fill="#f1f5f9">DeepEP 760.9 → MoK 1070.2 tokens/s/GPU</text>
+
+  <defs>
+    <marker id="mk" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#059669"/></marker>
+    <marker id="mk2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#2563eb"/></marker>
+  </defs>
+</svg>
