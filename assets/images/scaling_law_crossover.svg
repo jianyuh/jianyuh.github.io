@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="760" height="400" fill="#ffffff"/>
+  <text x="380" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#1e293b">Kaplan vs. Chinchilla: Path Divergence and the Loss Gap</text>
+
+  <!-- axes -->
+  <line x1="70" y1="330" x2="700" y2="330" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="70" y1="60" x2="70" y2="330" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="385" y="365" text-anchor="middle" font-size="12" fill="#475569">Compute budget  C  (FLOPs, log scale)</text>
+  <text x="24" y="195" text-anchor="middle" font-size="12" fill="#475569" transform="rotate(-90 24 195)">Achieved loss  L</text>
+
+  <!-- iso-compute grid ticks -->
+  <text x="140" y="348" text-anchor="middle" font-size="10" fill="#94a3b8">10¹⁶</text>
+  <text x="300" y="348" text-anchor="middle" font-size="10" fill="#94a3b8">10¹⁸</text>
+  <text x="460" y="348" text-anchor="middle" font-size="10" fill="#94a3b8">10²⁰</text>
+  <text x="620" y="348" text-anchor="middle" font-size="10" fill="#94a3b8">10²²</text>
+  <text x="690" y="348" text-anchor="middle" font-size="10" fill="#94a3b8">10²⁴</text>
+
+  <!-- Chinchilla optimal path (lower) -->
+  <path d="M90,120 C220,180 420,240 690,290" fill="none" stroke="#dc2626" stroke-width="3"/>
+  <!-- Kaplan empirical path (upper, diverges) -->
+  <path d="M90,118 C230,165 430,205 690,235" fill="none" stroke="#2563eb" stroke-width="3" stroke-dasharray="7,5"/>
+
+  <!-- wasted-compute fill between the two at right -->
+  <path d="M470,222 C560,215 630,240 690,235 L690,290 C560,275 520,260 470,247 Z" fill="#2563eb" opacity="0.12"/>
+
+  <!-- crossover point at left -->
+  <circle cx="90" cy="119" r="5" fill="#1e293b"/>
+  <text x="102" y="108" font-size="10" fill="#475569">crossover</text>
+
+  <!-- endpoint markers -->
+  <circle cx="690" cy="290" r="5" fill="#dc2626"/>
+  <circle cx="690" cy="235" r="5" fill="#2563eb"/>
+
+  <!-- loss gap annotation -->
+  <line x1="655" y1="235" x2="655" y2="290" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <text x="648" y="266" text-anchor="end" font-size="12" font-weight="700" fill="#dc2626">+0.38</text>
+  <text x="648" y="280" text-anchor="end" font-size="9.5" fill="#64748b">loss gap</text>
+
+  <!-- legend -->
+  <rect x="92" y="70" width="270" height="60" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="104" y1="88" x2="132" y2="88" stroke="#dc2626" stroke-width="3"/>
+  <text x="140" y="92" font-size="11" fill="#334155">Chinchilla optimal   N ∝ C⁰·⁴⁵</text>
+  <line x1="104" y1="112" x2="132" y2="112" stroke="#2563eb" stroke-width="3" stroke-dasharray="7,5"/>
+  <text x="140" y="116" font-size="11" fill="#334155">Kaplan empirical   N ∝ C⁰·⁷³</text>
+
+  <text x="470" y="205" font-size="10.5" font-style="italic" fill="#2563eb">wasted-compute zone</text>
+  <text x="385" y="392" text-anchor="middle" font-size="10" fill="#94a3b8">Loss surface: L(N,K) = 1.69 + 406.4·N⁻⁰·³⁴ + 410.7·K⁻⁰·²⁸</text>
+</svg>
