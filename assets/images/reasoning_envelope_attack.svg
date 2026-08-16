@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 430" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="780" height="430" fill="#ffffff"/>
+  <text x="390" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#1e293b">The reasoning envelope: one global key, three tiers of portability</text>
+
+  <!-- Frontier model -->
+  <rect x="24" y="52" width="180" height="112" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="114" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">Frontier model</text>
+  <text x="114" y="91" text-anchor="middle" font-size="11" fill="#64748b">hardened: refusal +</text>
+  <text x="114" y="106" text-anchor="middle" font-size="11" fill="#64748b">anti-distillation training</text>
+  <rect x="44" y="118" width="140" height="34" rx="7" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="114" y="133" text-anchor="middle" font-size="11" fill="#334155">hidden CoT τ</text>
+  <text x="114" y="146" text-anchor="middle" font-size="10" fill="#64748b">never shown to user</text>
+
+  <!-- Envelope -->
+  <rect x="238" y="52" width="188" height="112" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="332" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8">AEAD envelope (base64)</text>
+  <g font-size="10.5" fill="#334155">
+    <rect x="252" y="84" width="160" height="20" rx="4" fill="#ffffff" stroke="#60a5fa"/>
+    <text x="332" y="98" text-anchor="middle">header: model, type, key ID</text>
+    <rect x="252" y="108" width="160" height="20" rx="4" fill="#ffffff" stroke="#60a5fa"/>
+    <text x="332" y="122" text-anchor="middle">nonce + auth tag</text>
+    <rect x="252" y="132" width="160" height="20" rx="4" fill="#ffffff" stroke="#60a5fa"/>
+    <text x="332" y="146" text-anchor="middle">MAC over ciphertext</text>
+  </g>
+
+  <!-- Client -->
+  <rect x="460" y="52" width="140" height="112" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="530" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#dc2626">Client holds it</text>
+  <text x="530" y="94" text-anchor="middle" font-size="11" fill="#64748b">stateless server:</text>
+  <text x="530" y="109" text-anchor="middle" font-size="11" fill="#64748b">state lives with</text>
+  <text x="530" y="124" text-anchor="middle" font-size="11" fill="#64748b">the attacker</text>
+  <text x="530" y="149" text-anchor="middle" font-size="10.5" font-weight="600" fill="#dc2626">= extraction payload</text>
+
+  <!-- Sibling -->
+  <rect x="634" y="52" width="122" height="112" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="695" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#7c3aed">Weak sibling</text>
+  <text x="695" y="93" text-anchor="middle" font-size="10.5" fill="#64748b">same global key,</text>
+  <text x="695" y="108" text-anchor="middle" font-size="10.5" fill="#64748b">weaker guardrails</text>
+  <text x="695" y="131" text-anchor="middle" font-size="11" font-weight="600" fill="#7c3aed">decryption</text>
+  <text x="695" y="146" text-anchor="middle" font-size="11" font-weight="600" fill="#7c3aed">oracle</text>
+
+  <g stroke="#2563eb" stroke-width="2" marker-end="url(#st)">
+    <line x1="206" y1="108" x2="232" y2="108"/>
+    <line x1="428" y1="108" x2="454" y2="108"/>
+  </g>
+  <line x1="602" y1="108" x2="628" y2="108" stroke="#dc2626" stroke-width="2" marker-end="url(#st2)"/>
+  <text x="615" y="98" text-anchor="middle" font-size="9.5" fill="#dc2626">replay</text>
+
+  <!-- Three tiers -->
+  <text x="24" y="196" font-size="12.5" font-weight="700" fill="#334155">Portability = vulnerability</text>
+  <g font-size="11" fill="#334155" text-anchor="middle">
+    <rect x="24"  y="206" width="230" height="46" rx="8" fill="#fff7ed" stroke="#f59e0b"/>
+    <text x="139" y="224" font-weight="600">1 · in-session / cross-session</text>
+    <text x="139" y="240" font-size="10" fill="#64748b">blocks replayed out of order</text>
+    <rect x="272" y="206" width="230" height="46" rx="8" fill="#fef2f2" stroke="#dc2626"/>
+    <text x="387" y="224" font-weight="600">2 · cross-user</text>
+    <text x="387" y="240" font-size="10" fill="#64748b">another user's captured block replays</text>
+    <rect x="520" y="206" width="236" height="46" rx="8" fill="#fef2f2" stroke="#dc2626"/>
+    <text x="638" y="224" font-weight="600">3 · cross-model</text>
+    <text x="638" y="240" font-size="10" fill="#64748b">frontier trace decoded by the small sibling</text>
+  </g>
+
+  <!-- Impact -->
+  <text x="24" y="284" font-size="12.5" font-weight="700" fill="#dc2626">What the trace is worth</text>
+  <g font-size="10.5" fill="#475569">
+    <text x="24" y="304">· capability distillation — 10,000 traces decoded for ~$720</text>
+    <text x="24" y="322">· private data — 912 distinct artifacts across 6,708 sessions</text>
+    <text x="24" y="340">· safe answer / unsafe reasoning — harm retrievable from the trace</text>
+    <text x="24" y="358">· invisible prompt injection — payload the user never sees</text>
+  </g>
+
+  <!-- Mitigation -->
+  <rect x="424" y="270" width="332" height="112" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+  <text x="590" y="290" text-anchor="middle" font-size="12.5" font-weight="700" fill="#059669">Securing the layer</text>
+  <g font-size="10.5" fill="#334155">
+    <text x="440" y="310">· server-side lookup IDs — remove the payload</text>
+    <text x="440" y="328">· gateway rejects envelopes from other models</text>
+    <text x="440" y="346">· bind AEAD associated data to user_id, session_id</text>
+    <text x="440" y="364">· Merkle chain over blocks → ordinality + integrity</text>
+  </g>
+
+  <text x="390" y="408" text-anchor="middle" font-size="11.5" fill="#7c3aed">τ_{n+1} = H( user_id ‖ session_id ‖ H(τ_n ‖ salt₂) ‖ salt₁ )</text>
+  <text x="390" y="424" text-anchor="middle" font-size="10.5" fill="#64748b">bind the block to its user, its session, and its predecessor</text>
+
+  <defs>
+    <marker id="st" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#2563eb"/></marker>
+    <marker id="st2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#dc2626"/></marker>
+  </defs>
+</svg>
