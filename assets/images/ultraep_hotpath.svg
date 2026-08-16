@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 400" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="780" height="400" fill="#ffffff"/>
+  <text x="390" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#1e293b">UltraEP: exact balancing on the hot path (~0.3 ms budget)</text>
+
+  <!-- Before: skewed -->
+  <rect x="24" y="52" width="200" height="180" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="124" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#dc2626">Per-microbatch load</text>
+  <text x="124" y="91" text-anchor="middle" font-size="11" fill="#64748b">imbalance 1.30–4.01x</text>
+  <g fill="#dc2626">
+    <rect x="46"  y="112" width="26" height="94" rx="3"/>
+    <rect x="82"  y="164" width="26" height="42" rx="3"/>
+    <rect x="118" y="146" width="26" height="60" rx="3"/>
+    <rect x="154" y="182" width="26" height="24" rx="3"/>
+  </g>
+  <line x1="40" y1="206" x2="212" y2="206" stroke="#94a3b8" stroke-width="1.5"/>
+  <g font-size="10" fill="#64748b" text-anchor="middle">
+    <text x="59" y="220">r0</text><text x="95" y="220">r1</text><text x="131" y="220">r2</text><text x="167" y="220">r3</text>
+  </g>
+
+  <!-- Solver -->
+  <rect x="256" y="52" width="230" height="180" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="371" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8">Quota-driven solver</text>
+  <g font-size="11" fill="#334155">
+    <rect x="272" y="86" width="198" height="34" rx="7" fill="#ffffff" stroke="#60a5fa"/>
+    <text x="371" y="101" text-anchor="middle" font-size="11.5" font-weight="600">binary search threshold τ</text>
+    <text x="371" y="114" text-anchor="middle" font-size="10" fill="#64748b">exc_r = max(ℓ_r − τ, 0), slk_r = max(τ − ℓ_r, 0)</text>
+    <rect x="272" y="126" width="198" height="34" rx="7" fill="#ffffff" stroke="#60a5fa"/>
+    <text x="371" y="141" text-anchor="middle" font-size="11.5" font-weight="600">greedy feasibility oracle</text>
+    <text x="371" y="154" text-anchor="middle" font-size="10" fill="#64748b">replicate only if δ ≥ u_min</text>
+    <rect x="272" y="166" width="198" height="34" rx="7" fill="#ffffff" stroke="#60a5fa"/>
+    <text x="371" y="181" text-anchor="middle" font-size="11.5" font-weight="600">quota table U = {u_e,r}</text>
+    <text x="371" y="194" text-anchor="middle" font-size="10" fill="#64748b">local quota consumed first</text>
+  </g>
+  <text x="371" y="221" text-anchor="middle" font-size="10.5" fill="#7c3aed">single-SM GPU kernel · metadata never leaves the device</text>
+
+  <!-- After: balanced -->
+  <rect x="518" y="52" width="238" height="180" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+  <text x="637" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#059669">After replication</text>
+  <text x="637" y="91" text-anchor="middle" font-size="11" fill="#64748b">imbalance 1.01–1.04</text>
+  <g fill="#059669">
+    <rect x="548" y="150" width="26" height="56" rx="3"/>
+    <rect x="584" y="148" width="26" height="58" rx="3"/>
+    <rect x="620" y="150" width="26" height="56" rx="3"/>
+    <rect x="656" y="149" width="26" height="57" rx="3"/>
+  </g>
+  <line x1="540" y1="206" x2="740" y2="206" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="540" y1="147" x2="740" y2="147" stroke="#059669" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="716" y="143" text-anchor="middle" font-size="10" fill="#059669">βτ</text>
+  <g font-size="10" fill="#64748b" text-anchor="middle">
+    <text x="561" y="220">r0</text><text x="597" y="220">r1</text><text x="633" y="220">r2</text><text x="669" y="220">r3</text>
+  </g>
+
+  <line x1="228" y1="142" x2="250" y2="142" stroke="#2563eb" stroke-width="2" marker-end="url(#ue)"/>
+  <line x1="490" y1="142" x2="512" y2="142" stroke="#2563eb" stroke-width="2" marker-end="url(#ue)"/>
+
+  <!-- Pipeline -->
+  <text x="24" y="266" font-size="12.5" font-weight="700" fill="#334155">Forward hot path</text>
+  <g font-size="11.5" fill="#1e293b" text-anchor="middle">
+    <rect x="24"  y="276" width="120" height="42" rx="8" fill="#f1f5f9" stroke="#94a3b8"/>
+    <text x="84" y="296">gating</text><text x="84" y="311" font-size="10" fill="#64748b">load matrix Λ</text>
+    <rect x="160" y="276" width="120" height="42" rx="8" fill="#eff6ff" stroke="#2563eb"/>
+    <text x="220" y="296">solve_rep</text><text x="220" y="311" font-size="10" fill="#64748b">&lt; 0.3 ms</text>
+    <rect x="296" y="276" width="150" height="42" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+    <text x="371" y="292">max(T_reroute, T_w_distr)</text><text x="371" y="309" font-size="10" fill="#64748b">tile streaming + relay tree</text>
+    <rect x="462" y="276" width="130" height="42" rx="8" fill="#f1f5f9" stroke="#94a3b8"/>
+    <text x="527" y="296">T_tok_a2a</text><text x="527" y="311" font-size="10" fill="#64748b">dispatch / combine</text>
+    <rect x="608" y="276" width="148" height="42" rx="8" fill="#ecfdf5" stroke="#059669"/>
+    <text x="682" y="296">T_moe</text><text x="682" y="311" font-size="10" fill="#64748b">grouped GEMM</text>
+  </g>
+  <g stroke="#94a3b8" stroke-width="1.8" marker-end="url(#ue2)">
+    <line x1="144" y1="297" x2="156" y2="297"/><line x1="280" y1="297" x2="292" y2="297"/>
+    <line x1="446" y1="297" x2="458" y2="297"/><line x1="592" y1="297" x2="604" y2="297"/>
+  </g>
+
+  <text x="24" y="352" font-size="11.5" fill="#475569">Replication only — never reordering: a replica is a weight copy; optimizer state stays on the home rank.</text>
+  <text x="24" y="371" font-size="11.5" fill="#475569">Redundant slots share cross-layer weight/grad buffers: GB → 36 MB weights / 72 MB grads per slot (30–90x smaller).</text>
+  <text x="24" y="390" font-size="11.5" font-weight="600" fill="#059669">Result: 94.3% of ideal throughput · 1.42x over Megatron-LM · up to 11x less MoE activation memory.</text>
+
+  <defs>
+    <marker id="ue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#2563eb"/></marker>
+    <marker id="ue2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#94a3b8"/></marker>
+  </defs>
+</svg>
