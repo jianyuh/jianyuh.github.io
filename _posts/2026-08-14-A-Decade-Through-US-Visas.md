@@ -18,7 +18,7 @@ That year, I was preparing to start my PhD, and I got my first lesson in "Admini
 
 **B Visa.** I booked an interview immediately after getting my offer at the end of January, hoping to go for a campus visit. The check took a full month, and the campus visit didn't happen—my first lesson that some timelines simply aren't mine to set.
 
-**F Visa.** In a race against time, I even took a car straight to the international airport just to intercept my DHL package containing my I-20 the second it arrived. I booked my F visa interview immediately after, and that one was checked for another month too. Everyone involved was doing their job carefully, and there was nothing to do but wait well. It was the first time I learned to hold a plan loosely and let a process take the time it takes.
+**F Visa.** In a race against time, I even took a bus straight to the international airport just to intercept my DHL package containing my I-20 the second it arrived. I booked my F visa interview immediately after, and that one was checked for another month too. Everyone involved was doing their job carefully, and there was nothing to do but wait well. It was the first time I learned to hold a plan loosely and let a process take the time it takes.
 
 ---
 
