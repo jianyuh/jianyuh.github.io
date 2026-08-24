@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 360" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="860" height="360" fill="#ffffff"/>
+  <text x="430" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#1e293b">CUDA Agent: data synthesis, tool-using search, and stable RL</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <rect x="36" y="64" width="240" height="182" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="56" y="90" font-size="15" font-weight="700" fill="#1d4ed8">1. CUDA-Agent-Ops-6K</text>
+  <rect x="56" y="108" width="200" height="34" rx="8" fill="#ffffff" stroke="#60a5fa"/>
+  <text x="156" y="130" text-anchor="middle" font-size="13" fill="#334155">Seed ops from PyTorch + Transformers</text>
+  <rect x="56" y="152" width="200" height="34" rx="8" fill="#ffffff" stroke="#60a5fa"/>
+  <text x="156" y="174" text-anchor="middle" font-size="13" fill="#334155">LLM fusion of 1-5 primitives</text>
+  <rect x="56" y="196" width="200" height="34" rx="8" fill="#ffffff" stroke="#60a5fa"/>
+  <text x="156" y="218" text-anchor="middle" font-size="13" fill="#334155">1-100 ms filter + AST decontamination</text>
+
+  <line x1="276" y1="155" x2="320" y2="155" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <rect x="310" y="64" width="240" height="182" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+  <text x="330" y="90" font-size="15" font-weight="700" fill="#047857">2. Skill-integrated agent loop</text>
+  <rect x="330" y="108" width="200" height="34" rx="8" fill="#ffffff" stroke="#34d399"/>
+  <text x="430" y="130" text-anchor="middle" font-size="13" fill="#334155">Bash, edit, read, grep</text>
+  <rect x="330" y="152" width="200" height="34" rx="8" fill="#ffffff" stroke="#34d399"/>
+  <text x="430" y="174" text-anchor="middle" font-size="13" fill="#334155">Compile, verify, profile</text>
+  <rect x="330" y="196" width="200" height="34" rx="8" fill="#ffffff" stroke="#34d399"/>
+  <text x="430" y="218" text-anchor="middle" font-size="13" fill="#334155">CPU host + 128 H20 GPU workers</text>
+
+  <line x1="550" y1="155" x2="594" y2="155" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <rect x="584" y="64" width="240" height="182" rx="14" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="604" y="90" font-size="15" font-weight="700" fill="#6d28d9">3. Stable multi-turn RL</text>
+  <rect x="604" y="108" width="200" height="34" rx="8" fill="#ffffff" stroke="#c084fc"/>
+  <text x="704" y="130" text-anchor="middle" font-size="13" fill="#334155">Single-turn warm-up</text>
+  <rect x="604" y="152" width="200" height="34" rx="8" fill="#ffffff" stroke="#c084fc"/>
+  <text x="704" y="174" text-anchor="middle" font-size="13" fill="#334155">RFT actor init + GAE critic init</text>
+  <rect x="604" y="196" width="200" height="34" rx="8" fill="#ffffff" stroke="#c084fc"/>
+  <text x="704" y="218" text-anchor="middle" font-size="13" fill="#334155">150 PPO steps, batch size 1024</text>
+
+  <rect x="120" y="274" width="620" height="56" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="210" y="308" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">98.8% pass rate</text>
+  <text x="430" y="308" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">96.8% faster than compile</text>
+  <text x="650" y="308" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">2.11x speedup</text>
+  <line x1="320" y1="286" x2="320" y2="318" stroke="#cbd5e1" stroke-width="1.5"/>
+  <line x1="540" y1="286" x2="540" y2="318" stroke="#cbd5e1" stroke-width="1.5"/>
+</svg>
