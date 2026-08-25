@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 618" width="920" height="618" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="920" height="618" fill="#ffffff"/>
+  <text x="460" y="32" text-anchor="middle" font-size="18" fill="#0f172a" font-weight="700">SOPD: keep the student's states, make the teacher's correction coherent</text>
+  <rect x="22" y="62" width="277.333" height="156.36" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.4"/>
+  <text x="160.667" y="94.14" text-anchor="middle" font-size="13" fill="#1d4ed8" font-weight="700">SFT</text>
+  <text x="160.667" y="110.33" text-anchor="middle" font-size="10.5" fill="#64748b">teacher prefixes</text>
+  <rect x="36" y="123.48" width="249.333" height="38" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="74.1511" y="146.28" font-size="10.8" fill="#1d4ed8" font-weight="700">prompt</text>
+  <line x1="118.346" y1="142.48" x2="130.346" y2="142.48" stroke="#2563eb" stroke-width="1.4" stroke-linecap="round" marker-end="url(#arw2563eb)"/>
+  <text x="137.346" y="146.28" font-size="10.8" fill="#1d4ed8" font-weight="700">full teacher trajectory</text>
+  <text x="160.667" y="182.06" text-anchor="middle" font-size="11" fill="#475569">Coherent targets, but the states never come from</text>
+  <text x="160.667" y="197.06" text-anchor="middle" font-size="11" fill="#475569">the student.</text>
+  <rect x="321.333" y="62" width="277.333" height="156.36" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.4"/>
+  <text x="460" y="94.14" text-anchor="middle" font-size="13" fill="#6d28d9" font-weight="700">Token-wise OPD</text>
+  <text x="460" y="110.33" text-anchor="middle" font-size="10.5" fill="#64748b">student prefixes</text>
+  <rect x="335.333" y="123.48" width="249.333" height="38" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="385.791" y="146.28" font-size="10.8" fill="#6d28d9" font-weight="700">student prefix</text>
+  <line x1="464.201" y1="142.48" x2="476.201" y2="142.48" stroke="#7c3aed" stroke-width="1.4" stroke-linecap="round" marker-end="url(#arw7c3aed)"/>
+  <text x="483.201" y="146.28" font-size="10.8" fill="#6d28d9" font-weight="700">one token</text>
+  <text x="460" y="182.06" text-anchor="middle" font-size="11" fill="#475569">On-policy states, but the corrections stay</text>
+  <text x="460" y="197.06" text-anchor="middle" font-size="11" fill="#475569">fragmented.</text>
+  <rect x="620.667" y="62" width="277.333" height="156.36" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.4"/>
+  <text x="759.333" y="94.14" text-anchor="middle" font-size="13" fill="#047857" font-weight="700">SOPD</text>
+  <text x="759.333" y="110.33" text-anchor="middle" font-size="10.5" fill="#64748b">student prefixes</text>
+  <rect x="634.667" y="123.48" width="249.333" height="38" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.4"/>
+  <text x="664.118" y="146.28" font-size="10.8" fill="#047857" font-weight="700">student prefix</text>
+  <line x1="742.528" y1="142.48" x2="754.528" y2="142.48" stroke="#059669" stroke-width="1.4" stroke-linecap="round" marker-end="url(#arw059669)"/>
+  <text x="761.528" y="146.28" font-size="10.8" fill="#047857" font-weight="700">one coherent step</text>
+  <text x="759.333" y="182.06" text-anchor="middle" font-size="11" fill="#475569">Same visited states, and every repair is locally</text>
+  <text x="759.333" y="197.06" text-anchor="middle" font-size="11" fill="#475569">usable.</text>
+  <line x1="160.667" y1="244.36" x2="759.333" y2="244.36" stroke="#cbd5e1" stroke-width="1.4" stroke-linecap="round"/>
+  <circle cx="160.667" cy="244.36" r="5" fill="#2563eb"/>
+  <circle cx="460" cy="244.36" r="5" fill="#7c3aed"/>
+  <circle cx="759.333" cy="244.36" r="5" fill="#059669"/>
+  <text x="160.667" y="264.36" text-anchor="middle" font-size="10" fill="#64748b">one step for the whole response  (K = 1)</text>
+  <text x="460" y="264.36" text-anchor="middle" font-size="10" fill="#64748b">one step per token</text>
+  <text x="759.333" y="264.36" text-anchor="middle" font-size="10" fill="#64748b">one step per natural reasoning step</text>
+  <rect x="22" y="286.36" width="876" height="286" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.4"/>
+  <text x="44" y="314.36" font-size="13" fill="#334155" font-weight="700">Packed attention mask: every step trains in one forward pass</text>
+  <text x="44" y="333.36" font-size="10.5" fill="#64748b">the prefix is stored once, so step-level distillation costs one sequence instead of one sequence per step</text>
+  <text x="124" y="379.16" text-anchor="end" font-size="10.5" fill="#475569">packed sequence</text>
+  <rect x="136" y="360.36" width="62" height="30" rx="7" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.4"/>
+  <text x="167" y="379.16" text-anchor="middle" font-size="9.8" fill="#334155" font-weight="700">Prompt</text>
+  <rect x="202" y="360.36" width="62" height="30" rx="7" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="233" y="379.16" text-anchor="middle" font-size="9.8" fill="#1d4ed8" font-weight="700">Student s1</text>
+  <rect x="268" y="360.36" width="62" height="30" rx="7" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="299" y="379.16" text-anchor="middle" font-size="9.8" fill="#1d4ed8" font-weight="700">Student s2</text>
+  <rect x="334" y="360.36" width="62" height="30" rx="7" fill="#ecfdf5" stroke="#059669" stroke-width="1.4"/>
+  <text x="365" y="379.16" text-anchor="middle" font-size="9.8" fill="#047857" font-weight="700">Teacher t1</text>
+  <rect x="400" y="360.36" width="62" height="30" rx="7" fill="#ecfdf5" stroke="#059669" stroke-width="1.4"/>
+  <text x="431" y="379.16" text-anchor="middle" font-size="9.8" fill="#047857" font-weight="700">Teacher t2</text>
+  <text x="124" y="422.46" text-anchor="end" font-size="9.8" fill="#334155" font-weight="700">Prompt</text>
+  <rect x="136" y="406.36" width="62" height="21" rx="4" fill="#94a3b8" stroke="#ffffff" stroke-width="1"/>
+  <rect x="202" y="406.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <rect x="268" y="406.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <rect x="334" y="406.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <rect x="400" y="406.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <text x="124" y="447.46" text-anchor="end" font-size="9.8" fill="#1d4ed8" font-weight="700">Student s1</text>
+  <rect x="136" y="431.36" width="62" height="21" rx="4" fill="#2563eb" stroke="#ffffff" stroke-width="1"/>
+  <rect x="202" y="431.36" width="62" height="21" rx="4" fill="#2563eb" stroke="#ffffff" stroke-width="1"/>
+  <rect x="268" y="431.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <rect x="334" y="431.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <rect x="400" y="431.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <text x="124" y="472.46" text-anchor="end" font-size="9.8" fill="#1d4ed8" font-weight="700">Student s2</text>
+  <rect x="136" y="456.36" width="62" height="21" rx="4" fill="#2563eb" stroke="#ffffff" stroke-width="1"/>
+  <rect x="202" y="456.36" width="62" height="21" rx="4" fill="#2563eb" stroke="#ffffff" stroke-width="1"/>
+  <rect x="268" y="456.36" width="62" height="21" rx="4" fill="#2563eb" stroke="#ffffff" stroke-width="1"/>
+  <rect x="334" y="456.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <rect x="400" y="456.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <text x="124" y="497.46" text-anchor="end" font-size="9.8" fill="#047857" font-weight="700">Teacher t1</text>
+  <rect x="136" y="481.36" width="62" height="21" rx="4" fill="#059669" stroke="#ffffff" stroke-width="1"/>
+  <rect x="202" y="481.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <line x1="229" y1="487.86" x2="237" y2="495.86" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="237" y1="487.86" x2="229" y2="495.86" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
+  <rect x="268" y="481.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <line x1="295" y1="487.86" x2="303" y2="495.86" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="303" y1="487.86" x2="295" y2="495.86" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
+  <rect x="334" y="481.36" width="62" height="21" rx="4" fill="#059669" stroke="#ffffff" stroke-width="1"/>
+  <rect x="400" y="481.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <line x1="427" y1="487.86" x2="435" y2="495.86" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="435" y1="487.86" x2="427" y2="495.86" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="124" y="522.46" text-anchor="end" font-size="9.8" fill="#047857" font-weight="700">Teacher t2</text>
+  <rect x="136" y="506.36" width="62" height="21" rx="4" fill="#059669" stroke="#ffffff" stroke-width="1"/>
+  <rect x="202" y="506.36" width="62" height="21" rx="4" fill="#059669" stroke="#ffffff" stroke-width="1"/>
+  <rect x="268" y="506.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <line x1="295" y1="512.86" x2="303" y2="520.86" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="303" y1="512.86" x2="295" y2="520.86" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
+  <rect x="334" y="506.36" width="62" height="21" rx="4" fill="#eef2f6" stroke="#ffffff" stroke-width="1"/>
+  <line x1="361" y1="512.86" x2="369" y2="520.86" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="369" y1="512.86" x2="361" y2="520.86" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
+  <rect x="400" y="506.36" width="62" height="21" rx="4" fill="#059669" stroke="#ffffff" stroke-width="1"/>
+  <text x="299" y="547.36" text-anchor="middle" font-size="9.8" fill="#64748b">each row shows what that segment may attend to</text>
+  <rect x="506" y="362.36" width="10" height="10" rx="3" fill="#059669" stroke="none" stroke-width="1.4"/>
+  <text x="528" y="370.36" font-size="10.5" fill="#475569">A teacher target reads the prompt, the student prefix before it, and its own</text>
+  <text x="528" y="384.86" font-size="10.5" fill="#475569">earlier tokens.</text>
+  <rect x="506" y="401.36" width="10" height="10" rx="3" fill="#2563eb" stroke="none" stroke-width="1.4"/>
+  <text x="528" y="409.36" font-size="10.5" fill="#475569">A student step reads the prompt and the student steps before it.</text>
+  <rect x="506" y="425.86" width="10" height="10" rx="3" fill="#dc2626" stroke="none" stroke-width="1.4"/>
+  <text x="528" y="433.86" font-size="10.5" fill="#475569">A teacher target is blocked from every other teacher target and from</text>
+  <text x="528" y="448.36" font-size="10.5" fill="#475569">future student steps, so no correction is conditioned on another one.</text>
+  <rect x="506" y="480.86" width="368" height="60" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="690" y="501.86" text-anchor="middle" font-size="11" fill="#6d28d9" font-weight="700">Step-balanced loss</text>
+  <text x="690" y="517.86" text-anchor="middle" font-size="9.8" fill="#475569">average within each step, then across steps, so a verbose step cannot</text>
+  <text x="690" y="530.86" text-anchor="middle" font-size="9.8" fill="#475569">dominate a short decisive one</text>
+  <text x="460" y="600.36" text-anchor="middle" font-size="11.5" fill="#475569">All teacher steps train together without duplicating the prefix, and the teacher only ever has to return text.</text>
+  <defs>
+    <marker id="arw2563eb" markerWidth="9" markerHeight="8" refX="8.5" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0.5,0.8 L8.5,4 L0.5,7.2 Z" fill="#2563eb"/></marker>
+    <marker id="arw7c3aed" markerWidth="9" markerHeight="8" refX="8.5" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0.5,0.8 L8.5,4 L0.5,7.2 Z" fill="#7c3aed"/></marker>
+    <marker id="arw059669" markerWidth="9" markerHeight="8" refX="8.5" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0.5,0.8 L8.5,4 L0.5,7.2 Z" fill="#059669"/></marker>
+  </defs>
+</svg>
