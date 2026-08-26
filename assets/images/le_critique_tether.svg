@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 364" width="920" height="364" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="920" height="364" fill="#ffffff"/>
+  <text x="460" y="32" text-anchor="middle" font-size="18" fill="#0f172a" font-weight="700">Le Critique: privileged critics without changing the policy objective</text>
+  <rect x="22" y="64" width="204" height="234.98" rx="14" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.6"/>
+  <text x="124" y="96.14" text-anchor="middle" font-size="13" fill="#334155" font-weight="700">Prompt group rollout</text>
+  <text x="124" y="112.33" text-anchor="middle" font-size="10.5" fill="#64748b">one prompt, K sampled traces</text>
+  <text x="124" y="126.33" text-anchor="middle" font-size="10.5" fill="#64748b">scored by the same reward</text>
+  <rect x="46" y="137.48" width="156" height="30" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.3"/>
+  <text x="124" y="156.155" text-anchor="middle" font-size="10.5" fill="#1d4ed8">trajectory i</text>
+  <rect x="46" y="173.48" width="156" height="30" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.3"/>
+  <text x="124" y="192.155" text-anchor="middle" font-size="10.5" fill="#1d4ed8">trajectory j</text>
+  <rect x="46" y="209.48" width="156" height="30" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.3"/>
+  <text x="124" y="228.155" text-anchor="middle" font-size="10.5" fill="#1d4ed8">trajectory k</text>
+  <text x="124" y="262.68" text-anchor="middle" font-size="11" fill="#475569">The actor conditions on the visible</text>
+  <text x="124" y="277.68" text-anchor="middle" font-size="11" fill="#475569">history h only.</text>
+  <rect x="246" y="64" width="204" height="234.98" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/>
+  <text x="348" y="96.14" text-anchor="middle" font-size="13" fill="#1d4ed8" font-weight="700">Group baseline</text>
+  <text x="348" y="112.33" text-anchor="middle" font-size="10.5" fill="#64748b">training-free and</text>
+  <text x="348" y="126.33" text-anchor="middle" font-size="10.5" fill="#64748b">synchronization-light</text>
+  <rect x="262" y="137.48" width="172" height="66.62" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="348" y="157.45" text-anchor="middle" font-size="11.5" fill="#1d4ed8" font-weight="700">b_LOO = mean of siblings</text>
+  <text x="348" y="175.45" text-anchor="middle" font-size="10.5" fill="#475569">the leave-one-out reward of the</text>
+  <text x="348" y="189.95" text-anchor="middle" font-size="10.5" fill="#475569">other K−1 traces</text>
+  <text x="348" y="247.68" text-anchor="middle" font-size="11" fill="#475569">Stable, but one blunt</text>
+  <text x="348" y="262.68" text-anchor="middle" font-size="11" fill="#475569">sequence-level contrast for the</text>
+  <text x="348" y="277.68" text-anchor="middle" font-size="11" fill="#475569">whole trace.</text>
+  <rect x="470" y="64" width="204" height="234.98" rx="14" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.6"/>
+  <text x="572" y="96.14" text-anchor="middle" font-size="13" fill="#6d28d9" font-weight="700">Privileged critic</text>
+  <text x="572" y="112.33" text-anchor="middle" font-size="10.5" fill="#64748b">conditions on extra</text>
+  <text x="572" y="126.33" text-anchor="middle" font-size="10.5" fill="#64748b">admissible context z</text>
+  <rect x="486" y="137.48" width="172" height="81.12" rx="10" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="572" y="157.45" text-anchor="middle" font-size="11.5" fill="#6d28d9" font-weight="700">V(h, z)</text>
+  <text x="572" y="175.45" text-anchor="middle" font-size="10.5" fill="#475569">gold answers or solved boards</text>
+  <text x="572" y="189.95" text-anchor="middle" font-size="10.5" fill="#475569">verifier rubrics, proof sketches</text>
+  <text x="572" y="204.45" text-anchor="middle" font-size="10.5" fill="#475569">sibling rollouts and rewards</text>
+  <text x="572" y="262.68" text-anchor="middle" font-size="11" fill="#475569">Admissible only if z is conditionally</text>
+  <text x="572" y="277.68" text-anchor="middle" font-size="11" fill="#475569">independent of y_t given h.</text>
+  <rect x="694" y="64" width="204" height="234.98" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="1.6"/>
+  <text x="796" y="96.14" text-anchor="middle" font-size="13" fill="#047857" font-weight="700">TETHER</text>
+  <text x="796" y="112.33" text-anchor="middle" font-size="10.5" fill="#64748b">adaptive mixture of</text>
+  <text x="796" y="126.33" text-anchor="middle" font-size="10.5" fill="#64748b">the two baselines</text>
+  <rect x="710" y="137.48" width="172" height="66.62" rx="10" fill="#ffffff" stroke="#059669" stroke-width="1.4"/>
+  <text x="796" y="157.45" text-anchor="middle" font-size="11.5" fill="#047857" font-weight="700">b = (1 − ρ) b_LOO + ρ V</text>
+  <text x="796" y="175.45" text-anchor="middle" font-size="10.5" fill="#475569">ρ* = E[A_B Δ] / E[Δ²]</text>
+  <text x="796" y="189.95" text-anchor="middle" font-size="10.5" fill="#475569">clipped into [0, 1]</text>
+  <rect x="724" y="223.1" width="144" height="9" rx="4.5" fill="#ffffff" stroke="#6ee7b7" stroke-width="1.2"/>
+  <rect x="724" y="223.1" width="60.48" height="9" rx="4.5" fill="#6ee7b7" stroke="none" stroke-width="1.4"/>
+  <circle cx="784.48" cy="227.6" r="6.5" fill="#059669" stroke="#ffffff" stroke-width="1.6"/>
+  <text x="722" y="248.1" font-size="9.5" fill="#64748b">ρ = 0  group only</text>
+  <text x="870" y="248.1" text-anchor="end" font-size="9.5" fill="#64748b">ρ = 1  critic only</text>
+  <text x="796" y="262.68" text-anchor="middle" font-size="11" fill="#475569">ρ rises only once the critic earns it:</text>
+  <text x="796" y="277.68" text-anchor="middle" font-size="11" fill="#475569">EMA 0.95, evaluate before train.</text>
+  <line x1="229" y1="181.49" x2="243" y2="181.49" stroke="#94a3b8" stroke-width="1.6" stroke-linecap="round" marker-end="url(#arw94a3b8)"/>
+  <line x1="453" y1="181.49" x2="467" y2="181.49" stroke="#94a3b8" stroke-width="1.6" stroke-linecap="round" marker-end="url(#arw94a3b8)"/>
+  <line x1="677" y1="181.49" x2="691" y2="181.49" stroke="#94a3b8" stroke-width="1.6" stroke-linecap="round" marker-end="url(#arw94a3b8)"/>
+  <text x="460" y="328.98" text-anchor="middle" font-size="11.5" fill="#475569">Extra information enters only through the baseline.</text>
+  <text x="460" y="346.98" text-anchor="middle" font-size="11.5" fill="#475569">The objective is unchanged; only the variance of the gradient estimate falls.</text>
+  <defs>
+    <marker id="arw94a3b8" markerWidth="9" markerHeight="8" refX="8.5" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0.5,0.8 L8.5,4 L0.5,7.2 Z" fill="#94a3b8"/></marker>
+  </defs>
+</svg>
