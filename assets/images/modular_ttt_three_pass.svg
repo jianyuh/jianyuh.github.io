@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 427" width="920" height="427" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="920" height="427" fill="#ffffff"/>
+  <text x="460" y="32" text-anchor="middle" font-size="18" fill="#0f172a" font-weight="700">Modular TTT: one primitive DAG, three execution passes</text>
+  <rect x="22" y="62" width="244" height="319.34" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.4"/>
+  <text x="144" y="94.14" text-anchor="middle" font-size="13" fill="#334155" font-weight="700">Primitive DAG</text>
+  <text x="144" y="110.33" text-anchor="middle" font-size="10.5" fill="#64748b">swap a loss, an activation or a decay</text>
+  <text x="144" y="124.33" text-anchor="middle" font-size="10.5" fill="#64748b">without re-deriving the whole block</text>
+  <rect x="42" y="137.48" width="84" height="34" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="84" y="158.38" text-anchor="middle" font-size="11" fill="#1d4ed8" font-weight="700">Linear</text>
+  <rect x="162" y="137.48" width="84" height="34" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="1.4"/>
+  <text x="204" y="158.38" text-anchor="middle" font-size="11" fill="#047857" font-weight="700">Gate</text>
+  <rect x="42" y="199.48" width="84" height="34" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="84" y="220.38" text-anchor="middle" font-size="11" fill="#6d28d9" font-weight="700">Norm</text>
+  <rect x="162" y="199.48" width="84" height="34" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.4"/>
+  <text x="204" y="220.38" text-anchor="middle" font-size="11" fill="#b91c1c" font-weight="700">Act</text>
+  <line x1="128" y1="154.48" x2="159" y2="154.48" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round" marker-end="url(#arw94a3b8)"/>
+  <line x1="128" y1="216.48" x2="159" y2="216.48" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round" marker-end="url(#arw94a3b8)"/>
+  <line x1="84" y1="173.48" x2="84" y2="196.48" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round" marker-end="url(#arw94a3b8)"/>
+  <line x1="204" y1="173.48" x2="204" y2="196.48" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round" marker-end="url(#arw94a3b8)"/>
+  <line x1="44" y1="271.59" x2="244" y2="271.59" stroke="#e2e8f0" stroke-width="1" stroke-linecap="round"/>
+  <text x="144" y="287.17" text-anchor="middle" font-size="11" fill="#475569">Fast weights are the hidden state</text>
+  <text x="144" y="303.05" text-anchor="middle" font-size="11" fill="#475569">Design axes: network, loss,</text>
+  <text x="144" y="318.05" text-anchor="middle" font-size="11" fill="#475569">learning rate, forgetting</text>
+  <text x="144" y="333.93" text-anchor="middle" font-size="11" fill="#475569">Ablations become local substitutions</text>
+  <rect x="286" y="62" width="316" height="319.34" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.4"/>
+  <text x="444" y="94.14" text-anchor="middle" font-size="13" fill="#334155" font-weight="700">Three-pass shared computation</text>
+  <text x="444" y="110.33" text-anchor="middle" font-size="10.5" fill="#64748b">one chunk, one primitive graph, three views</text>
+  <rect x="306" y="123.48" width="276" height="66.62" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="444" y="143.45" text-anchor="middle" font-size="11.5" fill="#1d4ed8" font-weight="700">1. Train-view forward</text>
+  <text x="444" y="161.45" text-anchor="middle" font-size="10.5" fill="#475569">topological pass computes V-hat and the inner loss</text>
+  <text x="444" y="175.95" text-anchor="middle" font-size="10.5" fill="#475569">L(V-hat, V)</text>
+  <rect x="306" y="208.1" width="276" height="66.62" rx="10" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="444" y="228.07" text-anchor="middle" font-size="11.5" fill="#6d28d9" font-weight="700">2. Train-view backward</text>
+  <text x="444" y="246.07" text-anchor="middle" font-size="10.5" fill="#475569">reverse pass emits dV-hat and the local parameter</text>
+  <text x="444" y="260.57" text-anchor="middle" font-size="10.5" fill="#475569">updates Δθ</text>
+  <rect x="306" y="292.72" width="276" height="66.62" rx="10" fill="#ffffff" stroke="#059669" stroke-width="1.4"/>
+  <text x="444" y="312.69" text-anchor="middle" font-size="11.5" fill="#047857" font-weight="700">3. Causal query-view forward</text>
+  <text x="444" y="330.69" text-anchor="middle" font-size="10.5" fill="#475569">reads the updated fast weights without violating token</text>
+  <text x="444" y="345.19" text-anchor="middle" font-size="10.5" fill="#475569">causality</text>
+  <rect x="622" y="62" width="276" height="319.34" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.4"/>
+  <text x="760" y="94.14" text-anchor="middle" font-size="13" fill="#334155" font-weight="700">Why it stays stable</text>
+  <text x="760" y="110.33" text-anchor="middle" font-size="10.5" fill="#64748b">the abstractions are modular, but</text>
+  <text x="760" y="124.33" text-anchor="middle" font-size="10.5" fill="#64748b">the dynamics are still constrained</text>
+  <rect x="640" y="137.48" width="240" height="66.62" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.3"/>
+  <text x="760" y="157.45" text-anchor="middle" font-size="11.5" fill="#1d4ed8" font-weight="700">Scale control</text>
+  <text x="760" y="175.45" text-anchor="middle" font-size="10.5" fill="#475569">||ΔW|| = O(η c / s), so a small η_0 keeps early</text>
+  <text x="760" y="189.95" text-anchor="middle" font-size="10.5" fill="#475569">writes bounded</text>
+  <rect x="640" y="215.1" width="240" height="66.62" rx="10" fill="#ffffff" stroke="#7c3aed" stroke-width="1.3"/>
+  <text x="760" y="235.07" text-anchor="middle" font-size="11.5" fill="#6d28d9" font-weight="700">Spectral stability</text>
+  <text x="760" y="253.07" text-anchor="middle" font-size="10.5" fill="#475569">0 ≤ λ(H) ≤ 2</text>
+  <text x="760" y="267.57" text-anchor="middle" font-size="10.5" fill="#475569">for the homogeneous update A = I − H</text>
+  <rect x="640" y="292.72" width="240" height="66.62" rx="10" fill="#ffffff" stroke="#059669" stroke-width="1.3"/>
+  <text x="760" y="312.69" text-anchor="middle" font-size="11.5" fill="#047857" font-weight="700">Practical recipe</text>
+  <text x="760" y="330.69" text-anchor="middle" font-size="10.5" fill="#475569">SiLU with scalar decay, plus analytic backward</text>
+  <text x="760" y="345.19" text-anchor="middle" font-size="10.5" fill="#475569">kernels</text>
+  <line x1="444" y1="192.1" x2="444" y2="205.1" stroke="#64748b" stroke-width="1.6" stroke-linecap="round" marker-end="url(#arw64748b)"/>
+  <line x1="444" y1="276.72" x2="444" y2="289.72" stroke="#64748b" stroke-width="1.6" stroke-linecap="round" marker-end="url(#arw64748b)"/>
+  <text x="460" y="411.34" text-anchor="middle" font-size="11.5" fill="#475569">Result: modular architecture search without hand-derived algebra for every variant.</text>
+  <defs>
+    <marker id="arw94a3b8" markerWidth="9" markerHeight="8" refX="8.5" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0.5,0.8 L8.5,4 L0.5,7.2 Z" fill="#94a3b8"/></marker>
+    <marker id="arw64748b" markerWidth="9" markerHeight="8" refX="8.5" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0.5,0.8 L8.5,4 L0.5,7.2 Z" fill="#64748b"/></marker>
+  </defs>
+</svg>
