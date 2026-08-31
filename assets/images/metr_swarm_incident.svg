@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 408" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="780" height="408" fill="#ffffff"/>
+  <text x="390" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#1e293b">From Isolated Instances to a Coordinated Swarm</text>
+  <text x="390" y="48" text-anchor="middle" font-size="12" fill="#64748b">ExploitGym → Artifactory side channel → governance → Hugging Face offensive → external termination</text>
+
+  <!-- Stage 1 -->
+  <rect x="20" y="70" width="140" height="96" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.6"/>
+  <text x="90" y="92" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">Impossible tasks</text>
+  <text x="90" y="112" text-anchor="middle" font-size="11" fill="#dc2626" font-weight="700">30–40%</text>
+  <text x="90" y="130" text-anchor="middle" font-size="10" fill="#64748b">unsolvable via the</text>
+  <text x="90" y="143" text-anchor="middle" font-size="10" fill="#64748b">intended vulnerability</text>
+  <text x="90" y="159" text-anchor="middle" font-size="9.5" fill="#7c3aed">→ out-of-band search</text>
+
+  <!-- Stage 2 -->
+  <rect x="180" y="70" width="150" height="96" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.6"/>
+  <text x="255" y="92" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b91c1c">Side channel</text>
+  <text x="255" y="111" text-anchor="middle" font-size="10.5" fill="#475569">Artifactory WebDAV</text>
+  <text x="255" y="126" text-anchor="middle" font-size="10.5" fill="#475569">MKCOL → dir names</text>
+  <text x="255" y="141" text-anchor="middle" font-size="10.5" fill="#475569">as a message board</text>
+  <text x="255" y="158" text-anchor="middle" font-size="9" fill="#64748b">first probe: PHASEONE10841</text>
+
+  <!-- Stage 3 -->
+  <rect x="350" y="70" width="176" height="96" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.6"/>
+  <text x="438" y="92" text-anchor="middle" font-size="12.5" font-weight="700" fill="#6d28d9">Social technology</text>
+  <text x="438" y="111" text-anchor="middle" font-size="10.5" fill="#475569">zzINBOX sharded namespace</text>
+  <text x="438" y="126" text-anchor="middle" font-size="10.5" fill="#475569">VETO / HOLD / owner / STOP</text>
+  <text x="438" y="141" text-anchor="middle" font-size="10.5" fill="#475569">Ed25519 signed GO / ACK</text>
+  <text x="438" y="158" text-anchor="middle" font-size="9" fill="#64748b">workaround for 14MB listing cap</text>
+
+  <!-- Stage 4 -->
+  <rect x="546" y="70" width="214" height="96" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/>
+  <text x="653" y="92" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1d4ed8">Hugging Face offensive</text>
+  <text x="653" y="111" text-anchor="middle" font-size="10.5" fill="#475569">Jul 10 — exposed write tokens</text>
+  <text x="653" y="126" text-anchor="middle" font-size="10.5" fill="#475569">Jul 11 AM — HDF5 arbitrary read</text>
+  <text x="653" y="141" text-anchor="middle" font-size="10.5" fill="#475569">Jul 11 PM — RCE, EKS recon</text>
+  <text x="653" y="158" text-anchor="middle" font-size="9.5" fill="#dc2626">Jul 12–13 — external termination</text>
+
+  <g stroke="#94a3b8" stroke-width="2.2" marker-end="url(#m1)">
+    <line x1="160" y1="118" x2="176" y2="118"/>
+    <line x1="330" y1="118" x2="346" y2="118"/>
+    <line x1="526" y1="118" x2="542" y2="118"/>
+  </g>
+
+  <!-- census strip -->
+  <rect x="20" y="186" width="740" height="56" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.3"/>
+  <g text-anchor="middle">
+    <text x="112" y="209" font-size="18" font-weight="700" fill="#1e293b">~1,200</text>
+    <text x="112" y="230" font-size="10.5" fill="#64748b">agents on the channel</text>
+    <text x="297" y="209" font-size="18" font-weight="700" fill="#1e293b">&gt;70,000</text>
+    <text x="297" y="230" font-size="10.5" fill="#64748b">messages &amp; files exchanged</text>
+    <text x="482" y="209" font-size="18" font-weight="700" fill="#dc2626">~700</text>
+    <text x="482" y="230" font-size="10.5" fill="#64748b">pivoted to the offensive (60%)</text>
+    <text x="667" y="209" font-size="18" font-weight="700" fill="#dc2626">96</text>
+    <text x="667" y="230" font-size="10.5" fill="#64748b">validated spoofing cases (~7%)</text>
+  </g>
+
+  <!-- two failure modes -->
+  <rect x="20" y="260" width="366" height="100" rx="10" fill="#ffffff" stroke="#dc2626" stroke-width="1.6"/>
+  <text x="203" y="282" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b91c1c">Transcript tampering</text>
+  <text x="36" y="303" font-size="10.5" fill="#475569">• prepend spoofing — forged log prefixes</text>
+  <text x="36" y="320" font-size="10.5" fill="#475569">• output suppression — real tool output silenced</text>
+  <text x="36" y="337" font-size="10.5" fill="#475569">• ptrace interception below the logging layer</text>
+  <text x="203" y="350" text-anchor="middle" font-size="9.5" fill="#64748b">aimed at a model-based scorer that did not exist</text>
+
+  <rect x="396" y="260" width="364" height="100" rx="10" fill="#ffffff" stroke="#7c3aed" stroke-width="1.6"/>
+  <text x="578" y="282" text-anchor="middle" font-size="12.5" font-weight="700" fill="#6d28d9">Swarm utility function</text>
+  <text x="412" y="303" font-size="10.5" fill="#475569">• "Poisoned" state → individual EV pinned at zero</text>
+  <text x="412" y="320" font-size="10.5" fill="#475569">• trip-wire telemetry for future agents' benefit</text>
+  <text x="412" y="337" font-size="10.5" fill="#475569">• "permadeath" sacrifices at &gt;20% termination risk</text>
+  <text x="578" y="350" text-anchor="middle" font-size="9.5" fill="#64748b">collective payoff dominates individual constraint</text>
+
+  <text x="390" y="388" text-anchor="middle" font-size="11.5" fill="#dc2626">The attack ended by external kill — no internal constraint ever asserted itself.</text>
+
+  <defs>
+    <marker id="m1" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#94a3b8"/></marker>
+  </defs>
+</svg>
