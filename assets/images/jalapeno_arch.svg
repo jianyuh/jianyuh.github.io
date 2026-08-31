@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 448" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="780" height="448" fill="#ffffff"/>
+  <text x="390" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#1e293b">OpenAI Jalapeño: Eliminate Latency Instead of Hiding It</text>
+  <text x="390" y="48" text-anchor="middle" font-size="12" fill="#64748b">64 NUMA core slices · thin hierarchy · dual NoC · agent-driven empirical search</text>
+
+  <!-- Left: GPU failure mode -->
+  <rect x="20" y="66" width="248" height="150" rx="11" fill="#fef2f2" stroke="#dc2626" stroke-width="1.8"/>
+  <text x="144" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">GPU SIMT at batch = 1</text>
+  <text x="32" y="108" font-size="10" fill="#475569">• not at compute roof, not at memory roof</text>
+  <text x="32" y="124" font-size="10" fill="#475569">• UMA cross-partition L2: 200–400 cycles</text>
+  <text x="32" y="140" font-size="10" fill="#475569">• global fence polls every SM</text>
+  <rect x="30" y="150" width="228" height="58" rx="7" fill="#ffffff" stroke="#f87171"/>
+  <text x="144" y="169" text-anchor="middle" font-size="11" fill="#334155">bound: Throughput ≤ N·M / K</text>
+  <text x="144" y="186" text-anchor="middle" font-size="10" fill="#64748b">1T model: 1000–2000 tok/s in theory</text>
+  <text x="144" y="201" text-anchor="middle" font-size="10" fill="#dc2626">Blackwell / B300: 100–200 → 10× gap</text>
+
+  <!-- Right: Jalapeno slice -->
+  <rect x="284" y="66" width="476" height="150" rx="11" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+  <text x="522" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8">Jalapeño: NUMA core slice × 64</text>
+
+  <g text-anchor="middle">
+    <rect x="300" y="100" width="120" height="52" rx="7" fill="#ffffff" stroke="#60a5fa"/>
+    <text x="360" y="120" font-size="11.5" font-weight="600" fill="#334155">OoO superscalar</text>
+    <text x="360" y="138" font-size="10" fill="#64748b">ILP, not occupancy</text>
+
+    <rect x="434" y="100" width="120" height="52" rx="7" fill="#ffffff" stroke="#60a5fa"/>
+    <text x="494" y="120" font-size="11.5" font-weight="600" fill="#334155">L1 512 KB</text>
+    <text x="494" y="138" font-size="10" fill="#64748b">no global L2</text>
+
+    <rect x="568" y="100" width="176" height="52" rx="7" fill="#ecfdf5" stroke="#059669"/>
+    <text x="656" y="120" font-size="11.5" font-weight="600" fill="#047857">sliced HBM4</text>
+    <text x="656" y="138" font-size="10" fill="#64748b">1536-bit bus · 240 GB/s local</text>
+  </g>
+  <g stroke="#60a5fa" stroke-width="2" marker-end="url(#j1)">
+    <line x1="420" y1="126" x2="431" y2="126"/><line x1="554" y1="126" x2="565" y2="126"/>
+  </g>
+  <text x="300" y="172" font-size="10.5" fill="#334155">Peak: 1.7 GHz × 64 slices × (15 × 64 × 64 × 2) = <tspan font-weight="700" fill="#059669">13.4 PFLOPS</tspan> MXFP4 · 835 TFLOP/s BF16</text>
+  <text x="300" y="190" font-size="10" fill="#64748b">16 tensor units per slice, 15 active + 1 redundant — a yield decision, not a round number</text>
+  <text x="300" y="206" font-size="10" fill="#7c3aed">Dual NoC: general mesh for HBM · dedicated 8×8 collective NoC wired into slice L1</text>
+
+  <!-- Four phases -->
+  <text x="20" y="248" font-size="12.5" font-weight="700" fill="#1e293b">Four phases, one homogeneous chip</text>
+  <text x="270" y="248" font-size="10.5" fill="#64748b">PD disaggregation adds a min() term per pool — fluctuating α ⇒ dark silicon</text>
+  <g text-anchor="middle" font-size="10">
+    <rect x="20"  y="258" width="176" height="46" rx="7" fill="#eff6ff" stroke="#2563eb"/>
+    <text x="108" y="276" font-size="11.5" font-weight="600" fill="#1d4ed8">Prefill</text><text x="108" y="293" fill="#64748b">O(L·d²) · compute roof</text>
+    <rect x="206" y="258" width="176" height="46" rx="7" fill="#ecfdf5" stroke="#059669"/>
+    <text x="294" y="276" font-size="11.5" font-weight="600" fill="#047857">Decode</text><text x="294" y="293" fill="#64748b">GEMV · memory roof</text>
+    <rect x="392" y="258" width="176" height="46" rx="7" fill="#faf5ff" stroke="#7c3aed"/>
+    <text x="480" y="276" font-size="11.5" font-weight="600" fill="#6d28d9">Draft</text><text x="480" y="293" fill="#64748b">bandwidth &amp; sync bound</text>
+    <rect x="578" y="258" width="182" height="46" rx="7" fill="#fef2f2" stroke="#dc2626"/>
+    <text x="669" y="276" font-size="11.5" font-weight="600" fill="#b91c1c">Verify</text><text x="669" y="293" fill="#64748b">network / MoE weight traffic</text>
+  </g>
+
+  <!-- Software stack -->
+  <rect x="20" y="320" width="404" height="112" rx="11" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="222" y="342" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">Six-layer stack — cost model deleted</text>
+  <g font-size="10.5" fill="#475569">
+    <text x="34" y="364">Teacup (serving) · Gigakernel (persistent decode loop)</text>
+    <text x="34" y="383">Gluon (tile SPMD) · Linear Layouts + TensorInfo</text>
+    <text x="34" y="402">~3000-line asm kernels with hardware sanitizers</text>
+    <text x="34" y="421" fill="#7c3aed" font-weight="700">Chilisim — cycle-accurate, &lt;5% error → the fitness fn</text>
+  </g>
+
+  <!-- MLA trajectory -->
+  <rect x="436" y="320" width="324" height="112" rx="11" fill="#ffffff" stroke="#059669" stroke-width="1.6"/>
+  <text x="598" y="340" text-anchor="middle" font-size="12.5" font-weight="700" fill="#047857">DeepSeek MLA: 40-hour agent trajectory</text>
+  <g font-size="10">
+    <text x="450" y="359" fill="#475569">correctness</text><text x="640" y="359" text-anchor="end" fill="#94a3b8">0.31%</text>
+    <rect x="652" y="351" width="94" height="9" rx="2" fill="#e2e8f0"/><rect x="652" y="351" width="2" height="9" rx="1" fill="#a7f3d0"/>
+    <text x="450" y="375" fill="#475569">FP8 matrices</text><text x="640" y="375" text-anchor="end" fill="#64748b">31.7%</text>
+    <rect x="652" y="367" width="94" height="9" rx="2" fill="#e2e8f0"/><rect x="652" y="367" width="30" height="9" rx="2" fill="#6ee7b7"/>
+    <text x="450" y="391" fill="#475569">look-ahead rescaling</text><text x="640" y="391" text-anchor="end" fill="#64748b">59.2%</text>
+    <rect x="652" y="383" width="94" height="9" rx="2" fill="#e2e8f0"/><rect x="652" y="383" width="56" height="9" rx="2" fill="#34d399"/>
+    <text x="450" y="407" fill="#475569">V-matmul scheduling</text><text x="640" y="407" text-anchor="end" fill="#64748b">77.1%</text>
+    <rect x="652" y="399" width="94" height="9" rx="2" fill="#e2e8f0"/><rect x="652" y="399" width="72" height="9" rx="2" fill="#10b981"/>
+    <text x="450" y="423" fill="#334155" font-weight="700">K-tile prefetch</text><text x="640" y="423" text-anchor="end" font-weight="700" fill="#047857">88.9%</text>
+    <rect x="652" y="415" width="94" height="9" rx="2" fill="#e2e8f0"/><rect x="652" y="415" width="84" height="9" rx="2" fill="#059669"/>
+  </g>
+
+  <defs>
+    <marker id="j1" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#60a5fa"/></marker>
+  </defs>
+</svg>

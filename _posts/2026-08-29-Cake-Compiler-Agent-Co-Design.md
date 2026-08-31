@@ -220,4 +220,4 @@ That last row is the trap the conformance gate exists for: consumer Blackwell sh
 
 Cake's kernels are now upstream in FlashInfer and running in Kimi-K3 serving. That, more than any speedup table, is the claim: agent-authored frontier kernels are in production, and the thing that made it possible was rebuilding the compiler for a non-human author.
 
-The logical endpoint of that argument is a chip designed on the same assumption. [OpenAI's Jalapeño]({% post_url 2026-08-30-OpenAI-Jalapeno-Inference-Chip-Teardown %}) deletes the compiler cost model entirely and replaces it with agent-driven empirical search against a cycle-accurate simulator — same diagnosis (human-authored predictive models don't survive real silicon), different feedback channel.
+The logical endpoint of that argument is a chip designed on the same assumption. [OpenAI's Jalapeño]({% post_url 2026-08-31-OpenAI-Jalapeno-Inference-Chip-Teardown %}) deletes the compiler cost model entirely and replaces it with agent-driven empirical search against a cycle-accurate simulator — same diagnosis (human-authored predictive models don't survive real silicon), different feedback channel.
