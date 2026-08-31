@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 428" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="780" height="428" fill="#ffffff"/>
+  <text x="390" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#1e293b">GLM-5.3-Flash: 320B total / 18B active / 45 layers</text>
+  <text x="390" y="48" text-anchor="middle" font-size="12" fill="#64748b">Hybrid attention buys the headroom; EPD disaggregation spends it on 1M-token context</text>
+
+  <!-- Model layer -->
+  <rect x="24" y="66" width="732" height="126" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="42" y="88" font-size="13" font-weight="700" fill="#1d4ed8">MODEL — hybrid attention + mHC</text>
+
+  <rect x="42" y="98" width="186" height="80" rx="8" fill="#ffffff" stroke="#60a5fa"/>
+  <text x="135" y="120" text-anchor="middle" font-size="12.5" font-weight="600" fill="#334155">Linear attention</text>
+  <text x="135" y="139" text-anchor="middle" font-size="10.5" fill="#64748b">local dependencies</text>
+  <text x="135" y="155" text-anchor="middle" font-size="10.5" fill="#64748b">constant-time state model</text>
+
+  <rect x="242" y="98" width="212" height="80" rx="8" fill="#ffffff" stroke="#60a5fa"/>
+  <text x="348" y="120" text-anchor="middle" font-size="12.5" font-weight="600" fill="#334155">Sparse attention</text>
+  <text x="348" y="139" text-anchor="middle" font-size="10.5" fill="#64748b">lightweight indexer over 1M window</text>
+  <text x="348" y="155" text-anchor="middle" font-size="10.5" fill="#64748b">global retrieval</text>
+
+  <rect x="468" y="98" width="150" height="80" rx="8" fill="#faf5ff" stroke="#7c3aed"/>
+  <text x="543" y="120" text-anchor="middle" font-size="12.5" font-weight="600" fill="#6d28d9">IndexPool</text>
+  <text x="543" y="139" text-anchor="middle" font-size="10.5" fill="#64748b">4 indexer keys → 1</text>
+  <text x="543" y="155" text-anchor="middle" font-size="10.5" fill="#64748b">weighted pooling</text>
+
+  <rect x="632" y="98" width="106" height="80" rx="8" fill="#ecfdf5" stroke="#059669"/>
+  <text x="685" y="126" text-anchor="middle" font-size="12.5" font-weight="600" fill="#047857">mHC</text>
+  <text x="685" y="146" text-anchor="middle" font-size="10.5" fill="#64748b">first in GLM</text>
+
+  <!-- dividends -->
+  <text x="390" y="212" text-anchor="middle" font-size="12.5" fill="#059669" font-weight="600">vs. standard GLM-5.3:  3.0× less attention compute / head / layer   ·   4.4× smaller KV cache / layer</text>
+  <line x1="390" y1="222" x2="390" y2="244" stroke="#2563eb" stroke-width="2" marker-end="url(#g1)"/>
+
+  <!-- Serving layer -->
+  <rect x="24" y="248" width="732" height="118" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.6"/>
+  <text x="42" y="270" font-size="13" font-weight="700" fill="#334155">SERVING — SGLang on Chinese AI accelerators</text>
+
+  <g text-anchor="middle">
+    <rect x="42" y="282" width="150" height="62" rx="8" fill="#fef2f2" stroke="#dc2626"/>
+    <text x="117" y="304" font-size="12.5" font-weight="600" fill="#b91c1c">Encode</text>
+    <text x="117" y="322" font-size="10" fill="#64748b">multimodal, bursty</text>
+    <text x="117" y="336" font-size="10" fill="#64748b">image-shaped load</text>
+
+    <rect x="206" y="282" width="150" height="62" rx="8" fill="#eff6ff" stroke="#2563eb"/>
+    <text x="281" y="304" font-size="12.5" font-weight="600" fill="#1d4ed8">Prefill</text>
+    <text x="281" y="322" font-size="10" fill="#64748b">compute-bound</text>
+    <text x="281" y="336" font-size="10" fill="#64748b">up to 1M tokens</text>
+
+    <rect x="370" y="282" width="150" height="62" rx="8" fill="#ecfdf5" stroke="#059669"/>
+    <text x="445" y="304" font-size="12.5" font-weight="600" fill="#047857">Decode</text>
+    <text x="445" y="322" font-size="10" fill="#64748b">bandwidth-bound</text>
+    <text x="445" y="336" font-size="10" fill="#64748b">latency-sensitive</text>
+
+    <rect x="540" y="282" width="198" height="62" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+    <text x="639" y="301" font-size="11" fill="#334155">W8A8 · ReplaySSM · layer split</text>
+    <text x="639" y="317" font-size="11" fill="#334155">hybrid KV cache: INT8/FP8/BF16</text>
+    <text x="639" y="335" font-size="11" fill="#334155">intra-node TP on lin-attn + LM head</text>
+  </g>
+  <text x="281" y="357" text-anchor="middle" font-size="10" fill="#7c3aed">independent worker pools — no head-of-line blocking</text>
+
+  <!-- results -->
+  <text x="24" y="392" font-size="12.5" fill="#334155"><tspan font-weight="700" fill="#059669">3×</tspan> end-to-end serving improvement over baseline</text>
+  <text x="330" y="392" font-size="12.5" fill="#334155"><tspan font-weight="700" fill="#059669">10×</tspan> price cut vs GLM-5.2 — $0.045 / task at AA index 57</text>
+  <text x="24" y="414" font-size="11" fill="#64748b">Serving stack co-developed with a GLM-5.3-powered infrastructure agent: the model tuned the kernels that serve the model.</text>
+
+  <defs>
+    <marker id="g1" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#2563eb"/></marker>
+  </defs>
+</svg>
