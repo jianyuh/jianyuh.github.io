@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 678" width="940" height="678" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="940" height="678" fill="#ffffff"/>
+  <text x="470" y="32" text-anchor="middle" font-size="18" fill="#0f172a" font-weight="700">MergeKit: what you may average, and how to fit it in memory</text>
+  <text x="470" y="52" text-anchor="middle" font-size="11.5" fill="#64748b">The initialization decides which methods are legal; the DAG scheduler decides whether a 70B merge runs at all</text>
+  <rect x="22" y="68" width="896" height="292" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+  <text x="38" y="89" font-size="12.5" fill="#1d4ed8" font-weight="700">DO THE CHECKPOINTS SHARE AN INITIALIZATION?</text>
+  <rect x="38" y="102" width="277.333" height="242" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+  <text x="176.667" y="122" text-anchor="middle" font-size="11" fill="#047857" font-weight="700">YES  -  shared base theta_base</text>
+  <line x1="48" y1="130" x2="305.333" y2="130" stroke="#6ee7b7" stroke-width="1.1" stroke-linecap="round"/>
+  <text x="48" y="148" font-size="10.2" fill="#047857" font-weight="700">linear averaging</text>
+  <text x="48" y="160.5" font-size="9.4" fill="#475569">plain parameter mean; the model-soup baseline</text>
+  <text x="48" y="176.5" font-size="10.2" fill="#047857" font-weight="700">task arithmetic</text>
+  <text x="48" y="189" font-size="9.4" fill="#475569">tau_i = theta_i - theta_base; add, scale, negate</text>
+  <text x="48" y="205" font-size="10.2" fill="#047857" font-weight="700">TIES</text>
+  <text x="48" y="217.5" font-size="9.4" fill="#475569">trim to top-k%, elect majority sign, merge agreeing values</text>
+  <text x="48" y="233.5" font-size="10.2" fill="#047857" font-weight="700">DARE</text>
+  <text x="48" y="246" font-size="9.4" fill="#475569">drop deltas w.p. p, rescale survivors by 1/(1-p)</text>
+  <text x="48" y="262" font-size="10.2" fill="#047857" font-weight="700">SLERP</text>
+  <text x="48" y="274.5" font-size="9.4" fill="#475569">interpolate along the arc; preserves norm</text>
+  <text x="48" y="290.5" font-size="10.2" fill="#047857" font-weight="700">Fisher / RegMean</text>
+  <text x="48" y="303" font-size="9.4" fill="#475569">weight by informativeness or activation statistics</text>
+  <text x="48" y="319" font-size="10.2" fill="#047857" font-weight="700">passthrough / MoE</text>
+  <text x="48" y="331.5" font-size="9.4" fill="#475569">slice layers, or build experts from dense donors</text>
+  <rect x="331.333" y="102" width="277.333" height="242" rx="9" fill="#ffffff" stroke="#d97706" stroke-width="1.5"/>
+  <text x="470" y="122" text-anchor="middle" font-size="11" fill="#b45309" font-weight="700">NO  -  same shape, different init</text>
+  <line x1="341.333" y1="130" x2="598.667" y2="130" stroke="#fcd34d" stroke-width="1.1" stroke-linecap="round"/>
+  <text x="341.333" y="148" font-size="10.2" fill="#b45309" font-weight="700">Git-Rebasin</text>
+  <text x="341.333" y="160.5" font-size="9.4" fill="#475569">search the permutation that aligns hidden units</text>
+  <text x="341.333" y="176.5" font-size="10.2" fill="#b45309" font-weight="700">OTFusion</text>
+  <text x="341.333" y="189" font-size="9.4" fill="#475569">soft neuron correspondence via optimal transport</text>
+  <text x="341.333" y="205" font-size="10.2" fill="#b45309" font-weight="700">ZipIt</text>
+  <text x="341.333" y="217.5" font-size="9.4" fill="#475569">correlate features within and across models</text>
+  <text x="341.333" y="233.5" font-size="10.2" fill="#b45309" font-weight="700">REPAIR</text>
+  <text x="341.333" y="246" font-size="9.4" fill="#475569">rescale interpolated activations; fixes variance collapse</text>
+  <rect x="624.667" y="102" width="277.333" height="242" rx="9" fill="#ffffff" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="763.333" y="122" text-anchor="middle" font-size="11" fill="#b91c1c" font-weight="700">NO  -  different architecture</text>
+  <line x1="634.667" y1="130" x2="892" y2="130" stroke="#fca5a5" stroke-width="1.1" stroke-linecap="round"/>
+  <text x="634.667" y="148" font-size="10.2" fill="#b91c1c" font-weight="700">CALM</text>
+  <text x="634.667" y="160.5" font-size="9.4" fill="#475569">compose two models with trainable cross-attention</text>
+  <text x="634.667" y="176.5" font-size="10.2" fill="#b91c1c" font-weight="700">FuseLLM</text>
+  <text x="634.667" y="189" font-size="9.4" fill="#475569">distil a fused logit distribution into a student</text>
+  <text x="341.333" y="302" font-size="9.4" fill="#64748b">permutation symmetry breaks LMC:</text>
+  <text x="341.333" y="314" font-size="9.4" fill="#64748b">align the frame before interpolating</text>
+  <text x="634.667" y="302" font-size="9.4" fill="#64748b">no shared tensor shapes, so no</text>
+  <text x="634.667" y="314" font-size="9.4" fill="#64748b">arithmetic - both need training</text>
+  <rect x="22" y="376" width="500" height="214" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.8"/>
+  <text x="38" y="397" font-size="12.5" fill="#6d28d9" font-weight="700">OUT-OF-CORE EXECUTION ENGINE</text>
+  <rect x="38" y="416" width="224" height="42" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="150" y="434" text-anchor="middle" font-size="11" fill="#6d28d9" font-weight="700">YAML merge config</text>
+  <text x="150" y="449" text-anchor="middle" font-size="9.4" fill="#64748b">declarative recipe</text>
+  <line x1="150" y1="459" x2="150" y2="470" stroke="#7c3aed" stroke-width="1.2" stroke-linecap="round" marker-end="url(#a7c3aed)"/>
+  <rect x="38" y="472" width="224" height="42" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="150" y="490" text-anchor="middle" font-size="11" fill="#6d28d9" font-weight="700">plan.py  -&gt;  DAG</text>
+  <text x="150" y="505" text-anchor="middle" font-size="9.4" fill="#64748b">recipe compiled into Task nodes</text>
+  <line x1="150" y1="515" x2="150" y2="526" stroke="#7c3aed" stroke-width="1.2" stroke-linecap="round" marker-end="url(#a7c3aed)"/>
+  <rect x="38" y="528" width="224" height="42" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="150" y="546" text-anchor="middle" font-size="11" fill="#6d28d9" font-weight="700">graph.py  -&gt;  schedule</text>
+  <text x="150" y="561" text-anchor="middle" font-size="9.4" fill="#64748b">order chosen to narrow the live cut</text>
+  <rect x="282" y="416" width="224" height="154" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+  <text x="394" y="436" text-anchor="middle" font-size="11" fill="#047857" font-weight="700">streamed working set</text>
+  <text x="292" y="456" font-size="9.5" fill="#475569">Tensors are pulled from disk on demand and</text>
+  <text x="292" y="468.5" font-size="9.5" fill="#475569">evicted the moment their last consumer has run.</text>
+  <text x="292" y="481" font-size="9.5" fill="#475569">No backward pass means no activation is held</text>
+  <text x="292" y="493.5" font-size="9.5" fill="#475569">across the graph, so the working set is bounded</text>
+  <text x="292" y="506" font-size="9.5" fill="#475569">by the widest cut of the DAG - not by model</text>
+  <text x="292" y="518.5" font-size="9.5" fill="#475569">size.</text>
+  <text x="292" y="539" font-size="10" fill="#047857" font-weight="700">70B+ merges on a CPU workstation</text>
+  <rect x="540" y="376" width="378" height="214" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.8"/>
+  <text x="556" y="397" font-size="12.5" fill="#334155" font-weight="700">MEDITRON-7B  +  LLAMA2-7B-CHAT</text>
+  <text x="554" y="420" font-size="9.6" fill="#64748b" font-weight="700">model / merge</text>
+  <text x="788" y="420" text-anchor="middle" font-size="9.6" fill="#64748b" font-weight="700">USMLE</text>
+  <text x="860" y="420" text-anchor="middle" font-size="9.6" fill="#64748b" font-weight="700">MMLU</text>
+  <line x1="554" y1="426" x2="904" y2="426" stroke="#cbd5e1" stroke-width="1.1" stroke-linecap="round"/>
+  <text x="554" y="442" font-size="10" fill="#475569">Llama2-7B-Chat</text>
+  <text x="788" y="442" text-anchor="middle" font-size="10" fill="#475569">35.90</text>
+  <text x="860" y="442" text-anchor="middle" font-size="10" fill="#475569">46.37</text>
+  <text x="554" y="460" font-size="10" fill="#475569">Meditron-7B</text>
+  <text x="788" y="460" text-anchor="middle" font-size="10" fill="#475569">38.40</text>
+  <text x="860" y="460" text-anchor="middle" font-size="10" fill="#475569">33.06</text>
+  <text x="554" y="478" font-size="10" fill="#047857" font-weight="700">Lerp</text>
+  <text x="788" y="478" text-anchor="middle" font-size="10" fill="#047857" font-weight="700">39.10</text>
+  <text x="860" y="478" text-anchor="middle" font-size="10" fill="#047857" font-weight="700">48.44</text>
+  <text x="554" y="496" font-size="10" fill="#047857" font-weight="700">Slerp</text>
+  <text x="788" y="496" text-anchor="middle" font-size="10" fill="#047857" font-weight="700">39.20</text>
+  <text x="860" y="496" text-anchor="middle" font-size="10" fill="#047857" font-weight="700">47.97</text>
+  <text x="554" y="514" font-size="10" fill="#b45309">Ties</text>
+  <text x="788" y="514" text-anchor="middle" font-size="10" fill="#b45309">38.73</text>
+  <text x="860" y="514" text-anchor="middle" font-size="10" fill="#b45309">45.03</text>
+  <text x="554" y="532" font-size="10" fill="#b91c1c">Dare-Ties</text>
+  <text x="788" y="532" text-anchor="middle" font-size="10" fill="#b91c1c">36.37</text>
+  <text x="860" y="532" text-anchor="middle" font-size="10" fill="#b91c1c">41.17</text>
+  <text x="554" y="554" font-size="9.5" fill="#64748b">Lerp and Slerp beat both parents on every column. Meditron's 13-point MMLU</text>
+  <text x="554" y="566.3" font-size="9.5" fill="#64748b">collapse is recovered by arithmetic alone. Sparsification (Ties, Dare-Ties) hurts</text>
+  <text x="554" y="578.6" font-size="9.5" fill="#64748b">with only two donors - there is little interference to resolve.</text>
+  <rect x="22" y="608" width="213.5" height="48" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.4"/>
+  <text x="128.75" y="632.96" text-anchor="middle" font-size="14.5" fill="#047857" font-weight="700">SLERP</text>
+  <text x="128.75" y="647" text-anchor="middle" font-size="9.2" fill="#64748b">best 2-donor default</text>
+  <rect x="249.5" y="608" width="213.5" height="48" rx="9" fill="#ffffff" stroke="#d97706" stroke-width="1.4"/>
+  <text x="356.25" y="632.96" text-anchor="middle" font-size="14.5" fill="#b45309" font-weight="700">TIES / DARE</text>
+  <text x="356.25" y="647" text-anchor="middle" font-size="9.2" fill="#64748b">for 4+ conflicting task vectors</text>
+  <rect x="477" y="608" width="213.5" height="48" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="583.75" y="632.96" text-anchor="middle" font-size="14.5" fill="#6d28d9" font-weight="700">DAG + evict</text>
+  <text x="583.75" y="647" text-anchor="middle" font-size="9.2" fill="#64748b">what makes 70B fit</text>
+  <rect x="704.5" y="608" width="213.5" height="48" rx="9" fill="#ffffff" stroke="#dc2626" stroke-width="1.4"/>
+  <text x="811.25" y="632.96" text-anchor="middle" font-size="14.5" fill="#b91c1c" font-weight="700">shared base</text>
+  <text x="811.25" y="647" text-anchor="middle" font-size="9.2" fill="#64748b">the load-bearing assumption</text>
+  <defs>
+    <marker id="a7c3aed" markerWidth="6" markerHeight="5.2" refX="5.6" refY="2.6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0.4,0.5 L5.8,2.6 L0.4,4.7 Z" fill="#7c3aed"/></marker>
+  </defs>
+</svg>
