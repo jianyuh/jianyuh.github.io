@@ -1,7 +1,6 @@
-title: Jianyu Huang
+title: "Gradients & Tides"
 author:
-  name: Jianyu Huang
-  email: jianyu0huang@gmail.com
+  name: "Gradients & Tides"
 
 
 # The `>` after `description:` means to ignore line-breaks until next key.
@@ -58,15 +57,15 @@ minima:
   #  - { platform: dribbble,       user_url: "https://dribbble.com/jekyll" }
   #  - { platform: facebook,       user_url: "https://www.facebook.com/jekyll" }
   #  - { platform: flickr,         user_url: "https://www.flickr.com/photos/jekyll" }
-    - { platform: github,         user_url: "https://github.com/jianyuh" }
+  #  - { platform: github,         user_url: "https://github.com/jianyuh" }
   #  - { platform: gitlab,         user_url: "https://gitlab.com/jekyll" }
-    - { platform: google_scholar, user_url: "https://scholar.google.com/citations?user=5h4eSNQAAAAJ" }
+  #  - { platform: google_scholar, user_url: "https://scholar.google.com/citations?user=5h4eSNQAAAAJ" }
   #  - { platform: instagram,      user_url: "https://www.instagram.com/jekyll" }
   #  - { platform: keybase,        user_url: "https://keybase.io/jekyll" }
-    - { platform: linkedin,       user_url: "https://www.linkedin.com/in/jianyuhuang/" }
+  #  - { platform: linkedin,       user_url: "https://www.linkedin.com/in/jianyuhuang/" }
   #  - { platform: microdotblog,   user_url: "https://micro.blog/jekyll" }
   #  - { platform: pinterest,      user_url: "https://www.pinterest.com/jekyll" }
-    - { platform: stackoverflow,  user_url: "https://stackoverflow.com/users/3234205/jianyu-huang" }
+  #  - { platform: stackoverflow,  user_url: "https://stackoverflow.com/users/3234205/jianyu-huang" }
   #  - { platform: telegram,       user_url: "https://t.me/jekyll" }
   #  - { platform: twitter,        user_url: "https://twitter.com/jekyllrb" }
   #  - { platform: x,              user_url: "https://x.com/jekyllrb" }

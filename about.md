@@ -4,4 +4,4 @@ title: About
 # permalink: /about/
 ---
 
-Welcome to [Jianyu](http://jianyuhuang.com)'s blog.
+Welcome to Gradients & Tides.
