@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 760" width="940" height="760" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="940" height="760" fill="#ffffff"/>
+  <text x="470" y="32" text-anchor="middle" font-size="17.5" fill="#0f172a" font-weight="700">The SFT metric trap: Pass@1 measures the peak, RLVR consumes the support</text>
+  <text x="470" y="52" text-anchor="middle" font-size="11.5" fill="#64748b">Post-SFT Pass@1 explains 43% of post-RL variance. Validation loss and Pass@64 roughly double that.</text>
+  <rect x="22" y="68" width="896" height="240" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="1.8"/>
+  <text x="38" y="89" font-size="12.5" fill="#b91c1c" font-weight="700">TWO WAYS THE SFT -&gt; RL HANDOFF BREAKS</text>
+  <rect x="38" y="104" width="423" height="188" rx="9" fill="#ffffff" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="249.5" y="124" text-anchor="middle" font-size="11.5" fill="#b91c1c" font-weight="700">dataset level: over-training</text>
+  <text x="249.5" y="139" text-anchor="middle" font-size="9.4" fill="#64748b">Mistral-NeMo-12B, 25k examples</text>
+  <text x="62" y="162" font-size="9.6" fill="#64748b" font-weight="700">SFT epochs</text>
+  <text x="291" y="162" text-anchor="middle" font-size="9.6" fill="#64748b" font-weight="700">post-SFT</text>
+  <text x="413" y="162" text-anchor="middle" font-size="9.6" fill="#64748b" font-weight="700">post-RL</text>
+  <line x1="62" y1="168" x2="437" y2="168" stroke="#cbd5e1" stroke-width="1.1" stroke-linecap="round"/>
+  <text x="62" y="186" font-size="10.5" fill="#475569">2 epochs</text>
+  <text x="291" y="186" text-anchor="middle" font-size="10.5" fill="#475569" font-weight="700">32.51%</text>
+  <text x="413" y="186" text-anchor="middle" font-size="10.5" fill="#047857" font-weight="700">42.57%</text>
+  <text x="62" y="206" font-size="10.5" fill="#475569">4 epochs</text>
+  <text x="291" y="206" text-anchor="middle" font-size="10.5" fill="#047857" font-weight="700">36.61%</text>
+  <text x="413" y="206" text-anchor="middle" font-size="10.5" fill="#b91c1c" font-weight="700">41.63%</text>
+  <text x="249.5" y="234" text-anchor="middle" font-size="10.5" fill="#b91c1c" font-weight="700">the rankings invert</text>
+  <text x="62" y="250" font-size="9.5" fill="#64748b">Memorizing formats and trajectories buys benchmark accuracy and collapses policy</text>
+  <text x="62" y="262.3" font-size="9.5" fill="#64748b">entropy. Qwen3-4B: +12.8 pp post-SFT, post-RL worse than RL on the base model.</text>
+  <rect x="479" y="104" width="423" height="188" rx="9" fill="#ffffff" stroke="#d97706" stroke-width="1.5"/>
+  <text x="690.5" y="124" text-anchor="middle" font-size="11.5" fill="#b45309" font-weight="700">instance level: length and simplicity bias</text>
+  <text x="690.5" y="139" text-anchor="middle" font-size="9.4" fill="#64748b">Llama3-8B and Mistral-NeMo-12B</text>
+  <text x="509" y="162" font-size="10" fill="#b91c1c" font-weight="700">shortest traces</text>
+  <text x="872" y="162" text-anchor="end" font-size="9.2" fill="#64748b">fast to fit, high post-SFT</text>
+  <rect x="509" y="169" width="333.96" height="9" rx="4" fill="#fca5a5" stroke="#dc2626" stroke-width="1"/>
+  <text x="509" y="193" font-size="10" fill="#334155" font-weight="700">random traces</text>
+  <text x="872" y="193" text-anchor="end" font-size="9.2" fill="#64748b">baseline</text>
+  <rect x="509" y="200" width="225.06" height="9" rx="4" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+  <text x="509" y="224" font-size="10" fill="#047857" font-weight="700">long + short mix</text>
+  <text x="872" y="224" text-anchor="end" font-size="9.2" fill="#64748b">best post-RL</text>
+  <rect x="509" y="231" width="199.65" height="9" rx="4" fill="#6ee7b7" stroke="#059669" stroke-width="1"/>
+  <text x="509" y="249" font-size="9.3" fill="#64748b">&lt;- post-SFT Pass@1 (higher is not better)</text>
+  <text x="509" y="269" font-size="9.5" fill="#64748b">Short traces lack the reasoning primitives - case splits, backtracking, verification - that</text>
+  <text x="509" y="281.3" font-size="9.5" fill="#64748b">RL needs to recombine into new solution paths.</text>
+  <rect x="22" y="324" width="896" height="242" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+  <text x="38" y="345" font-size="12.5" fill="#1d4ed8" font-weight="700">TWO PREDICTORS EVALUATED ON THE SFT CHECKPOINT</text>
+  <rect x="38" y="360" width="276" height="190" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="176" y="380" text-anchor="middle" font-size="11.5" fill="#6d28d9" font-weight="700">validation loss  L_val</text>
+  <line x1="62" y1="458" x2="252" y2="458" stroke="#cbd5e1" stroke-width="1.1" stroke-linecap="round"/>
+  <line x1="62" y1="402" x2="62" y2="458" stroke="#cbd5e1" stroke-width="1.1" stroke-linecap="round"/>
+  <path d="M66,408 Q147.5,432.8 248.0,408.72" fill="none" stroke="#2563eb" stroke-width="1.6"/>
+  <path d="M66,454 Q157.0,430.0 248.0,417.68" fill="none" stroke="#059669" stroke-width="1.6" stroke-dasharray="4 3"/>
+  <text x="258" y="411.72" font-size="9.2" fill="#1d4ed8" font-weight="700">L_val</text>
+  <text x="258" y="423.8" font-size="9.2" fill="#047857" font-weight="700">Pass@1</text>
+  <text x="157" y="474" text-anchor="middle" font-size="9.2" fill="#64748b">SFT epochs -&gt;</text>
+  <text x="52" y="496" font-size="9.4" fill="#64748b">Accuracy keeps climbing while L_val turns up. That turn is</text>
+  <text x="52" y="508.2" font-size="9.4" fill="#64748b">the over-training signal accuracy cannot show.</text>
+  <rect x="332" y="360" width="276" height="190" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+  <text x="470" y="380" text-anchor="middle" font-size="11.5" fill="#047857" font-weight="700">Pass@large k   (k = 64)</text>
+  <line x1="366" y1="430" x2="580" y2="430" stroke="#cbd5e1" stroke-width="1.1" stroke-linecap="round"/>
+  <line x1="366" y1="402" x2="366" y2="458" stroke="#cbd5e1" stroke-width="1.1" stroke-linecap="round"/>
+  <text x="358" y="406" text-anchor="end" font-size="8.8" fill="#64748b">+1</text>
+  <text x="358" y="433" text-anchor="end" font-size="8.8" fill="#64748b">0</text>
+  <text x="358" y="458" text-anchor="end" font-size="8.8" fill="#64748b">-1</text>
+  <path d="M366.0,434.2 L400.2,427.2 L436.6,417.4 L473.0,409.8 L507.2,406.5 L543.6,403.7 L580.0,402.0" fill="none" stroke="#059669" stroke-width="1.8"/>
+  <rect x="363.5" y="431.7" width="5" height="5" rx="2.5" fill="#059669"/>
+  <rect x="470.5" y="407.34" width="5" height="5" rx="2.5" fill="#059669"/>
+  <rect x="577.5" y="399.5" width="5" height="5" rx="2.5" fill="#059669"/>
+  <text x="368" y="452" font-size="9" fill="#b91c1c" font-weight="700">k=1: -0.15</text>
+  <text x="576" y="395" text-anchor="end" font-size="9" fill="#047857" font-weight="700">k=64: 1.00</text>
+  <text x="473" y="474" text-anchor="middle" font-size="9.2" fill="#64748b">Pearson vs post-RL Pass@1</text>
+  <text x="346" y="496" font-size="9.4" fill="#64748b">GRPO needs one correct sample to update, so it</text>
+  <text x="346" y="508.2" font-size="9.4" fill="#64748b">compresses Pass@k mass into Pass@1. Pass@64</text>
+  <text x="346" y="520.4" font-size="9.4" fill="#64748b">estimates that ceiling.</text>
+  <rect x="626" y="360" width="276" height="190" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="764" y="380" text-anchor="middle" font-size="11.5" fill="#1d4ed8" font-weight="700">R-squared, dataset level</text>
+  <text x="646" y="402" font-size="9.4" fill="#475569">post-SFT Pass@1</text>
+  <rect x="646" y="408" width="90.06" height="9" rx="4" fill="#fca5a5" stroke="#dc2626" stroke-width="1"/>
+  <text x="812" y="416" font-size="9.2" fill="#b91c1c" font-weight="700">0.57 +/- 0.29</text>
+  <text x="646" y="430" font-size="9.4" fill="#475569">L_val</text>
+  <rect x="646" y="436" width="139.04" height="9" rx="4" fill="#6ee7b7" stroke="#059669" stroke-width="1"/>
+  <text x="812" y="444" font-size="9.2" fill="#047857" font-weight="700">0.88 +/- 0.09</text>
+  <text x="646" y="458" font-size="9.4" fill="#475569">Pass@64</text>
+  <rect x="646" y="464" width="137.46" height="9" rx="4" fill="#6ee7b7" stroke="#059669" stroke-width="1"/>
+  <text x="812" y="472" font-size="9.2" fill="#047857" font-weight="700">0.87 +/- 0.10</text>
+  <text x="646" y="486" font-size="9.4" fill="#475569">both combined</text>
+  <rect x="646" y="492" width="148.52" height="9" rx="4" fill="#93c5fd" stroke="#2563eb" stroke-width="1"/>
+  <text x="812" y="500" font-size="9.2" fill="#1d4ed8" font-weight="700">0.94 +/- 0.04</text>
+  <text x="764" y="530" text-anchor="middle" font-size="9.3" fill="#64748b">Llama3-8B; the error bars shrink 7x too</text>
+  <rect x="22" y="582" width="896" height="130" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="1.8"/>
+  <text x="38" y="603" font-size="12.5" fill="#047857" font-weight="700">TWO-STAGE CANDIDATE SELECTION</text>
+  <rect x="38" y="616" width="273.333" height="80" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="174.667" y="636" text-anchor="middle" font-size="11" fill="#6d28d9" font-weight="700">1. coarse filter  (free)</text>
+  <text x="51" y="656" font-size="9.5" fill="#475569">Discard any checkpoint where Pass@1 is flat or rising</text>
+  <text x="51" y="668.4" font-size="9.5" fill="#475569">while L_val rises. One forward pass over a held-out set.</text>
+  <line x1="315.333" y1="656" x2="328.333" y2="656" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#a94a3b8)"/>
+  <rect x="333.333" y="616" width="273.333" height="80" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+  <text x="470" y="636" text-anchor="middle" font-size="11" fill="#047857" font-weight="700">2. fine ranking  (cheap)</text>
+  <text x="346.333" y="656" font-size="9.5" fill="#475569">Compute Pass@64 from N=256 generations per task.</text>
+  <text x="346.333" y="668.4" font-size="9.5" fill="#475569">Rank by it. Pure inference, trivially parallel.</text>
+  <line x1="610.667" y1="656" x2="623.667" y2="656" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#a94a3b8)"/>
+  <rect x="628.667" y="616" width="273.333" height="80" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="765.333" y="636" text-anchor="middle" font-size="11" fill="#1d4ed8" font-weight="700">3. calibrate  (3-4 RL runs)</text>
+  <text x="641.667" y="656" font-size="9.5" fill="#475569">Fit Pass@1_postRL = a * Pass@64_postSFT + b, then</text>
+  <text x="641.667" y="668.4" font-size="9.5" fill="#475569">forecast absolute numbers for every remaining candidate.</text>
+  <text x="470" y="738" text-anchor="middle" font-size="11" fill="#475569">Entropy is the tempting explanation and it is not the right one: token loss in math reasoning is dominated by connector words, not symbols.</text>
+  <defs>
+    <marker id="a94a3b8" markerWidth="6" markerHeight="5.2" refX="5.6" refY="2.6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0.4,0.5 L5.8,2.6 L0.4,4.7 Z" fill="#94a3b8"/></marker>
+  </defs>
+</svg>
