@@ -31,7 +31,7 @@ The puzzle the paper opens with is a good one: **SFT does not care.** You can fi
 
 ## 2. The Drift/Signal Decomposition
 
-Fix a prefix $y\_{\<t}$ and look at the expected update at that single position.
+Fix a prefix $y_{<t}$ and look at the expected update at that single position.
 
 - $p_v = p_\theta(v \mid y_{<t})$, $q_v = q_\theta(v \mid y_{<t})$: trainer and sampler next-token probabilities.
 - $s_v = \nabla_\theta \log p_v$: the **score** of token $v$ under the trainer.
@@ -52,7 +52,7 @@ The second term is the learning: it moves the policy toward tokens whose reward 
 
 ### 2.1 The drift term is a distillation loss
 
-$\bar{s} = \sum_v q_v \nabla_\theta \log p_v$ is exactly the negative gradient of the cross-entropy loss $-\sum_v q_v \log p_v$: the SFT loss with **$q_\theta$ as the teacher**. So the drift term makes the trainer distill toward the sampler, at every prefix, scaled by $\mathbb{E}\_q\[R\]$.
+$\bar{s} = \sum_v q_v \nabla_\theta \log p_v$ is exactly the negative gradient of the cross-entropy loss $-\sum_v q_v \log p_v$: the SFT loss with **$q_\theta$ as the teacher**. So the drift term makes the trainer distill toward the sampler, at every prefix, scaled by $\mathbb{E}_q[R]$.
 
 That single observation answers the opening puzzle. SFT tolerates a mismatched data source because it has no such term. RL has an unrequested distillation objective bolted onto its gradient, and the teacher is a numerically corrupted copy of the student.
 
@@ -68,7 +68,7 @@ A positive feedback loop. Each cycle the bias is reinforced rather than correcte
 
 The natural objection: GRPO already centers advantages within a group, so $\mathbb{E}[R] = 0$, so the drift term vanishes. It does not, and the reason is a scope error.
 
-Group centering makes rewards sum to zero **over a prompt's rollout group**. The drift term involves $\mathbb{E}\_q\[R\]$ **conditioned on a specific prefix** $y\_{\<t}$. Those are different expectations. A prefix that leads to correct completions has positive conditional expected reward; a prefix down a wrong path has negative. Both are non-zero.
+Group centering makes rewards sum to zero **over a prompt's rollout group**. The drift term involves $\mathbb{E}_q[R]$ **conditioned on a specific prefix** $y\_{\<t}$. Those are different expectations. A prefix that leads to correct completions has positive conditional expected reward; a prefix down a wrong path has negative. Both are non-zero.
 
 And they are non-zero in exactly the wrong places. The prefixes where $\mathbb{E}\_q\[R \mid y\_{\<t}\]$ deviates most from zero are the prefixes that discriminate good from bad continuations: the prefixes carrying the learning signal. **Drift is largest precisely where the signal lives.**
 

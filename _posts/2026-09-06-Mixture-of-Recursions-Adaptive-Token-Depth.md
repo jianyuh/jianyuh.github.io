@@ -11,7 +11,7 @@ Reading notes on:
 
 Efficiency work on Transformers has long split into two lanes that rarely meet. **Parameter efficiency** shrinks the weights, usually by tying layers so the same block is applied repeatedly. **Adaptive computation** varies the work per input, usually by token routing or early exit. Both are well studied; neither has been the other's natural home.
 
-**Mixture-of-Recursions (MoR)** puts them in the same architecture: token-level conditional compute *inside* a weight-tied recursive Transformer. The result is a three-way saving — fewer unique parameters (up to $\sim 3\times$), fewer FLOPs per easy token, and a KV cache that shrinks with the routing distribution rather than staying dense.
+**Mixture-of-Recursions (MoR)** puts them in the same architecture: token-level conditional compute *inside* a weight-tied recursive Transformer. The result is a three-way saving: fewer unique parameters (up to $\sim 3\times$), fewer FLOPs per easy token, and a KV cache that shrinks with the routing distribution rather than staying dense.
 
 This is the token-adaptive branch of the depth-recurrence family. The compute-matched scaling-law branch is the subject of tomorrow's post on [SMELT]({% post_url 2026-09-07-SMELT-Compute-Matched-Looped-MoE-Scaling-Laws %}), and the theory-of-computation angle is in [Looped Transformers]({% post_url 2026-07-02-Looped-Transformers-Computers-and-Length-Generalization %}).
 
@@ -38,7 +38,7 @@ Four candidate unrolling schemes:
 
 $$\mathcal{H}^{\ell+1}_t = f\!\left(\mathcal{H}^\ell_t; \Phi'_{\ell \bmod (L/N_r)}\right)$$
 
-Pushing hidden states through the same cyclic sequence encourages loop-like iterative refinement — "rethink the problem" rather than "apply another transformation."
+Pushing hidden states through the same cyclic sequence encourages loop-like iterative refinement: "rethink the problem" rather than "apply another transformation."
 
 **Sequence** applies each unique block consecutively:
 
@@ -54,7 +54,7 @@ $$\mathcal{H}^{\ell+1}_t = f\!\left(\mathcal{H}^\ell_t; \Phi'_{\left((\ell - 1) 
 
 $$\mathcal{H}^L_t = f\!\left(\mathcal{H}^{L-1}_t; \Phi_{L-1}\right)$$
 
-Dedicated entry and exit layers give the network capacity for embedding adaptation and vocabulary prediction respectively — the two jobs that are least like "iterative refinement" and therefore worst served by shared weights. **Middle-Sequence** is the same boundary treatment with sequence-based interior sharing.
+Dedicated entry and exit layers give the network capacity for embedding adaptation and vocabulary prediction respectively, the two jobs that are least like "iterative refinement" and therefore worst served by shared weights. **Middle-Sequence** is the same boundary treatment with sequence-based interior sharing.
 
 Ablation on FineWeb-Edu (10B tokens):
 
@@ -85,7 +85,7 @@ with $\mathcal{G}$ typically a sigmoid. **Hierarchical filtering** enforces that
 
 $$\mathcal{H}^{r+1}_t = \begin{cases} g^r_t\, f(\mathcal{H}^r_t, \Phi') + \mathcal{H}^r_t, & \text{if } g^r_t > P_\beta(G^r) \\[4pt] \mathcal{H}^r_t, & \text{otherwise} \end{cases}$$
 
-where $P_\beta(G^r)$ is the $\beta$-percentile threshold over routing scores across the batch. Top-$k$ by construction gives a **static, predictable compute budget** — a real operational advantage over token-choice, where per-batch cost fluctuates.
+where $P_\beta(G^r)$ is the $\beta$-percentile threshold over routing scores across the batch. Top-$k$ by construction gives a **static, predictable compute budget**, a real operational advantage over token-choice, where per-batch cost fluctuates.
 
 **The causality problem.** Top-$k$ requires sorting scores across the whole sequence, but autoregressive decoding doesn't have the future tokens. Two mitigations:
 
@@ -101,7 +101,7 @@ where $P_\beta(G^r)$ is the $\beta$-percentile threshold over routing scores acr
 
    Once raw outputs cluster near 0.0 and 1.0, inference can drop sorting entirely and use a static threshold ($g^r_t > 0.5$). The paper's Figures 5b and 9a show the auxiliary-loss variant achieving clean separation between selected and unselected tokens, which is what makes the static threshold stable.
 
-The second option wins because it removes a component rather than adding one — the sorting operation, the training/inference mismatch, and the extra classifier all disappear together.
+The second option wins because it removes a component rather than adding one: the sorting operation, the training/inference mismatch, and the extra classifier all disappear together.
 
 ### 2.2 Token-Choice routing
 
@@ -113,7 +113,7 @@ Assignment is $i = \arg\max_j g_{jt}$, and the update is
 
 $$\mathcal{H}^{r+1}_t = \begin{cases} g^r_t\, f(\mathcal{H}^r_t, \Phi') + \mathcal{H}^1_t, & \text{if } r = i \\[4pt] g^r_t\, f(\mathcal{H}^r_t, \Phi'), & \text{otherwise} \end{cases}$$
 
-No causality violation — but load imbalance, and experts that receive no tokens collapse. Two standard MoE remedies apply:
+No causality violation, but load imbalance, and experts that receive no tokens collapse. Two standard MoE remedies apply:
 
 **Explicit balancing loss:**
 
@@ -134,7 +134,7 @@ At $N_r=3$, 118M parameters:
 - **Expert-Choice:** validation NLL **2.8667**, average downstream accuracy **40.1%**
 - **Token-Choice:** validation NLL **2.9358**, average downstream accuracy **39.1%**
 
-EC's advantage is granularity — it re-decides at every recursion step instead of committing once. A token whose difficulty only becomes apparent after one pass can still be escalated. Token-choice has to guess from the embedding.
+EC's advantage is granularity: it re-decides at every recursion step instead of committing once. A token whose difficulty only becomes apparent after one pass can still be escalated. Token-choice has to guess from the embedding.
 
 There's a deeper reason token-choice struggles here that doesn't apply to ordinary MoE: the experts are **structurally heterogeneous**. Expert 1 performs one recursion, expert 2 performs two. Balancing loads across experts of unequal cost is a different and harder problem than balancing across symmetric FFN experts, which is why it needs heavy z-loss and warmup. Contrast with the symmetric-expert balancing in [UltraEP]({% post_url 2026-08-12-UltraEP-Exact-Load-Balancing-Rack-Scale-MoE %}) and [RoutePack]({% post_url 2026-08-21-routepack %}).
 
@@ -170,7 +170,7 @@ Step 2 and step 3 queries skip projection and attend to the step-1 cache.
 ```
 
 - **KV memory:** $\frac{1}{N_r}$ → **0.33×** at $N_r=3$
-- **KV IO:** **1.0×** — the global step-1 cache must be fetched at every depth
+- **KV IO:** **1.0×** (the global step-1 cache must be fetched at every depth)
 - **Attention FLOPs:** linear reduction, $\frac{k}{N_{\text{ctx}}}$
 
 The trade is explicit and worth stating plainly: recursive sharing halves memory again but gives back all the IO savings. On a memory-capacity-bound deployment that's a clear win; on a bandwidth-bound decode it is not. Which regime you're in is exactly the roofline question from [Efficiency in LLMs]({% post_url 2026-06-26-Efficiency-in-LLMs-Fast-Inference-Memory-Bandwidth %}).
@@ -182,7 +182,7 @@ Sharing projection matrices across depths should risk representational collapse.
 - **Hidden states** grow steadily in $L_2$ norm across unrolled layers.
 - **Key and value states** show cosine similarity close to **1.0** along the diagonals of different recursion stages.
 
-The projections naturally learn to align and stabilize signal scale across depths, which is why KV sharing costs only a minor perplexity drop. This is the same phenomenon SMELT measures from the other side, finding second-pass Q/K similarity ~0.90 against V similarity ~0.70 — high agreement on *where* to look, more movement in *what* is read.
+The projections naturally learn to align and stabilize signal scale across depths, which is why KV sharing costs only a minor perplexity drop. This is the same phenomenon SMELT measures from the other side, finding second-pass Q/K similarity ~0.90 against V similarity ~0.70: high agreement on *where* to look, more movement in *what* is read.
 
 ---
 
@@ -203,7 +203,7 @@ Smaller KV caches also mean larger batches under fixed VRAM (H100):
 | MoR-3 | 48 |
 | MoR-4 | 51 |
 
-Combined with early exit, this yields up to **2.06× serving throughput** over optimized vanilla baselines. Structurally it's the same idea as continuous batching in [vLLM V1]({% post_url 2025-11-30-vLLM %}), moved one level down from the sequence to the recursion step — which is only possible because weight tying makes every depth the same kernel launch.
+Combined with early exit, this yields up to **2.06× serving throughput** over optimized vanilla baselines. Structurally it's the same idea as continuous batching in [vLLM V1]({% post_url 2025-11-30-vLLM %}), moved one level down from the sequence to the recursion step, which is only possible because weight tying makes every depth the same kernel launch.
 
 ---
 
@@ -228,13 +228,13 @@ Validation Loss
   +--------------------------------------------> Model Size / Parameters
 ```
 
-Vanilla models under isoFLOP prefer smaller parameter counts on longer token horizons — they're data-hungry. MoR prefers the opposite: **scale parameters (width) rather than tokens**. The quality of the shared recursive block is the binding bottleneck, so MoR favors wide-and-short configurations on less data.
+Vanilla models under isoFLOP prefer smaller parameter counts on longer token horizons; they're data-hungry. MoR prefers the opposite: **scale parameters (width) rather than tokens**. The quality of the shared recursive block is the binding bottleneck, so MoR favors wide-and-short configurations on less data.
 
 That's a real deployment consideration, not just a curve shape. If tokens are your scarce resource, MoR's optimal point is friendlier. Broader treatment of these surfaces in [Deconstructing Scaling Laws]({% post_url 2026-08-03-Deconstructing-Scaling-Laws %}) and [The Architecture of Scaling Laws]({% post_url 2026-06-25-The-Architecture-of-Scaling-Laws %}).
 
 ### Test-time scaling
 
-Because depth is a runtime parameter, MoR can spend more inference FLOPs by unrolling further — no retraining:
+Because depth is a runtime parameter, MoR can spend more inference FLOPs by unrolling further (no retraining):
 
 ```
 Inference quality (log-likelihood)
@@ -246,7 +246,7 @@ Inference quality (log-likelihood)
   +--------------------------------------------> Inference recursion steps
 ```
 
-Each additional step refines hidden representations further. This is a *latent-space* test-time scaling knob, orthogonal to the token-space one analyzed in [The Mechanics of Reasoning Effort and Inference Scaling]({% post_url 2026-07-19-Reasoning-Effort-Inference-Scaling %}) — you deepen the computation per token rather than emitting more thinking tokens.
+Each additional step refines hidden representations further. This is a *latent-space* test-time scaling knob, orthogonal to the token-space one analyzed in [The Mechanics of Reasoning Effort and Inference Scaling]({% post_url 2026-07-19-Reasoning-Effort-Inference-Scaling %}); you deepen the computation per token rather than emitting more thinking tokens.
 
 ---
 
@@ -254,7 +254,7 @@ Each additional step refines hidden representations further. This is a *latent-s
 
 1. **Heterogeneous expert collapse.** Token-choice balancing is structurally harder than in standard MoE because experts differ in cost, not just in specialization. Standard routers don't converge cleanly; z-loss and warmup are load-bearing.
 2. **Post-training on reasoning data.** Latent-space reasoning is the natural fit for a depth-adaptive model, and the obvious next question is how the router learns to allocate depth when fine-tuned on reasoning datasets under GRPO-style RL. Nobody has run that experiment.
-3. **Scaling the unshared block.** Below ~135M, the recursive bottleneck degrades quality outright. Past ~3B, the likely fix is *more* unshared capacity — wider first/last blocks, or LoRA adapters at specific recursion depths — to close the gap with vanilla. The recursion is a prior, and priors need to weaken as data grows.
+3. **Scaling the unshared block.** Below ~135M, the recursive bottleneck degrades quality outright. Past ~3B, the likely fix is *more* unshared capacity (wider first/last blocks, or LoRA adapters at specific recursion depths) to close the gap with vanilla. The recursion is a prior, and priors need to weaken as data grows.
 
 ---
 
@@ -264,6 +264,6 @@ Each additional step refines hidden representations further. This is a *latent-s
 - **Boundaries matter more than the interior.** Middle-Cycle's unshared entry/exit layers are the single biggest ablation win, and SMELT reaches the same layout from an entirely different direction.
 - **Expert-choice beats token-choice** (NLL 2.8667 vs. 2.9358) because it re-decides per step, and the causality problem is best solved by *making the router bimodal* rather than by adding a second router.
 - **The KV story has two settings, not one.** 0.67× memory at 0.67× IO, or 0.33× memory at 1.0× IO. Pick by which resource you're actually short of.
-- **MoR scales along width, not tokens.** Its isoFLOP optimum sits at larger parameter counts than vanilla's — worth knowing before you assume a shared-weight model is just a smaller model.
+- **MoR scales along width, not tokens.** Its isoFLOP optimum sits at larger parameter counts than vanilla's, worth knowing before you assume a shared-weight model is just a smaller model.
 
-Tomorrow: [SMELT]({% post_url 2026-09-07-SMELT-Compute-Matched-Looped-MoE-Scaling-Laws %}) asks whether looping still wins once you match FLOPs, parameters, *and* KV cache simultaneously — the control MoR's isoFLOP analysis only partially imposes.
+Tomorrow: [SMELT]({% post_url 2026-09-07-SMELT-Compute-Matched-Looped-MoE-Scaling-Laws %}) asks whether looping still wins once you match FLOPs, parameters, *and* KV cache simultaneously, the control MoR's isoFLOP analysis only partially imposes.
