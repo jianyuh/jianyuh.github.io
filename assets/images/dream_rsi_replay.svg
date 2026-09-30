@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 746" width="940" height="746" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="940" height="746" fill="#ffffff"/>
+  <text x="470" y="32" text-anchor="middle" font-size="17.5" fill="#0f172a" font-weight="700">Dream-RSI: a finished discovery run is a simulator for the explorer</text>
+  <text x="470" y="52" text-anchor="middle" font-size="11.5" fill="#64748b">Replay a recorded tree under a different exploration policy and score it for free - no LLM calls, no code evaluation</text>
+  <rect x="22" y="68" width="896" height="268" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.8"/>
+  <text x="38" y="89" font-size="12.5" fill="#6d28d9" font-weight="700">ONE EXPENSIVE ONLINE RUN, THOUSANDS OF FREE OFFLINE ONES</text>
+  <rect x="38" y="110" width="270.667" height="108" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1.6"/>
+  <text x="173.333" y="132" text-anchor="middle" font-size="11.5" fill="#1d4ed8" font-weight="700">1. online exploration</text>
+  <text x="173.333" y="147" text-anchor="middle" font-size="9.3" fill="#64748b">expensive: real LLM + real evals</text>
+  <text x="51" y="167" font-size="9.5" fill="#475569">Policy pi_t drives a coding agent, expanding discovery</text>
+  <text x="51" y="179.4" font-size="9.5" fill="#475569">tree T_t. Each node stores a workspace snapshot, code,</text>
+  <text x="51" y="191.8" font-size="9.5" fill="#475569">diagnostic log and score s_v.</text>
+  <line x1="313.667" y1="164" x2="329.667" y2="164" stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round" marker-end="url(#a94a3b8)"/>
+  <rect x="334.667" y="110" width="270.667" height="108" rx="9" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
+  <text x="470" y="132" text-anchor="middle" font-size="11.5" fill="#334155" font-weight="700">2. record the world</text>
+  <text x="470" y="147" text-anchor="middle" font-size="9.3" fill="#64748b">free</text>
+  <text x="347.667" y="167" font-size="9.5" fill="#475569">Append T_t to the history H_t = H_(t-1) + {T_t}. Nothing is</text>
+  <text x="347.667" y="179.4" font-size="9.5" fill="#475569">learned or fitted - the simulator IS the log.</text>
+  <line x1="610.333" y1="164" x2="626.333" y2="164" stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round" marker-end="url(#a94a3b8)"/>
+  <rect x="631.333" y="110" width="270.667" height="108" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.6"/>
+  <text x="766.667" y="132" text-anchor="middle" font-size="11.5" fill="#047857" font-weight="700">3. dream, then redeploy</text>
+  <text x="766.667" y="147" text-anchor="middle" font-size="9.3" fill="#64748b">free: reveal recorded outcomes</text>
+  <text x="644.333" y="167" font-size="9.5" fill="#475569">Replay candidate policies pi_t^0 ... pi_t^(M-1) against</text>
+  <text x="644.333" y="179.4" font-size="9.5" fill="#475569">every recorded tree, score each, and send the argmax</text>
+  <text x="644.333" y="191.8" font-size="9.5" fill="#475569">back online.</text>
+  <path d="M766.6666666666666,219 L766.6666666666666,238 L173.33333333333334,238 L173.33333333333334,223" fill="none" stroke="#059669" stroke-width="1.3" stroke-linecap="round" marker-end="url(#a059669)"/>
+  <text x="470" y="252" text-anchor="middle" font-size="9.6" fill="#047857" font-weight="700">pi_(t+1) redeployed for rollout t+1</text>
+  <rect x="38" y="266" width="422" height="56" rx="9" fill="#ffffff" stroke="#d97706" stroke-width="1.5"/>
+  <text x="249" y="289" text-anchor="middle" font-size="12" fill="#b45309" font-weight="700">V_i^m = max_v s_v  -  b1 N  +  b2 N / k</text>
+  <text x="249" y="307" text-anchor="middle" font-size="9.3" fill="#64748b">quality (a max, not a mean)  ·  probe cost  ·  parallelism bonus</text>
+  <rect x="480" y="266" width="422" height="56" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+  <text x="691" y="289" text-anchor="middle" font-size="11.5" fill="#047857" font-weight="700">pi_(t+1) = argmax_m V^m,   with  pi_t^0 = pi_t  in the pool</text>
+  <text x="691" y="307" text-anchor="middle" font-size="9.3" fill="#64748b">replay monotonicity:  V^(m*) &gt;= V^0  -  it cannot regress</text>
+  <rect x="22" y="352" width="452" height="282" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+  <text x="38" y="373" font-size="12.5" fill="#1d4ed8" font-weight="700">WHAT A REPLAY CAN AND CANNOT ANSWER</text>
+  <rect x="55" y="441" width="14" height="14" rx="7" fill="#334155"/>
+  <text x="62" y="470" text-anchor="middle" font-size="9.5" fill="#64748b" font-weight="700">r</text>
+  <line x1="62" y1="448" x2="120" y2="414" stroke="#059669" stroke-width="1.4" stroke-linecap="round"/>
+  <rect x="113" y="407" width="14" height="14" rx="7" fill="#059669" stroke="#059669" stroke-width="1.1"/>
+  <line x1="120" y1="414" x2="178" y2="408" stroke="#059669" stroke-width="1.4" stroke-linecap="round"/>
+  <rect x="171" y="401" width="14" height="14" rx="7" fill="#059669" stroke="#059669" stroke-width="1.1"/>
+  <line x1="178" y1="408" x2="236" y2="418" stroke="#cbd5e1" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 3"/>
+  <rect x="229" y="411" width="14" height="14" rx="7" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.1"/>
+  <line x1="62" y1="448" x2="120" y2="452" stroke="#2563eb" stroke-width="1.4" stroke-linecap="round"/>
+  <rect x="113" y="445" width="14" height="14" rx="7" fill="#2563eb" stroke="#2563eb" stroke-width="1.1"/>
+  <line x1="120" y1="452" x2="178" y2="458" stroke="#2563eb" stroke-width="1.4" stroke-linecap="round"/>
+  <rect x="171" y="451" width="14" height="14" rx="7" fill="#2563eb" stroke="#2563eb" stroke-width="1.1"/>
+  <line x1="178" y1="458" x2="236" y2="450" stroke="#2563eb" stroke-width="1.4" stroke-linecap="round"/>
+  <rect x="229" y="443" width="14" height="14" rx="7" fill="#2563eb" stroke="#2563eb" stroke-width="1.1"/>
+  <line x1="236" y1="450" x2="294" y2="456" stroke="#cbd5e1" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 3"/>
+  <rect x="287" y="449" width="14" height="14" rx="7" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.1"/>
+  <line x1="62" y1="448" x2="120" y2="490" stroke="#cbd5e1" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 3"/>
+  <rect x="113" y="483" width="14" height="14" rx="7" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.1"/>
+  <line x1="120" y1="490" x2="178" y2="498" stroke="#cbd5e1" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 3"/>
+  <rect x="171" y="491" width="14" height="14" rx="7" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.1"/>
+  <rect x="316" y="400" width="10" height="10" rx="5" fill="#2563eb"/>
+  <text x="332" y="409" font-size="9.4" fill="#475569">revealed by this policy</text>
+  <rect x="316" y="420" width="10" height="10" rx="5" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.1"/>
+  <text x="332" y="429" font-size="9.4" fill="#64748b">recorded, not revealed</text>
+  <text x="38" y="520" font-size="9.6" fill="#475569">A different policy induces a different subtree of the same recorded tree. Scoring it means revealing</text>
+  <text x="38" y="533" font-size="9.6" fill="#475569">stored outcomes - no generation, no evaluation.</text>
+  <rect x="38" y="556" width="420" height="67.2" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="1.4"/>
+  <text x="51" y="575" font-size="10.4" fill="#b91c1c" font-weight="700">the coverage limit - recorded, not learned</text>
+  <text x="51" y="592" font-size="9.4" fill="#64748b">It answers scheduling counterfactuals only - reorder, rewiden, stop earlier. It can never answer</text>
+  <text x="51" y="604.4" font-size="9.4" fill="#64748b">"what if the agent had tried something else at step 3", because that node does not exist. The</text>
+  <text x="51" y="616.8" font-size="9.4" fill="#64748b">constraint is what makes it exact: scheduling is precisely what an exploration policy decides.</text>
+  <rect x="492" y="352" width="426" height="282" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="1.8"/>
+  <text x="508" y="373" font-size="12.5" fill="#b45309" font-weight="700">KEEPING THE DREAM HONEST</text>
+  <text x="506" y="396" font-size="10.6" fill="#b45309" font-weight="700">prefix-only observability</text>
+  <text x="506" y="413" font-size="9.5" fill="#475569">Policy code may read revealed nodes, baseline_score, the legal action frontier and prefix</text>
+  <text x="506" y="425.4" font-size="9.5" fill="#475569">metadata. Unrevealed scores, remaining budget and future outcomes are off limits - so the</text>
+  <text x="506" y="437.8" font-size="9.5" fill="#475569">replay decision process is information-identical to the online one.</text>
+  <text x="506" y="462.2" font-size="10.6" fill="#b45309" font-weight="700">the beta schedule</text>
+  <text x="506" y="479.2" font-size="9.5" fill="#047857" font-weight="700">high beta</text>
+  <text x="904" y="479.2" text-anchor="end" font-size="9.5" fill="#475569">wider search, more patience, looser pruning</text>
+  <text x="506" y="494.2" font-size="9.5" fill="#b91c1c" font-weight="700">low beta</text>
+  <text x="904" y="494.2" text-anchor="end" font-size="9.5" fill="#475569">tighter probe budget, early stop, hard pruning</text>
+  <text x="506" y="509.2" font-size="9.5" fill="#1d4ed8" font-weight="700">plateau</text>
+  <text x="904" y="509.2" text-anchor="end" font-size="9.5" fill="#475569">raise beta by 0.1 - 0.2</text>
+  <text x="506" y="524.2" font-size="9.5" fill="#334155" font-weight="700">compute burned, no gain</text>
+  <text x="904" y="524.2" text-anchor="end" font-size="9.5" fill="#475569">lower beta</text>
+  <text x="506" y="551.2" font-size="10.6" fill="#b45309" font-weight="700">classify failures before closing a branch</text>
+  <text x="506" y="568.2" font-size="9.5" fill="#475569">Shape mismatches, resource limits and compile errors are repairable and keep the branch</text>
+  <text x="506" y="580.6" font-size="9.5" fill="#475569">eligible. Only sustained algorithmic failure, after enough valid evidence, closes it for good.</text>
+  <rect x="22" y="652" width="168" height="48" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.4"/>
+  <text x="106" y="676.96" text-anchor="middle" font-size="14.5" fill="#047857" font-weight="700">162x</text>
+  <text x="106" y="691" text-anchor="middle" font-size="8.8" fill="#64748b">fewer calls, Lasso path</text>
+  <rect x="204" y="652" width="168" height="48" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.4"/>
+  <text x="288" y="676.96" text-anchor="middle" font-size="14.5" fill="#047857" font-weight="700">2350.6 ms</text>
+  <text x="288" y="691" text-anchor="middle" font-size="8.8" fill="#64748b">vs sklearn 44180 ms</text>
+  <rect x="386" y="652" width="168" height="48" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="470" y="676.96" text-anchor="middle" font-size="14.5" fill="#1d4ed8" font-weight="700">&gt;50x</text>
+  <text x="470" y="691" text-anchor="middle" font-size="8.8" fill="#64748b">budget saving, sum-difference</text>
+  <rect x="568" y="652" width="168" height="48" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="652" y="676.96" text-anchor="middle" font-size="14.5" fill="#6d28d9" font-weight="700">2.43x</text>
+  <text x="652" y="691" text-anchor="middle" font-size="8.8" fill="#64748b">fewer generations, VGG16</text>
+  <rect x="750" y="652" width="168" height="48" rx="9" fill="#ffffff" stroke="#d97706" stroke-width="1.4"/>
+  <text x="834" y="676.96" text-anchor="middle" font-size="14.5" fill="#b45309" font-weight="700">2.09x</text>
+  <text x="834" y="691" text-anchor="middle" font-size="8.8" fill="#64748b">faster kernel, ConvDiv</text>
+  <text x="470" y="724" text-anchor="middle" font-size="11" fill="#475569">Injecting semantic direction summaries into the prompt underperformed unguided search - the structural channel generalizes, the content channel over-constrains.</text>
+  <defs>
+    <marker id="a94a3b8" markerWidth="6" markerHeight="5.2" refX="5.6" refY="2.6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0.4,0.5 L5.8,2.6 L0.4,4.7 Z" fill="#94a3b8"/></marker>
+    <marker id="a059669" markerWidth="6" markerHeight="5.2" refX="5.6" refY="2.6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0.4,0.5 L5.8,2.6 L0.4,4.7 Z" fill="#059669"/></marker>
+  </defs>
+</svg>

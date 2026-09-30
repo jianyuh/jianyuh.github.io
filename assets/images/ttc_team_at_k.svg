@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 713" width="940" height="713" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="940" height="713" fill="#ffffff"/>
+  <text x="470" y="32" text-anchor="middle" font-size="17.5" fill="#0f172a" font-weight="700">team@k: a sum of minima beats a minimum of sums</text>
+  <text x="470" y="52" text-anchor="middle" font-size="11.5" fill="#64748b">Illustrative 3 agents x 4 stages, stage times X_ij in arbitrary units, same per-agent budget τ = 10</text>
+  <rect x="22" y="68" width="896" height="192" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.8"/>
+  <text x="38" y="89" font-size="12.5" fill="#334155" font-weight="700">BEST@K - EACH AGENT MUST CLEAR EVERY STAGE ALONE</text>
+  <line x1="515.333" y1="104" x2="515.333" y2="222" stroke="#dc2626" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 3"/>
+  <text x="520.333" y="113" font-size="9.4" fill="#b91c1c" font-weight="700">budget τ</text>
+  <text x="38" y="136.8" font-size="10.5" fill="#1d4ed8" font-weight="700">agent a1</text>
+  <rect x="112" y="120" width="80.6667" height="26" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="1.2"/>
+  <text x="152.333" y="136.4" text-anchor="middle" font-size="9.6" fill="#1d4ed8" font-weight="700">s1</text>
+  <rect x="192.667" y="120" width="242" height="26" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="1.2"/>
+  <text x="313.667" y="136.4" text-anchor="middle" font-size="9.6" fill="#1d4ed8" font-weight="700">s2</text>
+  <rect x="434.667" y="120" width="161.333" height="26" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="1.2"/>
+  <text x="515.333" y="136.4" text-anchor="middle" font-size="9.6" fill="#1d4ed8" font-weight="700">s3</text>
+  <rect x="596" y="120" width="121" height="26" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="1.2"/>
+  <text x="656.5" y="136.4" text-anchor="middle" font-size="9.6" fill="#1d4ed8" font-weight="700">s4</text>
+  <text x="902" y="136.8" text-anchor="end" font-size="11" fill="#0f172a" font-weight="700">= 15</text>
+  <text x="38" y="172.8" font-size="10.5" fill="#6d28d9" font-weight="700">agent a2</text>
+  <rect x="112" y="156" width="201.667" height="26" rx="5" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.2"/>
+  <text x="212.833" y="172.4" text-anchor="middle" font-size="9.6" fill="#6d28d9" font-weight="700">s1</text>
+  <rect x="313.667" y="156" width="80.6667" height="26" rx="5" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.2"/>
+  <text x="354" y="172.4" text-anchor="middle" font-size="9.6" fill="#6d28d9" font-weight="700">s2</text>
+  <rect x="394.333" y="156" width="242" height="26" rx="5" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.2"/>
+  <text x="515.333" y="172.4" text-anchor="middle" font-size="9.6" fill="#6d28d9" font-weight="700">s3</text>
+  <rect x="636.333" y="156" width="201.667" height="26" rx="5" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.2"/>
+  <text x="737.167" y="172.4" text-anchor="middle" font-size="9.6" fill="#6d28d9" font-weight="700">s4</text>
+  <text x="902" y="172.8" text-anchor="end" font-size="11" fill="#64748b">= 18</text>
+  <text x="38" y="208.8" font-size="10.5" fill="#047857" font-weight="700">agent a3</text>
+  <rect x="112" y="192" width="161.333" height="26" rx="5" fill="#ecfdf5" stroke="#059669" stroke-width="1.2"/>
+  <text x="192.667" y="208.4" text-anchor="middle" font-size="9.6" fill="#047857" font-weight="700">s1</text>
+  <rect x="273.333" y="192" width="201.667" height="26" rx="5" fill="#ecfdf5" stroke="#059669" stroke-width="1.2"/>
+  <text x="374.167" y="208.4" text-anchor="middle" font-size="9.6" fill="#047857" font-weight="700">s2</text>
+  <rect x="475" y="192" width="40.3333" height="26" rx="5" fill="#ecfdf5" stroke="#059669" stroke-width="1.2"/>
+  <text x="495.167" y="208.4" text-anchor="middle" font-size="9.6" fill="#047857" font-weight="700">s3</text>
+  <rect x="515.333" y="192" width="242" height="26" rx="5" fill="#ecfdf5" stroke="#059669" stroke-width="1.2"/>
+  <text x="636.333" y="208.4" text-anchor="middle" font-size="9.6" fill="#047857" font-weight="700">s4</text>
+  <text x="902" y="208.8" text-anchor="end" font-size="11" fill="#64748b">= 16</text>
+  <text x="470" y="242" text-anchor="middle" font-size="10.6" fill="#475569">T_best = min over agents of (sum over stages) = 15 &gt; τ: no single agent finishes inside the budget</text>
+  <rect x="22" y="274" width="896" height="138" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="1.8"/>
+  <text x="38" y="295" font-size="12.5" fill="#047857" font-weight="700">TEAM@K - VERIFIED PROGRESS SHARING THROUGH A BROADCAST LOG</text>
+  <line x1="515.333" y1="310" x2="515.333" y2="356" stroke="#dc2626" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 3"/>
+  <text x="520.333" y="319" font-size="9.4" fill="#b91c1c" font-weight="700">budget τ</text>
+  <text x="38" y="342.8" font-size="10.5" fill="#047857" font-weight="700">team</text>
+  <rect x="112" y="326" width="80.6667" height="26" rx="5" fill="#93c5fd" stroke="#2563eb" stroke-width="1.2"/>
+  <text x="152.333" y="342.4" text-anchor="middle" font-size="9.6" fill="#1d4ed8" font-weight="700">a1</text>
+  <text x="152.333" y="366" text-anchor="middle" font-size="9.4" fill="#64748b">s1</text>
+  <rect x="192.667" y="326" width="80.6667" height="26" rx="5" fill="#c4b5fd" stroke="#7c3aed" stroke-width="1.2"/>
+  <text x="233" y="342.4" text-anchor="middle" font-size="9.6" fill="#6d28d9" font-weight="700">a2</text>
+  <text x="233" y="366" text-anchor="middle" font-size="9.4" fill="#64748b">s2</text>
+  <rect x="273.333" y="326" width="40.3333" height="26" rx="5" fill="#6ee7b7" stroke="#059669" stroke-width="1.2"/>
+  <text x="293.5" y="342.4" text-anchor="middle" font-size="9.6" fill="#047857" font-weight="700">a3</text>
+  <text x="293.5" y="366" text-anchor="middle" font-size="9.4" fill="#64748b">s3</text>
+  <rect x="313.667" y="326" width="121" height="26" rx="5" fill="#93c5fd" stroke="#2563eb" stroke-width="1.2"/>
+  <text x="374.167" y="342.4" text-anchor="middle" font-size="9.6" fill="#1d4ed8" font-weight="700">a1</text>
+  <text x="374.167" y="366" text-anchor="middle" font-size="9.4" fill="#64748b">s4</text>
+  <text x="902" y="342.8" text-anchor="end" font-size="11" fill="#0f172a" font-weight="700">= 8</text>
+  <text x="470" y="390" text-anchor="middle" font-size="10.6" fill="#475569">T_team = sum over stages of (min over agents) = 8 ≤ τ: whoever clears a stage first posts evidence, peers verify and adopt</text>
+  <rect x="22" y="426" width="439" height="201" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="1.8"/>
+  <text x="38" y="447" font-size="12" fill="#b45309" font-weight="700">WHY THE GAP IS EXPONENTIAL IN DEPTH m</text>
+  <text x="38" y="470" font-size="10.3" fill="#b45309" font-weight="700">model</text>
+  <text x="38" y="486" font-size="9.8" fill="#475569">Stage times X_ij ~ Exp(λ); m transferable stages; budget τ = αm/λ with 1/k &lt; α &lt; 1.</text>
+  <text x="38" y="507.4" font-size="10.3" fill="#b45309" font-weight="700">team</text>
+  <text x="38" y="523.4" font-size="9.8" fill="#475569">T_team ~ Erlang(m, kλ), so Pr(T_team &gt; τ) ≤ exp(-m I(kα)): failure vanishes as m grows.</text>
+  <text x="38" y="544.8" font-size="10.3" fill="#b45309" font-weight="700">best@k</text>
+  <text x="38" y="560.8" font-size="9.8" fill="#475569">Union bound: Pr(T_best ≤ τ) ≤ k exp(-m I(α)): success vanishes as m grows. More samples</text>
+  <text x="38" y="574.2" font-size="9.8" fill="#475569">buy only the factor k.</text>
+  <text x="38" y="595.6" font-size="10.3" fill="#b45309" font-weight="700">rate function</text>
+  <text x="38" y="611.6" font-size="9.8" fill="#475569">I(a) = a - 1 - log a, positive for every a other than 1.</text>
+  <rect x="479" y="426" width="439" height="201" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="1.8"/>
+  <text x="495" y="447" font-size="12" fill="#b91c1c" font-weight="700">WHEN COMMUNICATION LOSES</text>
+  <text x="495" y="470" font-size="10.3" fill="#b91c1c" font-weight="700">coordination tax</text>
+  <text x="495" y="486" font-size="9.8" fill="#475569">At ≤ ~400K tokens, reading the log and verifying peers costs more than the extra discovery</text>
+  <text x="495" y="499.4" font-size="9.8" fill="#475569">rate buys; independent agents win.</text>
+  <text x="495" y="520.8" font-size="10.3" fill="#b91c1c" font-weight="700">sparse verifier</text>
+  <text x="495" y="536.8" font-size="9.8" fill="#475569">Terminal-Bench 2.0 has one pass/fail at the end (m ~ 1). team@2 did not beat pass@2:</text>
+  <text x="495" y="550.2" font-size="9.8" fill="#475569">nothing to verify, so adoption is guesswork.</text>
+  <text x="495" y="571.6" font-size="10.3" fill="#b91c1c" font-weight="700">herding</text>
+  <text x="495" y="587.6" font-size="9.8" fill="#475569">If agents collapse into g &lt; k groups, the per-stage rate drops from kλ to gλ. Slot claiming</text>
+  <text x="495" y="601" font-size="9.8" fill="#475569">exists to keep g close to k.</text>
+  <rect x="22" y="643" width="168" height="50" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="106" y="669" text-anchor="middle" font-size="14.5" fill="#1d4ed8" font-weight="700">6.6x</text>
+  <text x="106" y="684" text-anchor="middle" font-size="9" fill="#64748b">team@5 = best@33, ARC-AGI-3</text>
+  <rect x="204" y="643" width="168" height="50" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="288" y="669" text-anchor="middle" font-size="14.5" fill="#1d4ed8" font-weight="700">9.4% -&gt; 90%</text>
+  <text x="288" y="684" text-anchor="middle" font-size="9" fill="#64748b">FT09, single -&gt; team@3</text>
+  <rect x="386" y="643" width="168" height="50" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="470" y="669" text-anchor="middle" font-size="14.5" fill="#6d28d9" font-weight="700">0/64 -&gt; 65%</text>
+  <text x="470" y="684" text-anchor="middle" font-size="9" fill="#64748b">LP85, single -&gt; team@5</text>
+  <rect x="568" y="643" width="168" height="50" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.4"/>
+  <text x="652" y="669" text-anchor="middle" font-size="14.5" fill="#047857" font-weight="700">0.945</text>
+  <text x="652" y="684" text-anchor="middle" font-size="9" fill="#64748b">polyomino, Sonnet team@3</text>
+  <rect x="750" y="643" width="168" height="50" rx="9" fill="#ffffff" stroke="#d97706" stroke-width="1.4"/>
+  <text x="834" y="669" text-anchor="middle" font-size="14.5" fill="#b45309" font-weight="700">1,957 B</text>
+  <text x="834" y="684" text-anchor="middle" font-size="9" fill="#64748b">MNIST, 20.5% under human</text>
+</svg>
