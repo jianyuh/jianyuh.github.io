@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 652" width="940" height="652" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="940" height="652" fill="#ffffff"/>
+  <text x="470" y="32" text-anchor="middle" font-size="17.5" fill="#0f172a" font-weight="700">TailSFT: stop fitting what SFT already fit, keep the tail for RL</text>
+  <text x="470" y="52" text-anchor="middle" font-size="11.5" fill="#64748b">Mask the examples whose loss fell furthest below their base-model loss; train on the rest</text>
+  <rect x="22" y="68" width="896" height="232" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+  <text x="38" y="89" font-size="12.5" fill="#1d4ed8" font-weight="700">ONE STEP: RANK THE BATCH BY m = l_t - l_0, MASK THE MOST NEGATIVE γ</text>
+  <text x="38" y="120" font-size="10.2" fill="#1d4ed8" font-weight="700">once</text>
+  <text x="108" y="120" font-size="9.6" fill="#475569">score D with the base model: l_0(x) =</text>
+  <text x="108" y="133.4" font-size="9.6" fill="#475569">per-token loss under π₀</text>
+  <text x="38" y="152.8" font-size="10.2" fill="#1d4ed8" font-weight="700">each step</text>
+  <text x="108" y="152.8" font-size="9.6" fill="#475569">l_t(x) from the SFT forward pass; margin</text>
+  <text x="108" y="166.2" font-size="9.6" fill="#475569">m = l_t - l_0</text>
+  <text x="38" y="185.6" font-size="10.2" fill="#1d4ed8" font-weight="700">mask</text>
+  <text x="108" y="185.6" font-size="9.6" fill="#475569">drop the γ_t fraction with most negative m</text>
+  <text x="108" y="199" font-size="9.6" fill="#475569">(fit hardest vs. base)</text>
+  <text x="38" y="218.4" font-size="10.2" fill="#1d4ed8" font-weight="700">train</text>
+  <text x="108" y="218.4" font-size="9.6" fill="#475569">token-averaged cross-entropy on the</text>
+  <text x="108" y="231.8" font-size="9.6" fill="#475569">retained examples only</text>
+  <line x1="318" y1="131.12" x2="902" y2="131.12" stroke="#94a3b8" stroke-width="1.1" stroke-linecap="round"/>
+  <text x="312" y="134.62" text-anchor="end" font-size="9" fill="#64748b">0</text>
+  <rect x="329.096" y="131.12" width="36.208" height="105.336" rx="3" fill="#cbd5e1"/>
+  <text x="347.2" y="256" text-anchor="middle" font-size="8.8" fill="#64748b">-1.90</text>
+  <rect x="387.496" y="131.12" width="36.208" height="83.16" rx="3" fill="#cbd5e1"/>
+  <text x="405.6" y="256" text-anchor="middle" font-size="8.8" fill="#64748b">-1.50</text>
+  <rect x="445.896" y="131.12" width="36.208" height="60.984" rx="3" fill="#cbd5e1"/>
+  <text x="464" y="256" text-anchor="middle" font-size="8.8" fill="#64748b">-1.10</text>
+  <rect x="504.296" y="131.12" width="36.208" height="44.352" rx="3" fill="#2563eb"/>
+  <text x="522.4" y="256" text-anchor="middle" font-size="8.8" fill="#64748b">-0.80</text>
+  <rect x="562.696" y="131.12" width="36.208" height="33.264" rx="3" fill="#2563eb"/>
+  <text x="580.8" y="256" text-anchor="middle" font-size="8.8" fill="#64748b">-0.60</text>
+  <rect x="621.096" y="131.12" width="36.208" height="24.948" rx="3" fill="#2563eb"/>
+  <text x="639.2" y="256" text-anchor="middle" font-size="8.8" fill="#64748b">-0.45</text>
+  <rect x="679.496" y="131.12" width="36.208" height="16.632" rx="3" fill="#2563eb"/>
+  <text x="697.6" y="256" text-anchor="middle" font-size="8.8" fill="#64748b">-0.30</text>
+  <rect x="737.896" y="131.12" width="36.208" height="11.088" rx="3" fill="#2563eb"/>
+  <text x="756" y="256" text-anchor="middle" font-size="8.8" fill="#64748b">-0.20</text>
+  <rect x="796.296" y="131.12" width="36.208" height="5.544" rx="3" fill="#2563eb"/>
+  <text x="814.4" y="256" text-anchor="middle" font-size="8.8" fill="#64748b">-0.10</text>
+  <rect x="854.696" y="128.348" width="36.208" height="2.772" rx="3" fill="#2563eb"/>
+  <text x="872.8" y="256" text-anchor="middle" font-size="8.8" fill="#64748b">+0.05</text>
+  <line x1="493.2" y1="112" x2="493.2" y2="244" stroke="#dc2626" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="4 3"/>
+  <text x="405.6" y="123.12" text-anchor="middle" font-size="9.6" fill="#b91c1c" font-weight="700">masked (γ = 0.3)</text>
+  <text x="697.6" y="123.12" text-anchor="middle" font-size="9.6" fill="#1d4ed8" font-weight="700">trained: the under-fit tail</text>
+  <text x="610" y="272" text-anchor="middle" font-size="9.4" fill="#64748b">signed margin m per example in the selection batch (illustrative)</text>
+  <rect x="22" y="314" width="439" height="252.8" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="1.8"/>
+  <text x="38" y="335" font-size="12" fill="#047857" font-weight="700">WHY THE REFERENCE MUST BE π₀ (KL-PROJECTED OPTIMA)</text>
+  <text x="238.5" y="362" text-anchor="middle" font-size="9.2" fill="#64748b">observed a · b · c</text>
+  <text x="386" y="362" text-anchor="middle" font-size="9.2" fill="#64748b">unobserved d · e</text>
+  <text x="38" y="390" font-size="9.8" fill="#334155" font-weight="700">base π_ref</text>
+  <rect x="150" y="381" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="150" y="381" width="30.6" height="10" rx="3" fill="#cbd5e1"/>
+  <text x="175.5" y="404" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.30</text>
+  <rect x="209" y="381" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="209" y="381" width="10.2" height="10" rx="3" fill="#cbd5e1"/>
+  <text x="234.5" y="404" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.10</text>
+  <rect x="268" y="381" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="268" y="381" width="5.1" height="10" rx="3" fill="#cbd5e1"/>
+  <text x="293.5" y="404" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.05</text>
+  <rect x="327" y="381" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="327" y="381" width="35.7" height="10" rx="3" fill="#cbd5e1"/>
+  <text x="352.5" y="404" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.35</text>
+  <rect x="386" y="381" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="386" y="381" width="20.4" height="10" rx="3" fill="#cbd5e1"/>
+  <text x="411.5" y="404" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.20</text>
+  <line x1="323" y1="376" x2="323" y2="520" stroke="#94a3b8" stroke-width="1" stroke-linecap="round" stroke-dasharray="3 3"/>
+  <text x="38" y="426" font-size="9.8" fill="#b91c1c" font-weight="700">ERM</text>
+  <rect x="150" y="417" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="150" y="417" width="34" height="10" rx="3" fill="#dc2626"/>
+  <text x="175.5" y="440" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.33</text>
+  <rect x="209" y="417" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="209" y="417" width="34" height="10" rx="3" fill="#dc2626"/>
+  <text x="234.5" y="440" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.33</text>
+  <rect x="268" y="417" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="268" y="417" width="34" height="10" rx="3" fill="#dc2626"/>
+  <text x="293.5" y="440" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.33</text>
+  <rect x="327" y="417" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <text x="352.5" y="440" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.00</text>
+  <rect x="386" y="417" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <text x="411.5" y="440" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.00</text>
+  <text x="38" y="462" font-size="9.8" fill="#b45309" font-weight="700">absolute α=0.25</text>
+  <rect x="150" y="453" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="150" y="453" width="25.5" height="10" rx="3" fill="#d97706"/>
+  <text x="175.5" y="476" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.25</text>
+  <rect x="209" y="453" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="209" y="453" width="25.5" height="10" rx="3" fill="#d97706"/>
+  <text x="234.5" y="476" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.25</text>
+  <rect x="268" y="453" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="268" y="453" width="25.5" height="10" rx="3" fill="#d97706"/>
+  <text x="293.5" y="476" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.25</text>
+  <rect x="327" y="453" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="327" y="453" width="16.2273" height="10" rx="3" fill="#d97706"/>
+  <text x="352.5" y="476" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.16</text>
+  <rect x="386" y="453" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="386" y="453" width="9.27273" height="10" rx="3" fill="#d97706"/>
+  <text x="411.5" y="476" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.09</text>
+  <text x="38" y="498" font-size="9.8" fill="#047857" font-weight="700">offset β=1.5</text>
+  <rect x="150" y="489" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="150" y="489" width="45.9" height="10" rx="3" fill="#059669"/>
+  <text x="175.5" y="512" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.45</text>
+  <rect x="209" y="489" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="209" y="489" width="15.3" height="10" rx="3" fill="#059669"/>
+  <text x="234.5" y="512" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.15</text>
+  <rect x="268" y="489" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="268" y="489" width="7.65" height="10" rx="3" fill="#059669"/>
+  <text x="293.5" y="512" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.08</text>
+  <rect x="327" y="489" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="327" y="489" width="21.0955" height="10" rx="3" fill="#059669"/>
+  <text x="352.5" y="512" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.21</text>
+  <rect x="386" y="489" width="51" height="10" rx="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.6"/>
+  <rect x="386" y="489" width="12.0545" height="10" rx="3" fill="#059669"/>
+  <text x="411.5" y="512" text-anchor="middle" font-size="8.8" fill="#0f172a" font-weight="700">0.12</text>
+  <text x="38" y="536" font-size="9.6" fill="#475569">ERM drops unobserved responses. Absolute clipping flattens observed ones to one floor. Offset</text>
+  <text x="38" y="549.4" font-size="9.6" fill="#475569">scales them by the same factor, keeping the base model's ranking and support.</text>
+  <rect x="479" y="314" width="439" height="252.8" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.8"/>
+  <text x="495" y="335" font-size="12" fill="#6d28d9" font-weight="700">THE PASS@1 RANKING FLIPS AFTER RL</text>
+  <line x1="555" y1="360" x2="555" y2="498" stroke="#cbd5e1" stroke-width="1" stroke-linecap="round"/>
+  <line x1="772" y1="360" x2="772" y2="498" stroke="#cbd5e1" stroke-width="1" stroke-linecap="round"/>
+  <text x="555" y="514" text-anchor="middle" font-size="9.6" fill="#64748b" font-weight="700">after SFT</text>
+  <text x="772" y="514" text-anchor="middle" font-size="9.6" fill="#64748b" font-weight="700">after GRPO</text>
+  <line x1="555" y1="467.678" x2="772" y2="405.336" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+  <rect x="551" y="463.678" width="8" height="8" rx="4" fill="#94a3b8"/>
+  <rect x="768" y="401.336" width="8" height="8" rx="4" fill="#94a3b8"/>
+  <text x="545" y="468.178" text-anchor="end" font-size="9.6" fill="#334155" font-weight="700">53.04</text>
+  <text x="782" y="408.836" font-size="9.6" fill="#334155" font-weight="700">69.57  standard SFT</text>
+  <line x1="555" y1="474.014" x2="772" y2="390.514" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"/>
+  <rect x="551" y="470.014" width="8" height="8" rx="4" fill="#7c3aed"/>
+  <rect x="768" y="386.514" width="8" height="8" rx="4" fill="#7c3aed"/>
+  <text x="545" y="482.514" text-anchor="end" font-size="9.6" fill="#6d28d9" font-weight="700">51.36</text>
+  <text x="782" y="394.014" font-size="9.6" fill="#6d28d9" font-weight="700">73.50  TailSFT</text>
+  <text x="495" y="536" font-size="9.6" fill="#475569">BigCode MBPP+: TailSFT trails on pass@1 at the SFT handoff, then leads after identical</text>
+  <text x="495" y="549.4" font-size="9.6" fill="#475569">GRPO. Early RL reward also rises up to 2.5x faster.</text>
+  <rect x="22" y="582.8" width="168" height="50" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="106" y="608.8" text-anchor="middle" font-size="14.5" fill="#1d4ed8" font-weight="700">+16.8</text>
+  <text x="106" y="623.8" text-anchor="middle" font-size="9" fill="#64748b">pass@16, BigCode CruxEval-O</text>
+  <rect x="204" y="582.8" width="168" height="50" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="288" y="608.8" text-anchor="middle" font-size="14.5" fill="#1d4ed8" font-weight="700">15 / 18</text>
+  <text x="288" y="623.8" text-anchor="middle" font-size="9" fill="#64748b">settings with higher pass@16</text>
+  <rect x="386" y="582.8" width="168" height="50" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="470" y="608.8" text-anchor="middle" font-size="14.5" fill="#6d28d9" font-weight="700">+3.93</text>
+  <text x="470" y="623.8" text-anchor="middle" font-size="9" fill="#64748b">post-GRPO pass@1, MBPP+</text>
+  <rect x="568" y="582.8" width="168" height="50" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="652" y="608.8" text-anchor="middle" font-size="14.5" fill="#6d28d9" font-weight="700">2.5x</text>
+  <text x="652" y="623.8" text-anchor="middle" font-size="9" fill="#64748b">faster early RL reward</text>
+  <rect x="750" y="582.8" width="168" height="50" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.4"/>
+  <text x="834" y="608.8" text-anchor="middle" font-size="14.5" fill="#047857" font-weight="700">10 / 11</text>
+  <text x="834" y="623.8" text-anchor="middle" font-size="9" fill="#64748b">gains when coverage ratio &gt; 1</text>
+</svg>
