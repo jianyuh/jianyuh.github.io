@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "TailSFT: Stop Fitting What You Already Fit, and RL Gets a Better Start"
-date: 2026-09-27
+date: 2026-09-28
 categories: [LLM, RL]
 tags: [TailSFT, SFT, RLVR, GRPO, Coverage, PassAtK, DataFiltering, PostTraining, OLMo]
 ---
