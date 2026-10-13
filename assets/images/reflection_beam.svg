@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 637" width="940" height="637" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect width="940" height="637" fill="#ffffff"/>
+  <text x="470" y="32" text-anchor="middle" font-size="17.5" fill="#0f172a" font-weight="700">Beam: 501B total, 23B active, built to stay stable through 100M RL rollouts</text>
+  <text x="470" y="52" text-anchor="middle" font-size="11.5" fill="#64748b">Pretrain and midtrain one base, branch a capability teacher and a safety teacher, merge them on-policy</text>
+  <rect x="22" y="68" width="896" height="229.94" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.8"/>
+  <text x="38" y="89" font-size="12.5" fill="#334155" font-weight="700">TRAINING PIPELINE</text>
+  <rect x="38" y="151.485" width="152" height="80.97" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="114" y="172.455" text-anchor="middle" font-size="11.5" fill="#1d4ed8" font-weight="700">Pretrain</text>
+  <text x="114" y="190.455" text-anchor="middle" font-size="10" fill="#475569">23.8T tokens on 6,144</text>
+  <text x="114" y="203.955" text-anchor="middle" font-size="10" fill="#475569">GB300 in under 4 weeks;</text>
+  <text x="114" y="217.455" text-anchor="middle" font-size="10" fill="#475569">92.3% goodput, 9 rewinds</text>
+  <rect x="216" y="151.485" width="152" height="80.97" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="292" y="172.455" text-anchor="middle" font-size="11.5" fill="#1d4ed8" font-weight="700">Midtrain</text>
+  <text x="292" y="190.455" text-anchor="middle" font-size="10" fill="#475569">context extended to 1M</text>
+  <text x="292" y="203.955" text-anchor="middle" font-size="10" fill="#475569">tokens; reasoning-rich</text>
+  <text x="292" y="217.455" text-anchor="middle" font-size="10" fill="#475569">synthetic data</text>
+  <rect x="394" y="104" width="152" height="80.97" rx="10" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="470" y="124.97" text-anchor="middle" font-size="11.5" fill="#6d28d9" font-weight="700">Capability teacher</text>
+  <text x="470" y="142.97" text-anchor="middle" font-size="10" fill="#475569">async RL: 10,500 GB300,</text>
+  <text x="470" y="156.47" text-anchor="middle" font-size="10" fill="#475569">100M+ rollouts, up to 256K</text>
+  <text x="470" y="169.97" text-anchor="middle" font-size="10" fill="#475569">context</text>
+  <rect x="394" y="198.97" width="152" height="80.97" rx="10" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+  <text x="470" y="226.69" text-anchor="middle" font-size="11.5" fill="#047857" font-weight="700">Safety teacher</text>
+  <text x="470" y="244.69" text-anchor="middle" font-size="10" fill="#475569">targeted SFT + RL against a</text>
+  <text x="470" y="258.19" text-anchor="middle" font-size="10" fill="#475569">three-tier behavior spec</text>
+  <rect x="572" y="151.485" width="152" height="80.97" rx="10" fill="#ffffff" stroke="#d97706" stroke-width="1.5"/>
+  <text x="648" y="179.205" text-anchor="middle" font-size="11.5" fill="#b45309" font-weight="700">MOPD</text>
+  <text x="648" y="197.205" text-anchor="middle" font-size="10" fill="#475569">multi-teacher on-policy</text>
+  <text x="648" y="210.705" text-anchor="middle" font-size="10" fill="#475569">distillation into one student</text>
+  <rect x="750" y="151.485" width="152" height="80.97" rx="10" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="826" y="179.205" text-anchor="middle" font-size="11.5" fill="#1d4ed8" font-weight="700">Beam</text>
+  <text x="826" y="197.205" text-anchor="middle" font-size="10" fill="#475569">501B / 23B active, 52 layers,</text>
+  <text x="826" y="210.705" text-anchor="middle" font-size="10" fill="#475569">Apache 2.0 weights</text>
+  <line x1="194" y1="191.97" x2="212" y2="191.97" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#a94a3b8)"/>
+  <line x1="372" y1="191.97" x2="390" y2="144.485" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#a94a3b8)"/>
+  <line x1="550" y1="144.485" x2="568" y2="191.97" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#a94a3b8)"/>
+  <line x1="372" y1="191.97" x2="390" y2="239.455" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#a94a3b8)"/>
+  <line x1="550" y1="239.455" x2="568" y2="191.97" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#a94a3b8)"/>
+  <line x1="728" y1="191.97" x2="746" y2="191.97" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#a94a3b8)"/>
+  <rect x="22" y="311.94" width="439" height="239.8" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.8"/>
+  <text x="38" y="332.94" font-size="12" fill="#6d28d9" font-weight="700">ASYNC RL: LEARNING FROM ROLLOUTS UP TO 1 DAY OLD</text>
+  <rect x="39" y="361.94" width="31.9167" height="14" rx="3" fill="#c4b5fd" fill-opacity="0.40"/>
+  <rect x="72.9167" y="361.94" width="31.9167" height="14" rx="3" fill="#c4b5fd" fill-opacity="0.46"/>
+  <rect x="106.833" y="361.94" width="31.9167" height="14" rx="3" fill="#c4b5fd" fill-opacity="0.51"/>
+  <rect x="140.75" y="361.94" width="31.9167" height="14" rx="3" fill="#c4b5fd" fill-opacity="0.57"/>
+  <rect x="174.667" y="361.94" width="31.9167" height="14" rx="3" fill="#c4b5fd" fill-opacity="0.62"/>
+  <rect x="208.583" y="361.94" width="31.9167" height="14" rx="3" fill="#c4b5fd" fill-opacity="0.68"/>
+  <rect x="242.5" y="361.94" width="31.9167" height="14" rx="3" fill="#c4b5fd" fill-opacity="0.73"/>
+  <rect x="276.417" y="361.94" width="31.9167" height="14" rx="3" fill="#c4b5fd" fill-opacity="0.78"/>
+  <rect x="310.333" y="361.94" width="31.9167" height="14" rx="3" fill="#c4b5fd" fill-opacity="0.84"/>
+  <rect x="344.25" y="361.94" width="31.9167" height="14" rx="3" fill="#c4b5fd" fill-opacity="0.89"/>
+  <rect x="378.167" y="361.94" width="31.9167" height="14" rx="3" fill="#c4b5fd" fill-opacity="0.95"/>
+  <rect x="412.083" y="361.94" width="31.9167" height="14" rx="3" fill="#7c3aed" fill-opacity="1.00"/>
+  <text x="38" y="391.94" font-size="9.4" fill="#64748b">v - 107: oldest usable rollouts</text>
+  <text x="445" y="391.94" text-anchor="end" font-size="9.4" fill="#6d28d9" font-weight="700">v: trainer</text>
+  <text x="241.5" y="407.94" text-anchor="middle" font-size="9.4" fill="#64748b">policy version that generated the tokens</text>
+  <text x="38" y="433.94" font-size="10" fill="#6d28d9" font-weight="700">GPU split</text>
+  <text x="142" y="433.94" font-size="9.6" fill="#475569">inference : training shifted between 3.9:1 and 5.4:1</text>
+  <text x="38" y="453.34" font-size="10" fill="#6d28d9" font-weight="700">weight push</text>
+  <text x="142" y="453.34" font-size="9.6" fill="#475569">median 12 s; RoCE across racks, NVLink within: 75% less cross-rack</text>
+  <text x="142" y="466.74" font-size="9.6" fill="#475569">traffic, 2.2x faster</text>
+  <text x="38" y="486.14" font-size="10" fill="#6d28d9" font-weight="700">packing</text>
+  <text x="142" y="486.14" font-size="9.6" fill="#475569">99.99% batch occupancy; trainer within 1.5% of peak as rollouts grew</text>
+  <text x="142" y="499.54" font-size="9.6" fill="#475569">~70%</text>
+  <text x="38" y="518.94" font-size="10" fill="#6d28d9" font-weight="700">faults</text>
+  <text x="142" y="518.94" font-size="9.6" fill="#475569">71 inference incidents absorbed; median recovery 8 min; 0.02%</text>
+  <text x="142" y="532.34" font-size="9.6" fill="#475569">GPU-minutes lost</text>
+  <rect x="479" y="311.94" width="439" height="239.8" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="1.8"/>
+  <text x="495" y="332.94" font-size="12" fill="#047857" font-weight="700">NUMERICS: FOUR RESIDUAL GUARDS PLUS STABLE ROUTING</text>
+  <text x="495" y="361.94" font-size="10" fill="#047857" font-weight="700">depth scaling</text>
+  <text x="599" y="361.94" font-size="9.6" fill="#475569">sublayer outputs scaled by depth so activations do not grow linearly</text>
+  <text x="495" y="381.34" font-size="10" fill="#047857" font-weight="700">SandwichNorm</text>
+  <text x="599" y="381.34" font-size="9.6" fill="#475569">normalization both before and after each sublayer</text>
+  <text x="495" y="400.74" font-size="10" fill="#047857" font-weight="700">attention gate</text>
+  <text x="599" y="400.74" font-size="9.6" fill="#475569">elementwise gate on what leaves each attention block</text>
+  <text x="495" y="420.14" font-size="10" fill="#047857" font-weight="700">FP32 residual</text>
+  <text x="599" y="420.14" font-size="9.6" fill="#475569">residual additions accumulated in full precision</text>
+  <text x="495" y="439.54" font-size="10" fill="#047857" font-weight="700">routing</text>
+  <text x="599" y="439.54" font-size="9.6" fill="#475569">aux-loss-free expert bias with cosine-decayed updates; peak load</text>
+  <text x="599" y="452.94" font-size="9.6" fill="#475569">1.04x uniform</text>
+  <text x="495" y="480.34" font-size="9.6" fill="#047857">Residual RMS stays bounded across all 52 layers through pretraining, midtraining, and RL.</text>
+  <rect x="22" y="567.74" width="168" height="50" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="106" y="593.74" text-anchor="middle" font-size="14.5" fill="#6d28d9" font-weight="700">100M+</text>
+  <text x="106" y="608.74" text-anchor="middle" font-size="8.8" fill="#64748b">RL rollouts (80M+ reasoning)</text>
+  <rect x="204" y="567.74" width="168" height="50" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4"/>
+  <text x="288" y="593.74" text-anchor="middle" font-size="14.5" fill="#6d28d9" font-weight="700">170K</text>
+  <text x="288" y="608.74" text-anchor="middle" font-size="8.8" fill="#64748b">peak concurrent sandboxes</text>
+  <rect x="386" y="567.74" width="168" height="50" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="470" y="593.74" text-anchor="middle" font-size="14.5" fill="#1d4ed8" font-weight="700">1.8T</text>
+  <text x="470" y="608.74" text-anchor="middle" font-size="8.8" fill="#64748b">high-quality web tokens kept</text>
+  <rect x="568" y="567.74" width="168" height="50" rx="9" fill="#ffffff" stroke="#d97706" stroke-width="1.4"/>
+  <text x="652" y="593.74" text-anchor="middle" font-size="14.5" fill="#b45309" font-weight="700">r = 0.79</text>
+  <text x="652" y="608.74" text-anchor="middle" font-size="8.8" fill="#64748b">GenRM vs. RL gains (BoN 0.46)</text>
+  <rect x="750" y="567.74" width="168" height="50" rx="9" fill="#ffffff" stroke="#059669" stroke-width="1.4"/>
+  <text x="834" y="593.74" text-anchor="middle" font-size="14.5" fill="#047857" font-weight="700">3-4x</text>
+  <text x="834" y="608.74" text-anchor="middle" font-size="8.8" fill="#64748b">less compute than GLM-5.2</text>
+  <defs>
+    <marker id="a94a3b8" markerWidth="6" markerHeight="5.2" refX="5.6" refY="2.6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0.4,0.5 L5.8,2.6 L0.4,4.7 Z" fill="#94a3b8"/></marker>
+  </defs>
+</svg>
