@@ -10,6 +10,13 @@ description: >
 
 google_analytics: G-D0QB575CLE
 
+# Comments via giscus (GitHub Discussions). Disable per post with `comments: false`.
+giscus:
+  repo: jianyuh/jianyuh.github.io
+  repo_id: R_kgDONNR20g
+  category: Comments
+  category_id: DIC_kwDONNR20s4DIkYQ
+
 # Build settings
 
 # If you clone the Minima repo and build locally, use this setting.

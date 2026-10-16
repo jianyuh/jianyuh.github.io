@@ -1,3 +1,11 @@
 #!/bin/sh
 
+# Intel Mac: Ruby 3.3 lives in the "jekyll" conda env (Homebrew dropped Intel).
+# Use it when it exists; elsewhere this is a no-op.
+CONDA="${CONDA_EXE:-$HOME/miniconda3/bin/conda}"
+if [ -x "$CONDA" ]; then
+  prefix=$("$CONDA" env list | awk '$1 == "jekyll" { print $NF }')
+  [ -n "$prefix" ] && PATH="$prefix/bin:$PATH" && export PATH
+fi
+
 bundle exec jekyll serve
