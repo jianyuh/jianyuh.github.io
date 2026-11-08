@@ -20,13 +20,10 @@ GEM
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0)
     eventmachine (1.2.7)
-    ffi (1.17.2-arm64-darwin)
-    ffi (1.17.2-x86_64-darwin)
+    ffi (1.17.4-arm64-darwin)
+    ffi (1.17.4-x86_64-darwin)
     forwardable-extended (2.6.0)
-    google-protobuf (4.33.1-arm64-darwin)
-      bigdecimal
-      rake (>= 13)
-    google-protobuf (4.33.1-x86_64-darwin)
+    google-protobuf (4.33.6)
       bigdecimal
       rake (>= 13)
     http_parser.rb (0.8.0)
@@ -64,6 +61,7 @@ GEM
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    logger (1.7.0)
     mercenary (0.4.0)
     pathutil (0.16.2)
       forwardable-extended (~> 2.6)
@@ -93,6 +91,7 @@ DEPENDENCIES
   base64 (~> 0.3.0)
   bundler
   csv (~> 3.3)
+  logger
   minima!
 
 BUNDLED WITH
