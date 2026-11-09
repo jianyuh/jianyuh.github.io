@@ -31,6 +31,9 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
+# Publish posts dated after the build time (e.g. a post scheduled for tomorrow).
+future: true
+
 # Theme-specific settings
 
 # If you want to link only specific pages in your header, use this and add the path to the pages
