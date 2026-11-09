@@ -22,3 +22,9 @@ Thumbs.db
 
 *~
 */*~
+
+# Scratch figure previews (create-blog-post render.sh)
+.tmp_svg_preview/
+
+# Local Claude Code config and skills
+.claude/
